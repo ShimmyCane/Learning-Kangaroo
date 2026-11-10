@@ -48,7 +48,7 @@
   (function () {
     const { esc } = APP;
     APP.init();
-    const s = BANK.find(APP.param("code")) || BANK.sheets()[0], all = BANK.sheets(s.level), i = all.indexOf(s);
+    const s = BANK.find(APP.param("code")) || BANK.sheets()[0], all = BANK.sheets(s.retired ? "archive" : s.level), i = all.indexOf(s);
     const flip = APP.store.get("lkg.flip", "long");
     document.title = "Learning Kangaroo #LK-" + s.code;
     document.getElementById("sub").textContent = "#LK-" + s.code + " · " + LKG.TRACKS[s.code[0]].name + " · " + s.title;
@@ -56,7 +56,7 @@
     document.getElementById("p2").innerHTML = LKG.page(s, 2);
     document.getElementById("prev").href = "sheet.html?code=" + all[(i - 1 + all.length) % all.length].code;
     document.getElementById("next").href = "sheet.html?code=" + all[(i + 1) % all.length].code;
-    document.getElementById("answers").href = "answers.html" + (s.level === "tk" ? "?level=tk" : "") + "#LK-" + s.code;
+    document.getElementById("answers").href = "answers.html" + (s.retired ? "?level=archive" : "") + "#LK-" + s.code;
     document.getElementById("print").addEventListener("click", () => { APP.addReview({ code: s.code, kind: "printed" }); APP.printPages(LKG.pages(s), { duplex: true, flip }); });
     function render() {
       const flag = APP.openFlags().find(f => f.code === s.code);

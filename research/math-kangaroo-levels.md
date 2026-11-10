@@ -46,3 +46,9 @@ Each sheet has one 5-point question that needs a trick (two steps, a comparison,
 
 - New: `J4`–`J6` (Joey, kindergarten) and `R4`–`R6` (Roo, grade 2) in `data/questions.js`, level `k` and `g2`.
 - Old: `J1`–`J3` and `R1`–`R3`, now level `tk` (TK and younger). Not deleted, not printed by default. Reached from ⚙️ Settings → 📦 TK and younger worksheets (`index.html?level=tk`), with the matching answers at `answers.html?level=tk`.
+
+## Round 3 (2026-11-10): archive and the new sets
+
+- The 12 earlier sheets (`J1`–`J6`, `R1`–`R6`) are retired (`retired: true`), so they are off the home page and kept in the file. They are reached from ⚙️ Settings → 🗄️ Archive (`index.html?level=archive`, `answers.html?level=archive`).
+- The new sets came in as 9 Joey (kindergarten) and 9 Roo (grade 2) sheets, renumbered to `J7`–`J15` and `R7`–`R15` so no code or question id is reused.
+- The answer letters were rotated to spread them across A–E (the picture-labelled questions keep their order).

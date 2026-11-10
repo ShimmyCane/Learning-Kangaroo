@@ -8,6 +8,13 @@
 - [x] Home, worksheet, bulk print (two-sided, flip, copies), answers and results pages
 - [x] `lkg_reviews` SQL + rolled-back test written
 
+## Round 3 (2026-11-10)
+
+- [x] Earlier sheets archived (retired, reached from ⚙️ Settings → Archive)
+- [x] 18 new sheets in: Joey J7–J15 (kindergarten), Roo R7–R15 (grade 2)
+- [ ] Fix the flagged questions (see the PR description)
+- [ ] Print one K and one grade 2 sheet, try them, mark the results
+
 ## Round 2 (2026-11-10)
 
 - [x] Old J1–J3 / R1–R3 moved to level `tk` (TK and younger), reached from ⚙️ Settings

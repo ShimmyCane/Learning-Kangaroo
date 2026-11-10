@@ -50,7 +50,7 @@
     let copies = store.get("lkg.copies", 1), flip = store.get("lkg.flip", "long");
     const list = () => BANK.sheets(view).filter(s => chosen.has(s.code) && !APP.isFlagged(s.code));
     function render() {
-      document.getElementById("pick").innerHTML = BANK.sheets(view).map(s => `<button class="tag${chosen.has(s.code) ? " on" : ""}" data-code="${s.code}" type="button"${APP.isFlagged(s.code) ? " disabled" : ""}>${APP.isFlagged(s.code) ? "🚩 " : ""}${esc(LKG.TRACKS[s.code[0]].name)} ${s.code[1]} · ${esc(s.title)}</button>`).join("");
+      document.getElementById("pick").innerHTML = BANK.sheets(view).map(s => `<button class="tag${chosen.has(s.code) ? " on" : ""}" data-code="${s.code}" type="button"${APP.isFlagged(s.code) ? " disabled" : ""}>${APP.isFlagged(s.code) ? "🚩 " : ""}${esc(LKG.TRACKS[s.code[0]].name)} ${s.code.slice(1)} · ${esc(s.title)}</button>`).join("");
       document.getElementById("copies").innerHTML = [1, 2, 3].map(n => `<button class="tag${copies === n ? " on" : ""}" data-copies="${n}" type="button">${n}</button>`).join("");
       document.querySelectorAll("input[name=flip]").forEach(x => { x.checked = x.value === flip; });
       const l = list();
