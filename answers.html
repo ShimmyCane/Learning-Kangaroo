@@ -38,7 +38,7 @@
     APP.init();
     const MARKS = [[1, "✅"], [0, "❌"], [null, "➖"]];
     function render() {
-      document.getElementById("key").innerHTML = BANK.sheets().map(s => {
+      document.getElementById("key").innerHTML = BANK.sheets(BANK.viewOf(APP.param("level"))).map(s => {
         const who = BANK.WHO[s.code[0]];
         const res = s.questions.map(q => APP.latest(q.id, "result", who));
         const right = res.filter(r => r && r.score === 1).length, done = res.filter(Boolean).length;
