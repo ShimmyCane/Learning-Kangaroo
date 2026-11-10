@@ -79,112 +79,208 @@ window.LKG_SHEETS = [
     { id: "R6-3", points: 4, text: "Kip is to the left of Bo. Pip is to the right of Bo. Who is in the middle?", art: null, choices: ["Kip", "Bo", "Pip", "Nobody", "Can't tell"], answer: "B", calc: () => "Bo", why: "From left to right: Kip, Bo, Pip. Bo is in the middle." },
     { id: "R6-4", points: 5, text: "Kip thinks of a number. He adds 9, then takes away 4, and gets 20. What number did he start with?", art: null, choices: [5, 11, 13, 15, 29], answer: "D", calc: () => 20 + 4 - 9, why: "Work backwards: 20 + 4 = 24, then 24 − 9 = 15." }
   ] },
-  { code: "J7", level: "k", title: "Counting & Comparing", questions: [
+  { code: "J7", level: "k", retired: true, title: "Counting & Comparing", questions: [
     { id: "J7-1", points: 3, text: "How many apples are hanging on the tree?", art: {"kind": "tree", "n": 5}, choices: [5, 6, 7, 3, 4], answer: "A", calc: () => 5, why: "Count the apples on the branches one by one: 5 apples." },
     { id: "J7-2", points: 3, text: "Which number comes next in the row?", art: {"kind": "missing", "list": [2, 3, 4, null]}, choices: [4, 5, 6, 7, 3], answer: "B", calc: () => 5, why: "Counting forward by ones: 2, 3, 4, 5." },
     { id: "J7-3", points: 4, text: "Bo sees these shapes. How many stars are there?", art: {"kind": "shapeMix", "list": [["star", 20, 30], ["star", 60, 40], ["circle", 40, 70], ["star", 80, 20]]}, choices: [6, 2, 3, 4, 5], answer: "C", calc: () => 3, why: "Count only the 5-pointed stars: there are 3 stars." },
     { id: "J7-4", points: 5, text: "Pip has 4 cupcakes. He eats 2 of them. How many cupcakes are left?", art: {"kind": "cupcakes", "n": 4, "eaten": 2}, choices: [4, 5, 1, 2, 3], answer: "D", calc: () => 2, why: "Subtract the 2 eaten cupcakes from 4: 4 - 2 = 2." }
   ] },
-  { code: "J8", level: "k", title: "Adding & Shapes", questions: [
+  { code: "J8", level: "k", retired: true, title: "Adding & Shapes", questions: [
     { id: "J8-1", points: 3, text: "How many red balls are there in total?", art: {"kind": "addBalls", "a": 3, "b": 2}, choices: [6, 7, 3, 4, 5], answer: "E", calc: () => 5, why: "Add the two groups of balls together: 3 + 2 = 5." },
     { id: "J8-2", points: 4, text: "Which kangaroo is the tallest?", art: {"kind": "roos", "heights": [2, 4, 5, 3, 1]}, choices: [{"see": "A"}, {"see": "B"}, {"see": "C"}, {"see": "D"}, {"see": "E"}], answer: "C", calc: () => "C", why: "Kangaroo C has height 5, which is taller than all the others." },
     { id: "J8-3", points: 4, text: "Which flower has exactly 6 petals?", art: {"kind": "flowers", "petals": [4, 5, 6, 3, 7]}, choices: [{"see": "A"}, {"see": "B"}, {"see": "C"}, {"see": "D"}, {"see": "E"}], answer: "C", calc: () => "C", why: "Count petals on each flower: Flower C has 6 petals." },
     { id: "J8-4", points: 5, text: "Bo rolls a die. How many dots are on the top face?", art: {"kind": "die", "n": 6}, choices: [6, 3, 2, 4, 5], answer: "A", calc: () => 6, why: "Count the dots on the single die face: 6." }
   ] },
-  { code: "J9", level: "k", title: "Jumps & Patterns", questions: [
+  { code: "J9", level: "k", retired: true, title: "Jumps & Patterns", questions: [
     { id: "J9-1", points: 3, text: "Where is Kip sitting on the number line?", art: {"kind": "numberLine", "max": 6, "jumps": [], "kip": 3}, choices: [2, 3, 4, 5, 1], answer: "B", calc: () => 3, why: "Kip is sitting directly above the number 3." },
     { id: "J9-2", points: 4, text: "What is the missing number in the sequence?", art: {"kind": "missing", "list": [5, 6, null, 8]}, choices: [5, 6, 7, 8, 9], answer: "C", calc: () => 7, why: "Counting forward by ones: 5, 6, 7, 8." },
     { id: "J9-3", points: 4, text: "How many small squares make up this shape?", art: {"kind": "cells", "cells": [[0, 0], [0, 1], [1, 0], [1, 1]]}, choices: [6, 2, 3, 4, 5], answer: "D", calc: () => 4, why: "Count all grid units: 4 small squares arranged in a 2x2 grid." },
     { id: "J9-4", points: 5, text: "Kip starts at 1 and makes one jump of size 3. Where does he land?", art: {"kind": "numberLine", "max": 6, "jumps": [[1, 4]], "kip": 1}, choices: [5, 6, 2, 3, 4], answer: "E", calc: () => 4, why: "1 + 3 = 4." }
   ] },
-  { code: "J10", level: "k", title: "Farm & Animals", questions: [
+  { code: "J10", level: "k", retired: true, title: "Farm & Animals", questions: [
     { id: "J10-1", points: 3, text: "How many hens are on the farm?", art: {"kind": "farm", "hens": 3, "dogs": 2}, choices: [3, 4, 5, 1, 2], answer: "A", calc: () => 3, why: "Count only the hens: there are 3." },
     { id: "J10-2", points: 4, text: "How many total animals are on the farm?", art: {"kind": "farm", "hens": 4, "dogs": 2}, choices: [5, 6, 7, 8, 4], answer: "B", calc: () => 6, why: "Add 4 hens + 2 dogs = 6 animals." },
     { id: "J10-3", points: 4, text: "Which flower has the fewest petals?", art: {"kind": "flowers", "petals": [5, 3, 6, 4, 7]}, choices: [{"see": "A"}, {"see": "B"}, {"see": "C"}, {"see": "D"}, {"see": "E"}], answer: "B", calc: () => "B", why: "Flower B has 3 petals, which is smaller than 4, 5, 6, or 7." },
     { id: "J10-4", points: 5, text: "Pip has 3 apples. Bo gives him 2 more. How many apples does Pip have now?", art: null, choices: [3, 4, 5, 6, 7], answer: "C", calc: () => 5, why: "3 + 2 = 5." }
   ] },
-  { code: "J11", level: "k", title: "Time & Order", questions: [
+  { code: "J11", level: "k", retired: true, title: "Time & Order", questions: [
     { id: "J11-1", points: 3, text: "What hour does the clock show?", art: {"kind": "clock", "h": 4}, choices: [6, 2, 3, 4, 5], answer: "D", calc: () => 4, why: "The hour hand points directly at the number 4." },
     { id: "J11-2", points: 4, text: "Kip rolls two dice. What is the sum of the dots?", art: {"kind": "dice", "a": 2, "b": 3}, choices: [6, 7, 3, 4, 5], answer: "E", calc: () => 5, why: "Add dots on both dice: 2 + 3 = 5." },
     { id: "J11-3", points: 4, text: "How many coins are in the pile?", art: {"kind": "coins", "n": 7}, choices: [7, 8, 9, 5, 6], answer: "A", calc: () => 7, why: "Count all coins in the stack: 7." },
     { id: "J11-4", points: 5, text: "Bo has 6 carrots. He gives 3 to Pip and 1 to Kip. How many carrots are left for Bo?", art: null, choices: [1, 2, 3, 4, 5], answer: "B", calc: () => 2, why: "6 - 3 - 1 = 2." }
   ] },
-  { code: "J12", level: "k", title: "Growing Patterns", questions: [
+  { code: "J12", level: "k", retired: true, title: "Growing Patterns", questions: [
     { id: "J12-1", points: 3, text: "How many dots should be in the next box?", art: {"kind": "growing", "counts": [1, 2, 3]}, choices: [2, 3, 4, 5, 6], answer: "C", calc: () => 4, why: "The pattern increases by 1 each step: 1, 2, 3, 4." },
     { id: "J12-2", points: 4, text: "Which kangaroo is second in line?", art: {"kind": "line", "label": "Bo"}, choices: [{"see": "A"}, {"see": "B"}, {"see": "C"}, {"see": "D"}, {"see": "E"}], answer: "B", calc: () => "B", why: "Kangaroo A is 1st (Bo), so Kangaroo B is 2nd." },
     { id: "J12-3", points: 4, text: "How many apples are on the tree?", art: {"kind": "tree", "n": 8}, choices: [10, 6, 7, 8, 9], answer: "D", calc: () => 8, why: "Count the apples carefully: there are 8 apples." },
     { id: "J12-4", points: 5, text: "Pip has 2 green dots and 4 red dots. How many dots does Pip have in total?", art: null, choices: [7, 8, 4, 5, 6], answer: "E", calc: () => 6, why: "2 + 4 = 6." }
   ] },
-  { code: "J13", level: "k", title: "Shapes & Sizes", questions: [
+  { code: "J13", level: "k", retired: true, title: "Shapes & Sizes", questions: [
     { id: "J13-1", points: 3, text: "How many triangles are in the box?", art: {"kind": "shapeMix", "list": [["triangle", 30, 40], ["square", 60, 20], ["triangle", 70, 70]]}, choices: [2, 3, 4, 5, 1], answer: "A", calc: () => 2, why: "Count only the 3-sided triangles: there are 2." },
     { id: "J13-2", points: 4, text: "Which kangaroo is the shortest?", art: {"kind": "roos", "heights": [5, 4, 1, 3, 2]}, choices: [{"see": "A"}, {"see": "B"}, {"see": "C"}, {"see": "D"}, {"see": "E"}], answer: "C", calc: () => "C", why: "Kangaroo C has height 1, which is the shortest." },
     { id: "J13-3", points: 4, text: "What number is missing from the list?", art: {"kind": "missing", "list": [7, 8, 9, null]}, choices: [9, 10, 11, 12, 8], answer: "B", calc: () => 10, why: "Counting up by ones: 7, 8, 9, 10." },
     { id: "J13-4", points: 5, text: "Kip has 5 balloons. 2 pop. How many balloons are left?", art: null, choices: [1, 2, 3, 4, 5], answer: "C", calc: () => 3, why: "5 - 2 = 3." }
   ] },
-  { code: "J14", level: "k", title: "Fun with Dice & Clocks", questions: [
+  { code: "J14", level: "k", retired: true, title: "Fun with Dice & Clocks", questions: [
     { id: "J14-1", points: 3, text: "What hour does the clock show?", art: {"kind": "clock", "h": 7}, choices: [9, 5, 6, 7, 8], answer: "D", calc: () => 7, why: "The hour hand points straight to 7." },
     { id: "J14-2", points: 4, text: "How many dots are on the die?", art: {"kind": "die", "n": 5}, choices: [6, 2, 3, 4, 5], answer: "E", calc: () => 5, why: "Count the dots on the die: 5." },
     { id: "J14-3", points: 4, text: "How many cupcakes are NOT eaten?", art: {"kind": "cupcakes", "n": 6, "eaten": 2}, choices: [4, 5, 6, 2, 3], answer: "A", calc: () => 4, why: "6 total cupcakes - 2 eaten = 4 remaining." },
     { id: "J14-4", points: 5, text: "Bo has 4 fish. Pip gives him 4 more. How many fish does Bo have in total?", art: null, choices: [7, 8, 9, 10, 6], answer: "B", calc: () => 8, why: "4 + 4 = 8." }
   ] },
-  { code: "J15", level: "k", title: "Mixed Review Joey", questions: [
+  { code: "J15", level: "k", retired: true, title: "Mixed Review Joey", questions: [
     { id: "J15-1", points: 3, text: "How many dogs are on the farm?", art: {"kind": "farm", "hens": 2, "dogs": 4}, choices: [2, 3, 4, 5, 6], answer: "C", calc: () => 4, why: "Count only the dogs: 4." },
     { id: "J15-2", points: 4, text: "Where does Kip land if he starts at 0 and jumps 5 steps forward?", art: {"kind": "numberLine", "max": 6, "jumps": [[0, 5]], "kip": 0}, choices: [2, 3, 4, 5, 6], answer: "D", calc: () => 5, why: "0 + 5 = 5." },
     { id: "J15-3", points: 4, text: "How many coins are shown?", art: {"kind": "coins", "n": 9}, choices: [10, 6, 7, 8, 9], answer: "E", calc: () => 9, why: "Count the total coins: 9." },
     { id: "J15-4", points: 5, text: "Pip has 7 stickers. He gives 3 to Bo. How many stickers does Pip have left?", art: null, choices: [4, 5, 6, 2, 3], answer: "A", calc: () => 4, why: "7 - 3 = 4." }
   ] },
-  { code: "R7", level: "g2", title: "Addition & Balance", questions: [
+  { code: "R7", level: "g2", retired: true, title: "Addition & Balance", questions: [
     { id: "R7-1", points: 3, text: "Kip rolls two dice. One shows 5 and the other shows 4. What is the sum?", art: {"kind": "dice", "a": 5, "b": 4}, choices: [8, 9, 10, 11, 7], answer: "B", calc: () => 9, why: "5 + 4 = 9." },
     { id: "R7-2", points: 4, text: "On a balance scale, 1 cube balances 2 balls. How many balls balance 3 cubes?", art: {"kind": "balance"}, choices: [4, 5, 6, 8, 3], answer: "C", calc: () => 6, why: "If 1 cube = 2 balls, then 3 cubes = 3 x 2 = 6 balls." },
     { id: "R7-3", points: 4, text: "Bo starts at number 3 on the number line. He makes 2 jumps of size 3 forward. Where does he land?", art: {"kind": "numberLine", "max": 10, "jumps": [[3, 6], [6, 9]], "kip": 3}, choices: [6, 7, 8, 9, 10], answer: "D", calc: () => 9, why: "3 + 3 + 3 = 9." },
     { id: "R7-4", points: 5, text: "Pip has 12 apples. He keeps 4 for himself and divides the rest equally between Bo and Kip. How many apples does Kip get?", art: null, choices: [5, 6, 8, 3, 4], answer: "E", calc: () => 4, why: "12 - 4 = 8 remaining apples. 8 divided between 2 kangaroos = 4 apples each." }
   ] },
-  { code: "R8", level: "g2", title: "Grids & Measurement", questions: [
+  { code: "R8", level: "g2", retired: true, title: "Grids & Measurement", questions: [
     { id: "R8-1", points: 3, text: "A square grid has 3 rows and 3 columns. How many small squares are there in total?", art: {"kind": "squares", "n": 3}, choices: [9, 12, 16, 6, 8], answer: "A", calc: () => 9, why: "3 rows x 3 columns = 9 small squares." },
     { id: "R8-2", points: 4, text: "Which flower has the most petals?", art: {"kind": "flowers", "petals": [6, 8, 7, 9, 5]}, choices: [{"see": "A"}, {"see": "B"}, {"see": "C"}, {"see": "D"}, {"see": "E"}], answer: "D", calc: () => "D", why: "Flower D has 9 petals, which is more than 5, 6, 7, or 8." },
     { id: "R8-3", points: 4, text: "What number comes next in the sequence: 4, 8, 12, 16, __?", art: {"kind": "missing", "list": [4, 8, 12, 16, null]}, choices: [18, 20, 22, 24, 25], answer: "B", calc: () => 20, why: "The pattern adds 4 each step: 16 + 4 = 20." },
     { id: "R8-4", points: 5, text: "Bo has 3 coins of 5 cents and 2 coins of 10 cents. How many cents does Bo have altogether?", art: null, choices: [25, 30, 35, 40, 45], answer: "C", calc: () => 35, why: "(3 x 5) + (2 x 10) = 15 + 20 = 35 cents." }
   ] },
-  { code: "R9", level: "g2", title: "Line Up & Deductions", questions: [
+  { code: "R9", level: "g2", retired: true, title: "Line Up & Deductions", questions: [
     { id: "R9-1", points: 3, text: "Bo, Kip, and Pip are standing in line. Kip is behind Bo. Pip is behind Kip. Who is last in line?", art: {"kind": "names", "names": ["Bo", "Kip", "Pip"]}, choices: ["None", "Bo", "Kip", "Pip", "Bo and Kip"], answer: "D", calc: () => "Pip", why: "Order from front to back: Bo, Kip, Pip. Pip is last." },
     { id: "R9-2", points: 4, text: "A clock shows 3 o'clock right now. What hour will it show in 5 hours?", art: {"kind": "clock", "h": 3}, choices: [9, 10, 6, 7, 8], answer: "E", calc: () => 8, why: "3 + 5 = 8 o'clock." },
     { id: "R9-3", points: 4, text: "How many unit cells make up an L-shape made of 3 vertical and 2 horizontal cells sharing a corner?", art: {"kind": "cells", "cells": [[0, 0], [0, 1], [0, 2], [1, 0]]}, choices: [4, 5, 6, 7, 3], answer: "A", calc: () => 4, why: "Count the coordinate pairs: 4 distinct cells." },
     { id: "R9-4", points: 5, text: "Kip has 15 red marbles. He trades 3 red marbles for 1 blue marble. If he gets 4 blue marbles, how many red marbles does he have left?", art: null, choices: [2, 3, 4, 5, 1], answer: "B", calc: () => 3, why: "4 blue marbles cost 4 x 3 = 12 red marbles. 15 - 12 = 3 red marbles left." }
   ] },
-  { code: "R10", level: "g2", title: "Geometry & Logic", questions: [
+  { code: "R10", level: "g2", retired: true, title: "Geometry & Logic", questions: [
     { id: "R10-1", points: 3, text: "A triangle is split into two smaller triangles by one straight line. How many total triangles are in the figure?", art: {"kind": "splitTriangle"}, choices: [1, 2, 3, 4, 5], answer: "C", calc: () => 3, why: "There are 2 small triangles inside plus 1 large outer triangle = 3 triangles." },
     { id: "R10-2", points: 4, text: "How many total squares are in a 4x4 grid?", art: {"kind": "squares", "n": 4}, choices: [20, 12, 14, 16, 18], answer: "D", calc: () => 16, why: "Count the small 1x1 grid squares: 4 x 4 = 16." },
     { id: "R10-3", points: 4, text: "What is the missing number: 30, 25, 20, __, 10?", art: {"kind": "missing", "list": [30, 25, 20, null, 10]}, choices: [16, 18, 12, 14, 15], answer: "E", calc: () => 15, why: "Subtracting 5 each step: 20 - 5 = 15." },
     { id: "R10-4", points: 5, text: "Bo has 20 nuts. He buries half of them. Then a squirrel steals 3 of the buried nuts. How many buried nuts are left?", art: null, choices: [7, 8, 10, 5, 6], answer: "A", calc: () => 7, why: "Half of 20 is 10. 10 - 3 = 7 buried nuts left." }
   ] },
-  { code: "R11", level: "g2", title: "Word Problems & Scales", questions: [
+  { code: "R11", level: "g2", retired: true, title: "Word Problems & Scales", questions: [
     { id: "R11-1", points: 3, text: "Pip count 5 dogs on the farm. Each dog has 4 legs. How many dog legs are there in total?", art: {"kind": "farm", "hens": 0, "dogs": 5}, choices: [18, 20, 24, 12, 16], answer: "B", calc: () => 20, why: "5 dogs x 4 legs each = 20 legs." },
     { id: "R11-2", points: 4, text: "If 1 cube balances 2 balls, how many cubes balance 8 balls?", art: {"kind": "balance"}, choices: [2, 3, 4, 5, 6], answer: "C", calc: () => 4, why: "8 divided by 2 = 4 cubes." },
     { id: "R11-3", points: 4, text: "How many cupcakes are left if Bo starts with 9 and eats 4?", art: {"kind": "cupcakes", "n": 9, "eaten": 4}, choices: [7, 3, 4, 5, 6], answer: "D", calc: () => 5, why: "9 - 4 = 5." },
     { id: "R11-4", points: 5, text: "Kip has 3 cards with numbers 2, 4, and 7. What is the largest 3-digit number he can make?", art: null, choices: [747, 427, 472, 724, 742], answer: "E", calc: () => 742, why: "Put the largest digit first (7), then the next largest (4), then the smallest (2) = 742." }
   ] },
-  { code: "R12", level: "g2", title: "Double Jumps & Sequences", questions: [
+  { code: "R12", level: "g2", retired: true, title: "Double Jumps & Sequences", questions: [
     { id: "R12-1", points: 3, text: "Kip starts at 0 and makes 4 jumps of size 2. Where does Kip land?", art: {"kind": "numberLine", "max": 10, "jumps": [[0, 2], [2, 4], [4, 6], [6, 8]], "kip": 0}, choices: [8, 9, 10, 6, 7], answer: "A", calc: () => 8, why: "4 jumps of 2 = 4 x 2 = 8." },
     { id: "R12-2", points: 4, text: "What is the missing number: 2, 5, 8, 11, __?", art: {"kind": "missing", "list": [2, 5, 8, 11, null]}, choices: [13, 14, 15, 16, 12], answer: "B", calc: () => 14, why: "Add 3 each step: 11 + 3 = 14." },
     { id: "R12-3", points: 4, text: "Bo has 2 dice showing 6 and 6. What is the total sum?", art: {"kind": "dice", "a": 6, "b": 6}, choices: [10, 11, 12, 13, 14], answer: "C", calc: () => 12, why: "6 + 6 = 12." },
     { id: "R12-4", points: 5, text: "Pip has 18 crayons. He gives 6 to Bo and twice as many as that to Kip. How many crayons does Pip have left?", art: null, choices: [4, 6, 8, 0, 2], answer: "D", calc: () => 0, why: "Kip gets 2 x 6 = 12. Total given away: 6 + 12 = 18. Pip has 18 - 18 = 0 left." }
   ] },
-  { code: "R13", level: "g2", title: "Patterns & Time", questions: [
+  { code: "R13", level: "g2", retired: true, title: "Patterns & Time", questions: [
     { id: "R13-1", points: 3, text: "What time will the clock show 2 hours after 8 o'clock?", art: {"kind": "clock", "h": 8}, choices: [11, 12, 1, 9, 10], answer: "E", calc: () => 10, why: "8 + 2 = 10 o'clock." },
     { id: "R13-2", points: 4, text: "How many dots should be in the 5th box of the growing pattern?", art: {"kind": "growing", "counts": [2, 4, 6, 8]}, choices: [10, 11, 12, 8, 9], answer: "A", calc: () => 10, why: "The pattern adds 2 each time: 2, 4, 6, 8, 10." },
     { id: "R13-3", points: 4, text: "How many coins are in 2 piles of 6 coins each?", art: {"kind": "coins", "n": 6}, choices: [10, 12, 14, 16, 8], answer: "B", calc: () => 12, why: "2 x 6 = 12 coins." },
     { id: "R13-4", points: 5, text: "A ribbon is 24 cm long. Bo cuts it into 3 equal pieces. How long is each piece?", art: null, choices: [6, 7, 8, 9, 10], answer: "C", calc: () => 8, why: "24 divided by 3 = 8 cm." }
   ] },
-  { code: "R14", level: "g2", title: "Mixed Math Roo 1", questions: [
+  { code: "R14", level: "g2", retired: true, title: "Mixed Math Roo 1", questions: [
     { id: "R14-1", points: 3, text: "How many total petals are on 3 flowers with 5 petals each?", art: {"kind": "flowers", "petals": [5, 5, 5, 0, 0]}, choices: [20, 10, 12, 15, 18], answer: "D", calc: () => 15, why: "3 x 5 = 15 petals." },
     { id: "R14-2", points: 4, text: "Kip is 3rd in line from the front. There are 4 kangaroos behind Kip. How many kangaroos are in line?", art: {"kind": "line", "label": "Kip"}, choices: [8, 9, 5, 6, 7], answer: "E", calc: () => 7, why: "3 in front (including Kip) + 4 behind = 7 kangaroos." },
     { id: "R14-3", points: 4, text: "How many legs do 3 hens and 2 dogs have altogether?", art: {"kind": "farm", "hens": 3, "dogs": 2}, choices: [14, 16, 18, 10, 12], answer: "A", calc: () => 14, why: "(3 hens x 2 legs = 6) + (2 dogs x 4 legs = 8). 6 + 8 = 14 legs." },
     { id: "R14-4", points: 5, text: "Pip thinks of a number. He doubles it and then adds 4 to get 14. What was his original number?", art: null, choices: [4, 5, 6, 7, 3], answer: "B", calc: () => 5, why: "Work backward: 14 - 4 = 10. Half of 10 is 5." }
   ] },
-  { code: "R15", level: "g2", title: "Grand Championship Roo", questions: [
+  { code: "R15", level: "g2", retired: true, title: "Grand Championship Roo", questions: [
     { id: "R15-1", points: 3, text: "What is the area of a rectangle made of 2 rows of 5 small square cells?", art: {"kind": "squares", "n": 5}, choices: [8, 9, 10, 12, 7], answer: "C", calc: () => 10, why: "2 rows x 5 cells = 10 small squares." },
     { id: "R15-2", points: 4, text: "Where does Kip land if he starts at 10 and jumps 4 backward?", art: {"kind": "numberLine", "max": 10, "jumps": [[10, 6]], "kip": 10}, choices: [8, 4, 5, 6, 7], answer: "D", calc: () => 6, why: "10 - 4 = 6." },
     { id: "R15-3", points: 4, text: "Bo has 5 apples on 3 trees. How many apples in total?", art: {"kind": "tree", "n": 5}, choices: [16, 20, 10, 12, 15], answer: "E", calc: () => 15, why: "3 trees x 5 apples = 15 apples." },
     { id: "R15-4", points: 5, text: "In a race, Kip finishes before Bo, but after Pip. Who won 1st place in the race?", art: {"kind": "names", "names": ["Pip", "Kip", "Bo"]}, choices: ["Pip", "Tie", "Unknown", "Bo", "Kip"], answer: "A", calc: () => "Pip", why: "Order of finish: 1st Pip, 2nd Kip, 3rd Bo. Pip won 1st place." }
+  ] },
+  { code: "J16", level: "k", title: "Mixed set 1", questions: [
+    { id: "J16-1", points: 3, text: "How many apples are hanging on the tree?", art: {"kind": "tree", "n": 5}, choices: [5, 6, 7, 3, 4], answer: "A", calc: () => 5, why: "Count the apples on the branches one by one: 5 apples." },
+    { id: "J16-2", points: 3, text: "What hour does the clock show?", art: {"kind": "clock", "h": 7}, choices: [6, 7, 8, 9, 5], answer: "B", calc: () => 7, why: "The hour hand points straight to 7." },
+    { id: "J16-3", points: 4, text: "Which flower has the fewest petals?", art: {"kind": "flowers", "petals": [5, 3, 6, 4, 7]}, choices: [{"see": "A"}, {"see": "B"}, {"see": "C"}, {"see": "D"}, {"see": "E"}], answer: "B", calc: () => "B", why: "Flower B has 3 petals, which is smaller than 4, 5, 6, or 7." },
+    { id: "J16-4", points: 4, text: "How many cupcakes are NOT eaten?", art: {"kind": "cupcakes", "n": 6, "eaten": 2}, choices: [2, 3, 4, 5, 6], answer: "C", calc: () => 4, why: "6 total cupcakes - 2 eaten = 4 remaining." }
+  ] },
+  { code: "J17", level: "k", title: "Mixed set 2", questions: [
+    { id: "J17-1", points: 3, text: "Which number comes next in the row?", art: {"kind": "missing", "list": [2, 3, 4, null]}, choices: [7, 3, 4, 5, 6], answer: "D", calc: () => 5, why: "Counting forward by ones: 2, 3, 4, 5." },
+    { id: "J17-2", points: 3, text: "How many dogs are on the farm?", art: {"kind": "farm", "hens": 2, "dogs": 4}, choices: [5, 6, 2, 3, 4], answer: "E", calc: () => 4, why: "Count only the dogs: 4." },
+    { id: "J17-3", points: 4, text: "Kip rolls two dice. What is the sum of the dots?", art: {"kind": "dice", "a": 2, "b": 3}, choices: [5, 6, 7, 3, 4], answer: "A", calc: () => 5, why: "Add dots on both dice: 2 + 3 = 5." },
+    { id: "J17-4", points: 4, text: "Where does Kip land if he starts at 0 and jumps 5 steps forward?", art: {"kind": "numberLine", "max": 6, "jumps": [], "kip": 0}, choices: [4, 5, 6, 2, 3], answer: "B", calc: () => 5, why: "0 + 5 = 5." }
+  ] },
+  { code: "J18", level: "k", title: "Mixed set 3", questions: [
+    { id: "J18-1", points: 3, text: "How many red balls are there in total?", art: {"kind": "addBalls", "a": 3, "b": 2}, choices: [3, 4, 5, 6, 7], answer: "C", calc: () => 5, why: "Add the two groups of balls together: 3 + 2 = 5." },
+    { id: "J18-2", points: 4, text: "Bo sees these shapes. How many stars are there?", art: {"kind": "shapeMix", "list": [["star", 20, 30], ["star", 60, 40], ["circle", 40, 70], ["star", 80, 20]]}, choices: [5, 6, 2, 3, 4], answer: "D", calc: () => 3, why: "Count only the 5-pointed stars: there are 3 stars." },
+    { id: "J18-3", points: 4, text: "How many coins are in the pile?", art: {"kind": "coins", "n": 7}, choices: [8, 9, 5, 6, 7], answer: "E", calc: () => 7, why: "Count all coins in the stack: 7." },
+    { id: "J18-4", points: 4, text: "How many coins are shown?", art: {"kind": "coins", "n": 9}, choices: [9, 10, 6, 7, 8], answer: "A", calc: () => 9, why: "Count the total coins: 9." }
+  ] },
+  { code: "J19", level: "k", title: "Mixed set 4", questions: [
+    { id: "J19-1", points: 3, text: "Where is Kip sitting on the number line?", art: {"kind": "numberLine", "max": 6, "jumps": [], "kip": 3}, choices: [2, 3, 4, 5, 1], answer: "B", calc: () => 3, why: "Kip is sitting directly above the number 3." },
+    { id: "J19-2", points: 4, text: "Which kangaroo is the tallest?", art: {"kind": "roos", "heights": [2, 4, 5, 3, 1]}, choices: [{"see": "A"}, {"see": "B"}, {"see": "C"}, {"see": "D"}, {"see": "E"}], answer: "C", calc: () => "C", why: "Kangaroo C has height 5, which is taller than all the others." },
+    { id: "J19-3", points: 4, text: "Bo is first in line. Kip is right behind Bo. Pip is right behind Kip. Who is second in line?", art: null, choices: ["Can't tell", "Bo", "Kip", "Pip", "Nobody"], answer: "C", calc: () => "Kip", why: "Bo is 1st, so Kip, right behind him, is 2nd." },
+    { id: "J19-4", points: 5, text: "Pip has 4 cupcakes. He eats 2 of them. How many cupcakes are left?", art: {"kind": "cupcakes", "n": 4, "eaten": 2}, choices: [4, 5, 1, 2, 3], answer: "D", calc: () => 2, why: "Subtract the 2 eaten cupcakes from 4: 4 - 2 = 2." }
+  ] },
+  { code: "J20", level: "k", title: "Mixed set 5", questions: [
+    { id: "J20-1", points: 3, text: "How many hens are on the farm?", art: {"kind": "farm", "hens": 3, "dogs": 2}, choices: [4, 5, 1, 2, 3], answer: "E", calc: () => 3, why: "Count only the hens: there are 3." },
+    { id: "J20-2", points: 4, text: "Which flower has exactly 6 petals?", art: {"kind": "flowers", "petals": [4, 5, 6, 3, 7]}, choices: [{"see": "A"}, {"see": "B"}, {"see": "C"}, {"see": "D"}, {"see": "E"}], answer: "C", calc: () => "C", why: "Count petals on each flower: Flower C has 6 petals." },
+    { id: "J20-3", points: 4, text: "How many apples are on the tree?", art: {"kind": "tree", "n": 8}, choices: [8, 9, 10, 6, 7], answer: "A", calc: () => 8, why: "Count the apples carefully: there are 8 apples." },
+    { id: "J20-4", points: 5, text: "Kip starts at 1 and makes one jump of size 3. Where does he land?", art: {"kind": "numberLine", "max": 6, "jumps": [], "kip": 1}, choices: [3, 4, 5, 6, 2], answer: "B", calc: () => 4, why: "1 + 3 = 4." }
+  ] },
+  { code: "J21", level: "k", title: "Mixed set 6", questions: [
+    { id: "J21-1", points: 3, text: "What hour does the clock show?", art: {"kind": "clock", "h": 4}, choices: [2, 3, 4, 5, 6], answer: "C", calc: () => 4, why: "The hour hand points directly at the number 4." },
+    { id: "J21-2", points: 4, text: "What is the missing number in the sequence?", art: {"kind": "missing", "list": [5, 6, null, 8]}, choices: [9, 5, 6, 7, 8], answer: "D", calc: () => 7, why: "Counting forward by ones: 5, 6, 7, 8." },
+    { id: "J21-3", points: 4, text: "Which kangaroo is the shortest?", art: {"kind": "roos", "heights": [5, 4, 1, 3, 2]}, choices: [{"see": "A"}, {"see": "B"}, {"see": "C"}, {"see": "D"}, {"see": "E"}], answer: "C", calc: () => "C", why: "Kangaroo C has height 1, which is the shortest." },
+    { id: "J21-4", points: 5, text: "Bo has 6 carrots. He gives 3 to Pip and 1 to Kip. How many carrots are left for Bo?", art: null, choices: [3, 4, 5, 1, 2], answer: "E", calc: () => 2, why: "6 - 3 - 1 = 2." }
+  ] },
+  { code: "J22", level: "k", title: "Mixed set 7", questions: [
+    { id: "J22-1", points: 3, text: "How many dots should be in the next box?", art: {"kind": "growing", "counts": [1, 2, 3]}, choices: [4, 5, 6, 2, 3], answer: "A", calc: () => 4, why: "The pattern increases by 1 each step: 1, 2, 3, 4." },
+    { id: "J22-2", points: 4, text: "How many small squares make up this shape?", art: {"kind": "cells", "cells": [[0, 0], [0, 1], [1, 0], [1, 1]]}, choices: [3, 4, 5, 6, 2], answer: "B", calc: () => 4, why: "Count all grid units: 4 small squares arranged in a 2x2 grid." },
+    { id: "J22-3", points: 4, text: "What number is missing from the list?", art: {"kind": "missing", "list": [7, 8, 9, null]}, choices: [8, 9, 10, 11, 12], answer: "C", calc: () => 10, why: "Counting up by ones: 7, 8, 9, 10." },
+    { id: "J22-4", points: 5, text: "Bo has 4 fish. Pip gives him 4 more. How many fish does Bo have in total?", art: null, choices: [10, 6, 7, 8, 9], answer: "D", calc: () => 8, why: "4 + 4 = 8." }
+  ] },
+  { code: "J23", level: "k", title: "Mixed set 8", questions: [
+    { id: "J23-1", points: 3, text: "How many triangles are in the box?", art: {"kind": "shapeMix", "list": [["triangle", 30, 40], ["square", 60, 20], ["triangle", 70, 70]]}, choices: [3, 4, 5, 1, 2], answer: "E", calc: () => 2, why: "Count only the 3-sided triangles: there are 2." },
+    { id: "J23-2", points: 4, text: "How many total animals are on the farm?", art: {"kind": "farm", "hens": 4, "dogs": 2}, choices: [6, 7, 8, 4, 5], answer: "A", calc: () => 6, why: "Add 4 hens + 2 dogs = 6 animals." },
+    { id: "J23-3", points: 4, text: "How many dots are on the die?", art: {"kind": "die", "n": 5}, choices: [4, 5, 6, 2, 3], answer: "B", calc: () => 5, why: "Count the dots on the die: 5." },
+    { id: "J23-4", points: 5, text: "Pip has 7 stickers. He gives 3 to Bo. How many stickers does Pip have left?", art: null, choices: [2, 3, 4, 5, 6], answer: "C", calc: () => 4, why: "7 - 3 = 4." }
+  ] },
+  { code: "R16", level: "g2", title: "Mixed set 1", questions: [
+    { id: "R16-1", points: 3, text: "Kip rolls two dice. One shows 5 and the other shows 4. What is the sum?", art: {"kind": "dice", "a": 5, "b": 4}, choices: [11, 7, 8, 9, 10], answer: "D", calc: () => 9, why: "5 + 4 = 9." },
+    { id: "R16-2", points: 3, text: "How many small squares are in this shape?", art: {"kind": "cells", "cells": [[0, 0], [1, 0], [2, 0], [3, 0], [4, 0], [0, 1], [1, 1], [2, 1], [3, 1], [4, 1]]}, choices: [12, 7, 8, 9, 10], answer: "E", calc: () => 10, why: "2 rows x 5 cells = 10 small squares." },
+    { id: "R16-3", points: 4, text: "What is the missing number: 30, 25, 20, __, 10?", art: {"kind": "missing", "list": [30, 25, 20, null, 10]}, choices: [15, 16, 18, 12, 14], answer: "A", calc: () => 15, why: "Subtracting 5 each step: 20 - 5 = 15." },
+    { id: "R16-4", points: 5, text: "Pip has 12 apples. He keeps 4 for himself and divides the rest equally between Bo and Kip. How many apples does Kip get?", art: null, choices: [3, 4, 5, 6, 8], answer: "B", calc: () => 4, why: "12 - 4 = 8 remaining apples. 8 divided between 2 kangaroos = 4 apples each." }
+  ] },
+  { code: "R17", level: "g2", title: "Mixed set 2", questions: [
+    { id: "R17-1", points: 3, text: "A square grid has 3 rows and 3 columns. How many small squares are there in total?", art: {"kind": "squares", "n": 3}, choices: [6, 8, 9, 12, 16], answer: "C", calc: () => 9, why: "3 rows x 3 columns = 9 small squares." },
+    { id: "R17-2", points: 4, text: "On a balance scale, 1 cube balances 2 balls. How many balls balance 3 cubes?", art: {"kind": "balance"}, choices: [3, 4, 5, 6, 8], answer: "D", calc: () => 6, why: "If 1 cube = 2 balls, then 3 cubes = 3 x 2 = 6 balls." },
+    { id: "R17-3", points: 4, text: "If 1 cube balances 2 balls, how many cubes balance 8 balls?", art: {"kind": "balance"}, choices: [5, 6, 2, 3, 4], answer: "E", calc: () => 4, why: "8 divided by 2 = 4 cubes." },
+    { id: "R17-4", points: 5, text: "Bo has 3 coins of 5 cents and 2 coins of 10 cents. How many cents does Bo have altogether?", art: null, choices: [35, 40, 45, 25, 30], answer: "A", calc: () => 35, why: "(3 x 5) + (2 x 10) = 15 + 20 = 35 cents." }
+  ] },
+  { code: "R18", level: "g2", title: "Mixed set 3", questions: [
+    { id: "R18-1", points: 3, text: "Bo, Kip, and Pip are standing in line. Kip is behind Bo. Pip is behind Kip. Who is last in line?", art: {"kind": "names", "names": ["Bo", "Kip", "Pip"]}, choices: ["Kip", "Pip", "Bo and Kip", "None", "Bo"], answer: "B", calc: () => "Pip", why: "Order from front to back: Bo, Kip, Pip. Pip is last." },
+    { id: "R18-2", points: 4, text: "Bo starts at number 3 on the number line. He makes 2 jumps of size 3 forward. Where does he land?", art: {"kind": "numberLine", "max": 10, "jumps": [], "kip": 3}, choices: [7, 8, 9, 10, 6], answer: "C", calc: () => 9, why: "3 + 3 + 3 = 9." },
+    { id: "R18-3", points: 4, text: "What is the missing number: 2, 5, 8, 11, __?", art: {"kind": "missing", "list": [2, 5, 8, 11, null]}, choices: [16, 12, 13, 14, 15], answer: "D", calc: () => 14, why: "Add 3 each step: 11 + 3 = 14." },
+    { id: "R18-4", points: 5, text: "Kip has 15 red marbles. He trades 3 red marbles for 1 blue marble. If he gets 4 blue marbles, how many red marbles does he have left?", art: null, choices: [4, 5, 1, 2, 3], answer: "E", calc: () => 3, why: "4 blue marbles cost 4 x 3 = 12 red marbles. 15 - 12 = 3 red marbles left." }
+  ] },
+  { code: "R19", level: "g2", title: "Mixed set 4", questions: [
+    { id: "R19-1", points: 3, text: "A triangle is split into two smaller triangles by one straight line. How many total triangles are in the figure?", art: {"kind": "splitTriangle"}, choices: [3, 4, 5, 1, 2], answer: "A", calc: () => 3, why: "There are 2 small triangles inside plus 1 large outer triangle = 3 triangles." },
+    { id: "R19-2", points: 4, text: "Which flower has the most petals?", art: {"kind": "flowers", "petals": [6, 8, 7, 9, 5]}, choices: [{"see": "A"}, {"see": "B"}, {"see": "C"}, {"see": "D"}, {"see": "E"}], answer: "D", calc: () => "D", why: "Flower D has 9 petals, which is more than 5, 6, 7, or 8." },
+    { id: "R19-3", points: 4, text: "How many dots should be in the 5th box of the growing pattern?", art: {"kind": "growing", "counts": [2, 4, 6, 8]}, choices: [9, 10, 11, 12, 8], answer: "B", calc: () => 10, why: "The pattern adds 2 each time: 2, 4, 6, 8, 10." },
+    { id: "R19-4", points: 5, text: "Bo has 20 nuts. He buries half of them. Then a squirrel steals 3 of the buried nuts. How many buried nuts are left?", art: null, choices: [5, 6, 7, 8, 10], answer: "C", calc: () => 7, why: "Half of 20 is 10. 10 - 3 = 7 buried nuts left." }
+  ] },
+  { code: "R20", level: "g2", title: "Mixed set 5", questions: [
+    { id: "R20-1", points: 3, text: "Pip counts 5 dogs on the farm. Each dog has 4 legs. How many dog legs are there in total?", art: {"kind": "farm", "hens": 0, "dogs": 5}, choices: [12, 16, 18, 20, 24], answer: "D", calc: () => 20, why: "5 dogs x 4 legs each = 20 legs." },
+    { id: "R20-2", points: 4, text: "What number comes next in the sequence: 4, 8, 12, 16, __?", art: {"kind": "missing", "list": [4, 8, 12, 16, null]}, choices: [22, 24, 25, 18, 20], answer: "E", calc: () => 20, why: "The pattern adds 4 each step: 16 + 4 = 20." },
+    { id: "R20-3", points: 4, text: "There is one pile of 6 coins. Bo adds a second pile of 6 coins. How many coins are there now?", art: {"kind": "coins", "n": 6}, choices: [12, 14, 16, 8, 10], answer: "A", calc: () => 12, why: "2 x 6 = 12 coins." },
+    { id: "R20-4", points: 5, text: "Kip has 3 cards with numbers 2, 4, and 7. What is the largest 3-digit number he can make?", art: null, choices: [724, 742, 747, 427, 472], answer: "B", calc: () => 742, why: "Put the largest digit first (7), then the next largest (4), then the smallest (2) = 742." }
+  ] },
+  { code: "R21", level: "g2", title: "Mixed set 6", questions: [
+    { id: "R21-1", points: 3, text: "Kip starts at 0 and makes 4 jumps of size 2. Where does Kip land?", art: {"kind": "numberLine", "max": 10, "jumps": [], "kip": 0}, choices: [6, 7, 8, 9, 10], answer: "C", calc: () => 8, why: "4 jumps of 2 = 4 x 2 = 8." },
+    { id: "R21-2", points: 4, text: "A clock shows 3 o'clock right now. What hour will it show in 5 hours?", art: {"kind": "clock", "h": 3}, choices: [10, 6, 7, 8, 9], answer: "D", calc: () => 8, why: "3 + 5 = 8 o'clock." },
+    { id: "R21-3", points: 4, text: "Kip is 3rd in line from the front. There are 4 kangaroos behind Kip. How many kangaroos are in line?", art: {"kind": "line", "label": "Kip"}, choices: [8, 9, 5, 6, 7], answer: "E", calc: () => 7, why: "3 in front (including Kip) + 4 behind = 7 kangaroos." },
+    { id: "R21-4", points: 5, text: "Pip has 18 crayons. He gives 6 to Bo and twice as many as that to Kip. How many crayons does Pip have left?", art: null, choices: [0, 2, 4, 6, 8], answer: "A", calc: () => 0, why: "Kip gets 2 x 6 = 12. Total given away: 6 + 12 = 18. Pip has 18 - 18 = 0 left." }
+  ] },
+  { code: "R22", level: "g2", title: "Mixed set 7", questions: [
+    { id: "R22-1", points: 3, text: "What time will the clock show 2 hours after 8 o'clock?", art: {"kind": "clock", "h": 8}, choices: [9, 10, 11, 12, 1], answer: "B", calc: () => 10, why: "8 + 2 = 10 o'clock." },
+    { id: "R22-2", points: 4, text: "An L-shape has 3 squares in a column, then 2 more squares in a row along its bottom. How many squares are there?", art: {"kind": "cells", "cells": [[0, 0], [0, 1], [0, 2], [1, 2], [2, 2]]}, choices: [3, 4, 5, 6, 7], answer: "C", calc: () => 5, why: "3 in the column, then 2 more along the bottom: 3 + 2 = 5 squares." },
+    { id: "R22-3", points: 4, text: "Where does Kip land if he starts at 10 and jumps 4 backward?", art: {"kind": "numberLine", "max": 10, "jumps": [], "kip": 10}, choices: [8, 4, 5, 6, 7], answer: "D", calc: () => 6, why: "10 - 4 = 6." },
+    { id: "R22-4", points: 5, text: "A ribbon is 24 cm long. Bo cuts it into 3 equal pieces. How long is each piece?", art: null, choices: [9, 10, 6, 7, 8], answer: "E", calc: () => 8, why: "24 divided by 3 = 8 cm." }
+  ] },
+  { code: "R23", level: "g2", title: "Mixed set 8", questions: [
+    { id: "R23-1", points: 3, text: "Three flowers have 5 petals each. How many petals are there in all?", art: null, choices: [15, 18, 20, 10, 12], answer: "A", calc: () => 15, why: "3 x 5 = 15 petals." },
+    { id: "R23-2", points: 4, text: "How many small 1 × 1 squares are in a 4 × 4 grid?", art: {"kind": "squares", "n": 4}, choices: [14, 16, 18, 20, 12], answer: "B", calc: () => 16, why: "4 rows of 4: 16 small squares." },
+    { id: "R23-3", points: 4, text: "Bo has 5 apples on each of 3 trees. How many apples are there in total?", art: null, choices: [10, 12, 15, 16, 20], answer: "C", calc: () => 15, why: "3 trees x 5 apples = 15 apples." },
+    { id: "R23-4", points: 5, text: "Pip thinks of a number. He doubles it and then adds 4 to get 14. What was his original number?", art: null, choices: [7, 3, 4, 5, 6], answer: "D", calc: () => 5, why: "Work backward: 14 - 4 = 10. Half of 10 is 5." }
   ] }
 ];
