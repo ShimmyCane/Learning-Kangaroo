@@ -4,6 +4,7 @@
    - every question has 5 different choices and an answer letter A–E
    - the worked-out answer (calc) matches the chosen letter, and matches exactly one choice
    - the question text fits in 3 lines; the picture kind exists; both pages draw
+   - data/question-format.json parses and format.html shows the same text
    - pages match tools/fingerprints.json (--update only when a change to a printed sheet is intended)
    Usage: node tools/check_sheets.js [--update] */
 const fs = require("fs"), path = require("path"), vm = require("vm"), crypto = require("crypto");
@@ -50,6 +51,14 @@ for (const s of LKG_SHEETS) {
     });
   } catch (e) { say("does not draw: " + e.message); }
 }
+// the question format: data/question-format.json must parse, and the settings page must show the same text
+try {
+  const fj = fs.readFileSync(path.join(dir, "data/question-format.json"), "utf8");
+  JSON.parse(fj);
+  const page = fs.readFileSync(path.join(dir, "format.html"), "utf8");
+  const m = page.match(/<script type="application\/json" id="fmtJson">([\s\S]*?)<\/script>/);
+  if (!m || m[1].trim() !== fj.trim()) problems.push("format.html does not show the same JSON as data/question-format.json");
+} catch (e) { problems.push("question format: " + e.message); }
 if (!problems.length && (update || !fs.existsSync(FP))) { fs.writeFileSync(FP, JSON.stringify(Object.assign(fps, out), null, 1) + "\n"); console.log("fingerprints written"); }
 if (problems.length) { console.log("❌ " + problems.length + " problem(s):\n" + problems.join("\n")); process.exit(1); }
 console.log(`✅ ${LKG_SHEETS.length} worksheets, ${ids.size} questions pass. Answer letters: ${"ABCDE".split("").map(l => l + " " + (letters[l] || 0)).join(" · ")}`);

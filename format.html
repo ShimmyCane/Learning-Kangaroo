@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/app.css">
+<title>How to add questions</title>
+<style>
+  .fmt h2 { font: 30px var(--hand); margin: 22px 0 6px; }
+  .fmt ol li, .fmt ul li { margin: 4px 0; }
+  .fmt table { width: 100%; border-collapse: collapse; background: #fff; }
+  .fmt th, .fmt td { border: 2px solid #eee4cc; padding: 6px 8px; text-align: left; vertical-align: top; font-size: 15px; }
+  .fmt code { font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 14px; }
+  .fmt pre { background: #fff; border: var(--line); border-radius: 12px; padding: 12px; overflow-x: auto; font-size: 13px; line-height: 1.4; max-height: 70vh; }
+  .fmt .row { margin: 8px 0; }
+</style>
+</head>
+<body>
+<header class="top">
+  <h1 class="title"><a href="index.html">Learning Kangaroo</a> <small>How to add questions · for grown-ups and for Gemini</small></h1>
+</header>
+<main class="wrap fmt">
+  <p class="note">Every worksheet is one sheet of paper: 4 questions, 2 on the front and 2 on the back. The JSON below is the shape each sheet must follow. Paste it into a chat with Gemini (or any helper) and ask for new questions in the same shape. The file is also <code>data/question-format.json</code>.</p>
+
+  <h2>Rules</h2>
+  <ol>
+    <li><b>Our own questions</b>, in the contest style: a picture, a short story, five choices. Never copy a real Math Kangaroo question.</li>
+    <li><b>Four questions a sheet</b>, with points 3, 3, 4, 5 or 3, 4, 4, 5. 3 = one step, 4 = two steps or a careful look, 5 = a trick or a pattern.</li>
+    <li><b>Question text</b> at most 3 short lines (about 130 characters), read aloud a child should know what to find.</li>
+    <li><b>Five different choices</b>. Make wrong choices believable: the usual slips (counting one twice, off by one, adding instead of taking away).</li>
+    <li><b>The answer letter</b> is A–E. <code>calc</code> is the worked-out answer; the checker proves the letter's choice equals it.</li>
+    <li><b>A picture</b> from the list below, or <code>null</code> for text only. It helps but does not give the answer away (show one jump, not all of them).</li>
+    <li><b>Level</b>: <code>k</code> for Joey (kindergarten), <code>g2</code> for Roo (grade 2). <code>tk</code> is the round 1 set behind Settings; do not add to it.</li>
+    <li><b>Codes and ids</b>: code = track letter + number (<code>J4</code>, <code>R7</code>). Question id = code + "-" + 1 to 4. Never reuse one. Retire a replaced question with <code>retired: true</code>.</li>
+    <li><b>No answers or hints on the kids' pages</b>. The <code>why</code> line is for the answer key only.</li>
+    <li><b>No names or ages of the children</b>. Kip, Bo and Pip are our kangaroos.</li>
+  </ol>
+
+  <h2>Pictures (<code>art.kind</code>)</h2>
+  <table>
+    <tr><th>kind</th><th>what it draws</th><th>fields</th></tr>
+    <tr><td><code>tree</code></td><td>apples on a tree</td><td><code>n</code> (up to 9)</td></tr>
+    <tr><td><code>sequence</code></td><td>a row of shapes or dot-groups, with a blank box at the end</td><td><code>items</code>: shape names or numbers (dots)</td></tr>
+    <tr><td><code>missing</code></td><td>a row of numbers with a blank</td><td><code>list</code>: numbers, one <code>null</code> for the blank</td></tr>
+    <tr><td><code>shapeMix</code></td><td>scattered shapes</td><td><code>list</code>: <code>[shape, x%, y%]</code> (x, y as percent of the picture; optional 4th = size)</td></tr>
+    <tr><td><code>roos</code></td><td>kangaroos A–E of different heights</td><td><code>heights</code>: five numbers</td></tr>
+    <tr><td><code>addBalls</code></td><td>balls with a + between two groups</td><td><code>a</code>, <code>b</code></td></tr>
+    <tr><td><code>numberLine</code></td><td>a number line with jumps and Kip</td><td><code>max</code>, <code>jumps</code> (<code>[from, to]</code> pairs), <code>kip</code></td></tr>
+    <tr><td><code>cupcakes</code></td><td>cupcakes, some with an X</td><td><code>n</code>, <code>eaten</code> (the last ones get an X)</td></tr>
+    <tr><td><code>flowers</code></td><td>flowers A–E with petals</td><td><code>petals</code>: five numbers</td></tr>
+    <tr><td><code>dice</code></td><td>two dice</td><td><code>a</code>, <code>b</code> (1–6)</td></tr>
+    <tr><td><code>die</code></td><td>one big die</td><td><code>n</code> (1–6)</td></tr>
+    <tr><td><code>squares</code></td><td>a big square split into small ones</td><td><code>n</code> (per side)</td></tr>
+    <tr><td><code>cells</code></td><td>small squares joined into a shape</td><td><code>cells</code>: <code>[column, row]</code> pairs starting at 0</td></tr>
+    <tr><td><code>line</code></td><td>kangaroos in a line, one labelled</td><td><code>label</code></td></tr>
+    <tr><td><code>clock</code></td><td>a clock face (hour hand only)</td><td><code>h</code> (1–12)</td></tr>
+    <tr><td><code>coins</code></td><td>a pile of coins</td><td><code>n</code></td></tr>
+    <tr><td><code>balance</code></td><td>a balance scale: 1 cube = 2 balls</td><td>none</td></tr>
+    <tr><td><code>splitTriangle</code></td><td>a triangle split in two</td><td>none</td></tr>
+    <tr><td><code>farm</code></td><td>hens and dogs</td><td><code>hens</code>, <code>dogs</code></td></tr>
+    <tr><td><code>growing</code></td><td>pictures of squares that grow, the next one blank</td><td><code>counts</code>: the first numbers</td></tr>
+    <tr><td><code>names</code></td><td>three kangaroos with names</td><td><code>names</code>: three names</td></tr>
+    <tr><td><code>null</code></td><td>no picture (text only)</td><td>use <code>"art": null</code></td></tr>
+  </table>
+
+  <h2>Choices</h2>
+  <p>Each choice is a number (<code>5</code>), a word (<code>"triangle"</code>), a shape (<code>{"shape": "star"}</code>), a dot-group (<code>{"dots": 6}</code>), or a letter in the picture (<code>{"see": "C"}</code>). Shapes: circle, square, triangle, oval, pentagon, star, heart.</p>
+
+  <h2>The JSON</h2>
+  <div class="row"><button class="btn go" id="copy" type="button">📋 Copy the JSON</button> <span id="copied"><small></small></span></div>
+  <pre id="json"></pre>
+  <script type="application/json" id="fmtJson">{
+  "_about": "How to add questions. One sheet = 4 questions (2 on the front, 2 on the back). Copy this file's shape, change the values, keep the rules on format.html. The sheet below is an EXAMPLE to copy from: do not add J99 to data/questions.js.",
+  "_levels": { "tk": "TK and younger (round 1, kept behind Settings)", "k": "Kindergarten (Joey)", "g2": "Grade 2 (Roo)" },
+  "_codes": "Track letter then a number: J = Joey, R = Roo. Never reuse a code or an id; retire a replaced question with retired: true.",
+  "_points": "3 = one step, 4 = two steps or a careful look, 5 = a trick or a pattern. A sheet has two 3s, one 4 and one 5, or one 3, two 4s and one 5.",
+  "_choices": "Exactly 5 different choices. Each is a number, a word, or one of: {\"shape\": \"triangle\"}, {\"dots\": 6}, {\"see\": \"C\"} (for kangaroos or flowers labelled A–E in the picture).",
+  "_answer": "The letter A–E of the correct choice. Spread the letters across a sheet.",
+  "_calc": "The worked-out answer as a number or the exact text of the correct choice. tools/check_sheets.js checks that the letter's choice matches it, so the answer is proven, not guessed.",
+  "_art": "A picture kind from js/kangaroo.js (see format.html for the list), or null for text only. The picture must help the child but not give the answer away.",
+  "sheets": [
+    {
+      "code": "J99",
+      "level": "k",
+      "title": "EXAMPLE: short title, 2 to 4 words",
+      "questions": [
+        {
+          "id": "J99-1",
+          "points": 3,
+          "text": "How many apples are on the tree? (at most 3 short lines, about 130 characters)",
+          "art": { "kind": "tree", "n": 4 },
+          "choices": [2, 3, 4, 5, 6],
+          "answer": "C",
+          "calc": 4,
+          "why": "Count them one by one: 4 apples."
+        },
+        {
+          "id": "J99-2",
+          "points": 3,
+          "text": "Which number is missing?",
+          "art": { "kind": "missing", "list": [10, null, 12] },
+          "choices": [10, 11, 12, 13, 14],
+          "answer": "B",
+          "calc": 11,
+          "why": "10, 11, 12: counting up by ones."
+        },
+        {
+          "id": "J99-3",
+          "points": 4,
+          "text": "How many circles are there?",
+          "art": { "kind": "shapeMix", "list": [["circle", 20, 50], ["square", 50, 30], ["circle", 75, 60]] },
+          "choices": [2, 3, 1, 4, 5],
+          "answer": "A",
+          "calc": 2,
+          "why": "Two round shapes; the square is not a circle."
+        },
+        {
+          "id": "J99-4",
+          "points": 5,
+          "text": "Kip has 5 apples. He gives 2 away and then finds 1 more. How many does he have now?",
+          "art": null,
+          "choices": [3, 4, 6, 7, 8],
+          "answer": "B",
+          "calc": 4,
+          "why": "5 − 2 = 3, then 3 + 1 = 4."
+        }
+      ]
+    }
+  ]
+}</script>
+
+  <h2>Adding it to the app</h2>
+  <ol>
+    <li>Write the sheet as JSON (above), or get it from Gemini and check each rule.</li>
+    <li>Translate it into <code>data/questions.js</code> as JavaScript: the same fields, with <code>calc</code> as a function, e.g. <code>calc: () =&gt; 4</code>, or <code>calc: a =&gt; a.art.n</code> when the picture holds the number.</li>
+    <li>Run <code>node tools/check_sheets.js</code>. It must pass before anything is printed.</li>
+    <li>Look at the sheet (<code>sheet.html?code=…</code>), then go through <code>qc.md</code>.</li>
+  </ol>
+</main>
+<script src="js/kangaroo.js"></script>
+<script src="data/questions.js"></script>
+<script src="js/config.js"></script>
+<script src="js/app.js"></script>
+<script src="js/bank.js"></script>
+<script>
+  (function () {
+    APP.init();
+    const text = document.getElementById("fmtJson").textContent.trim();
+    document.getElementById("json").textContent = text;
+    document.getElementById("copy").addEventListener("click", async () => {
+      try { await navigator.clipboard.writeText(text); document.getElementById("copied").textContent = "Copied."; }
+      catch (e) { document.getElementById("copied").textContent = "Select the text above and copy it."; }
+    });
+  })();
+</script>
+</body>
+</html>
