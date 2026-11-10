@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/app.css">
+<title>Learning Kangaroo Print in Bulk</title>
+<style>
+  .pairs { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px; margin-top: 14px; }
+  .pair { background: #fff; border: var(--line); border-radius: 18px 18px 18px 6px; box-shadow: var(--pop); padding: 10px; }
+  .pair h3 { font: 22px var(--hand); margin: 0 0 6px; }
+  .pair .two { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+  .pair img { width: 100%; aspect-ratio: 8.5 / 11; border: 2px solid #eee4cc; border-radius: 8px; background: #fff; }
+  .tags { display: flex; flex-wrap: wrap; gap: 8px; margin: 8px 0; }
+</style>
+</head>
+<body>
+<header class="top">
+  <h1 class="title"><a href="index.html">Learning Kangaroo</a> <small>Print in bulk · one worksheet = one sheet of paper, two-sided</small></h1>
+</header>
+<main class="wrap">
+  <div class="noprint">
+    <div class="row"><button class="btn go" id="print" type="button">🖨️ Print <span id="n">0</span> sheets of paper</button></div>
+    <h2 class="step">Which worksheets?</h2>
+    <div class="tags" id="pick"></div>
+    <h2 class="step">Copies of each</h2>
+    <div class="tags" id="copies"></div>
+    <div class="pick">
+      <b>Printer flips on the…</b>
+      <label><input type="radio" name="flip" value="long"> long edge <small>(like a book; right for most portrait prints)</small></label>
+      <label><input type="radio" name="flip" value="short"> short edge <small>(the backs are turned upside down for you)</small></label>
+    </div>
+    <p class="note">Turn on two-sided printing in the print box. Questions 1–2 are on the front, 3–4 on the back. Flagged worksheets are left out. The answers are on their own page (✅ Answers and results), never on the kids' sheets.</p>
+    <div class="pairs" id="pairs"></div>
+  </div>
+</main>
+<script src="js/kangaroo.js"></script>
+<script src="data/questions.js"></script>
+<script src="js/config.js"></script>
+<script src="js/app.js"></script>
+<script src="js/bank.js"></script>
+<script>
+  (function () {
+    const { esc, store } = APP;
+    APP.init();
+    const chosen = new Set(store.get("lkg.pack", BANK.sheets().map(s => s.code)));
+    let copies = store.get("lkg.copies", 1), flip = store.get("lkg.flip", "long");
+    const list = () => BANK.sheets().filter(s => chosen.has(s.code) && !APP.isFlagged(s.code));
+    function render() {
+      document.getElementById("pick").innerHTML = BANK.sheets().map(s => `<button class="tag${chosen.has(s.code) ? " on" : ""}" data-code="${s.code}" type="button"${APP.isFlagged(s.code) ? " disabled" : ""}>${APP.isFlagged(s.code) ? "🚩 " : ""}${esc(LKG.TRACKS[s.code[0]].name)} ${s.code[1]} · ${esc(s.title)}</button>`).join("");
+      document.getElementById("copies").innerHTML = [1, 2, 3].map(n => `<button class="tag${copies === n ? " on" : ""}" data-copies="${n}" type="button">${n}</button>`).join("");
+      document.querySelectorAll("input[name=flip]").forEach(x => { x.checked = x.value === flip; });
+      const l = list();
+      document.getElementById("n").textContent = l.length * copies;
+      const box = document.getElementById("pairs"); box.innerHTML = "";
+      l.forEach(s => {
+        const d = document.createElement("div"); d.className = "pair";
+        d.innerHTML = `<h3>#LK-${s.code} · ${esc(s.title)}</h3><div class="two"><img alt="front"><img alt="back"></div>`;
+        box.append(d);
+        const [a, b] = d.querySelectorAll("img");
+        APP.lazyThumb(a, s.code + "/1", () => LKG.page(s, 1), 300); APP.lazyThumb(b, s.code + "/2", () => LKG.page(s, 2), 300);
+      });
+    }
+    document.getElementById("pick").addEventListener("click", e => { const b = e.target.closest("[data-code]"); if (!b) return; chosen.has(b.dataset.code) ? chosen.delete(b.dataset.code) : chosen.add(b.dataset.code); store.set("lkg.pack", [...chosen]); render(); });
+    document.getElementById("copies").addEventListener("click", e => { const b = e.target.closest("[data-copies]"); if (!b) return; copies = +b.dataset.copies; store.set("lkg.copies", copies); render(); });
+    document.querySelectorAll("input[name=flip]").forEach(x => x.addEventListener("change", () => { flip = x.value; store.set("lkg.flip", flip); render(); }));
+    document.getElementById("print").addEventListener("click", () => {
+      const l = list(); if (!l.length) return;
+      const pages = [];
+      l.forEach(s => { for (let c = 0; c < copies; c++) pages.push(...LKG.pages(s)); APP.addReview({ code: s.code, kind: "printed", note: copies + " copies" }); });
+      APP.printPages(pages, { duplex: true, flip });
+    });
+    render();
+  })();
+</script>
+</body>
+</html>

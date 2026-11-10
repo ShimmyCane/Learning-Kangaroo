@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/app.css">
+<title>Learning Kangaroo</title>
+<style>
+  .quick { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin: 4px 0 6px; }
+  .quick .btn { width: 100%; }
+  .track { margin-top: 18px; }
+  .track h2 { font: 32px var(--hand); margin: 0 0 4px; }
+  .track p { margin: 0 0 10px; font-weight: 600; opacity: .8; }
+  .cards { grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); }
+</style>
+</head>
+<body>
+<header class="top">
+  <h1 class="title">Learning Kangaroo <small>Math Kangaroo-style worksheets, two questions a page, two-sided</small></h1>
+  <span class="chip sun" id="count">…</span>
+</header>
+<main class="wrap">
+  <div class="quick">
+    <a class="btn go" href="pack.html">🖨️ Print in bulk</a>
+    <a class="btn mint" href="answers.html">✅ Answers and results</a>
+  </div>
+  <p class="note">About the style: Math Kangaroo (Kangourou des Mathématiques) began in France in 1991, inspired by the Australian Mathematics Competition, and is now held in many countries. Its questions use pictures, a little story and five choices. Every question here is our own.</p>
+  <div id="tracks"></div>
+</main>
+<script src="js/kangaroo.js"></script>
+<script src="data/questions.js"></script>
+<script src="js/config.js"></script>
+<script src="js/app.js"></script>
+<script src="js/bank.js"></script>
+<script>
+  (function () {
+    const { esc } = APP;
+    APP.init();
+    function render() {
+      try {
+        const all = BANK.sheets();
+        document.getElementById("count").textContent = all.length + " worksheets · " + all.length * 4 + " questions";
+        document.getElementById("tracks").innerHTML = Object.entries(LKG.TRACKS).map(([t, info]) => `<section class="track"><h2>🦘 ${esc(info.name)}</h2><p>${esc(info.about)}</p><div class="cards" data-t="${t}"></div></section>`).join("");
+        all.forEach(s => {
+          const a = document.createElement("a"); a.className = "card"; a.href = "sheet.html?code=" + s.code;
+          a.innerHTML = `${APP.isFlagged(s.code) ? '<span class="flag">🚩</span>' : ""}<img alt=""><b>${esc(s.title)}</b><div class="meta"><span>#LK-${s.code}</span><span class="t">4 questions</span></div>`;
+          document.querySelector('.cards[data-t="' + s.code[0] + '"]').append(a);
+          APP.lazyThumb(a.querySelector("img"), s.code, () => LKG.page(s, 1), 360);
+        });
+      } catch (e) { APP.logError("home: " + e.message); }
+    }
+    APP.onReviews = render;
+    render();
+  })();
+</script>
+</body>
+</html>

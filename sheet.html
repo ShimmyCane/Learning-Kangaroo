@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/app.css">
+<title>Learning Kangaroo Worksheet</title>
+<style>
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  @media (max-width: 760px) { .two { grid-template-columns: 1fr; } }
+  .two h3 { font: 22px var(--hand); margin: 0 0 4px; }
+  .panel { background: #fff; border: var(--line); border-radius: 18px 18px 18px 6px; box-shadow: var(--pop); padding: 12px 14px; margin-top: 16px; }
+  .panel h3 { font: 24px var(--hand); margin: 0 0 6px; }
+  .reasons { display: flex; flex-wrap: wrap; gap: 8px; }
+</style>
+</head>
+<body>
+<header class="top">
+  <h1 class="title"><a href="index.html">Learning Kangaroo</a> <small id="sub">…</small></h1>
+</header>
+<main class="wrap">
+  <div class="row noprint" style="margin-bottom:12px">
+    <a class="btn" id="prev">◀</a>
+    <button class="btn go" id="print" type="button">🖨️ Print (two-sided)</button>
+    <a class="btn" id="next">▶</a>
+    <a class="btn mint" id="answers">✅ Answers</a>
+  </div>
+  <div class="two">
+    <div><h3>Front</h3><div class="paper" id="p1"></div></div>
+    <div><h3>Back</h3><div class="paper" id="p2"></div></div>
+  </div>
+  <div class="panel noprint">
+    <h3>🚩 Flag this worksheet</h3>
+    <p id="flagState"><small>Flagged worksheets are left out of bulk printing until they are fixed.</small></p>
+    <div class="reasons" id="reasons"></div>
+    <input class="field" id="flagNote" placeholder="Which question, and what's wrong? (optional)" style="width:100%;margin-top:8px">
+    <div class="row" style="margin-top:8px"><button class="btn" id="unflag" type="button" hidden>✅ It's fine now</button></div>
+  </div>
+</main>
+<script src="js/kangaroo.js"></script>
+<script src="data/questions.js"></script>
+<script src="js/config.js"></script>
+<script src="js/app.js"></script>
+<script src="js/bank.js"></script>
+<script>
+  (function () {
+    const { esc } = APP;
+    APP.init();
+    const all = BANK.sheets(), s = BANK.find(APP.param("code")) || all[0], i = all.indexOf(s);
+    const flip = APP.store.get("lkg.flip", "long");
+    document.title = "Learning Kangaroo #LK-" + s.code;
+    document.getElementById("sub").textContent = "#LK-" + s.code + " · " + LKG.TRACKS[s.code[0]].name + " · " + s.title;
+    document.getElementById("p1").innerHTML = LKG.page(s, 1);
+    document.getElementById("p2").innerHTML = LKG.page(s, 2);
+    document.getElementById("prev").href = "sheet.html?code=" + all[(i - 1 + all.length) % all.length].code;
+    document.getElementById("next").href = "sheet.html?code=" + all[(i + 1) % all.length].code;
+    document.getElementById("answers").href = "answers.html#LK-" + s.code;
+    document.getElementById("print").addEventListener("click", () => { APP.addReview({ code: s.code, kind: "printed" }); APP.printPages(LKG.pages(s), { duplex: true, flip }); });
+    function render() {
+      const flag = APP.openFlags().find(f => f.code === s.code);
+      document.getElementById("reasons").innerHTML = BANK.REASONS.map(([k, t]) => `<button class="btn${flag && flag.reason === k ? " on" : ""}" data-reason="${k}" type="button">${t}</button>`).join("");
+      document.getElementById("flagState").innerHTML = flag ? `<b>🚩 Flagged: ${esc((BANK.REASONS.find(x => x[0] === flag.reason) || [, flag.reason])[1])}</b>${flag.note ? " · " + esc(flag.note) : ""}` : "<small>Flagged worksheets are left out of bulk printing until they are fixed.</small>";
+      document.getElementById("unflag").hidden = !flag;
+    }
+    document.getElementById("reasons").addEventListener("click", e => { const b = e.target.closest("[data-reason]"); if (b) APP.addReview({ code: s.code, kind: "flag", reason: b.dataset.reason, note: document.getElementById("flagNote").value.trim() }); });
+    document.getElementById("unflag").addEventListener("click", () => APP.resolveFlag(s.code, "kept", "fine on a second look"));
+    APP.onReviews = render;
+    render();
+  })();
+</script>
+</body>
+</html>

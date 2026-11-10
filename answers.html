@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/app.css">
+<title>Learning Kangaroo Answers</title>
+<style>
+  .sheet { background: #fff; border: var(--line); border-radius: 18px 18px 18px 6px; box-shadow: var(--pop); padding: 12px 16px; margin: 16px 0; }
+  .sheet h2 { font: 28px var(--hand); margin: 0 0 6px; }
+  .q { display: grid; grid-template-columns: 60px 54px 1fr auto; gap: 10px; align-items: center; padding: 8px 0; border-top: 2px solid #eee4cc; }
+  .q .let { font: 700 28px var(--ui); width: 46px; height: 46px; border: 3px solid var(--ink); border-radius: 50%; display: grid; place-items: center; background: var(--sun); }
+  .q .marks .btn { min-height: 48px; min-width: 52px; padding: 4px 8px; font-size: 20px; }
+  .sum { font-weight: 700; }
+  @media (max-width: 640px) { .q { grid-template-columns: 50px 50px 1fr; } .q .marks { grid-column: 1 / -1; } }
+  @media print { .sheet { box-shadow: none; break-inside: avoid; } .marks { display: none !important; } }
+</style>
+</head>
+<body>
+<header class="top">
+  <h1 class="title"><a href="index.html">Learning Kangaroo</a> <small>Answers and results · for grown-ups</small></h1>
+</header>
+<main class="wrap">
+  <div class="row noprint"><button class="btn" id="printKey" type="button">🖨️ Print the answer key</button></div>
+  <p class="note noprint">Mark each question after a worksheet: ✅ right · ❌ wrong · ➖ skipped. Joey sheets count for the younger child, Roo sheets for the older. The totals show which kinds of questions to make more of.</p>
+  <div id="key"></div>
+</main>
+<script src="js/kangaroo.js"></script>
+<script src="data/questions.js"></script>
+<script src="js/config.js"></script>
+<script src="js/app.js"></script>
+<script src="js/bank.js"></script>
+<script>
+  (function () {
+    const { esc } = APP;
+    APP.init();
+    const MARKS = [[1, "✅"], [0, "❌"], [null, "➖"]];
+    function render() {
+      document.getElementById("key").innerHTML = BANK.sheets().map(s => {
+        const who = BANK.WHO[s.code[0]];
+        const res = s.questions.map(q => APP.latest(q.id, "result", who));
+        const right = res.filter(r => r && r.score === 1).length, done = res.filter(Boolean).length;
+        return `<section class="sheet" id="LK-${s.code}"><h2>#LK-${s.code} · ${esc(LKG.TRACKS[s.code[0]].name)} · ${esc(s.title)} <span class="sum noprint">${done ? right + " / " + done + " right" : ""}</span></h2>${s.questions.map((q, i) => `
+          <div class="q"><b>Q${i + 1}<br><small>${q.points} pts</small></b><span class="let">${q.answer}</span><span>${esc(q.text)}<br><small>${esc(q.why)}</small></span>
+          <span class="marks row">${MARKS.map(([v, t]) => `<button class="btn${res[i] && res[i].score === v ? " on" : ""}" data-q="${q.id}" data-who="${who}" data-v="${v}" type="button">${t}</button>`).join("")}</span></div>`).join("")}</section>`;
+      }).join("");
+      if (location.hash) { const el = document.querySelector(location.hash); if (el) el.scrollIntoView(); }
+    }
+    document.getElementById("key").addEventListener("click", e => {
+      const b = e.target.closest("[data-q]"); if (!b) return;
+      APP.addReview({ code: b.dataset.q, kind: "result", who: b.dataset.who, score: b.dataset.v === "null" ? null : +b.dataset.v });
+    });
+    document.getElementById("printKey").addEventListener("click", () => window.print());
+    APP.onReviews = render;
+    render();
+  })();
+</script>
+</body>
+</html>
