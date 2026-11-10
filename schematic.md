@@ -1,7 +1,7 @@
 # Learning Kangaroo — Schematic
 
 **Track:** A. Family play. The worksheets are the product; the pages pick, check, print and record results.
-**Status:** Round 1 — 6 worksheets (3 per track), 24 questions. Not printed or tried yet.
+**Status:** Round 2 — 12 worksheets, 48 questions. Joey at kindergarten (J4–J6), Roo at grade 2 (R4–R6). The round 1 sheets (J1–J3, R1–R3, TK and younger) are kept behind ⚙️ Settings (`?level=tk`). Not printed or tried yet.
 **Platform:** plain HTML/CSS/JS, no build, GitHub Pages (inside Felix-Maze for now). Letter portrait, black and white, two-sided.
 **Conversation:** `convo/convo v0.1.md`
 

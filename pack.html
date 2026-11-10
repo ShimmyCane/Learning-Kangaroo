@@ -45,11 +45,12 @@
   (function () {
     const { esc, store } = APP;
     APP.init();
-    const chosen = new Set(store.get("lkg.pack", BANK.sheets().map(s => s.code)));
+    const view = BANK.viewOf(APP.param("level")), packKey = view === "current" ? "lkg.pack" : "lkg.pack." + view;
+    const chosen = new Set(store.get(packKey, BANK.sheets(view).map(s => s.code)));
     let copies = store.get("lkg.copies", 1), flip = store.get("lkg.flip", "long");
-    const list = () => BANK.sheets().filter(s => chosen.has(s.code) && !APP.isFlagged(s.code));
+    const list = () => BANK.sheets(view).filter(s => chosen.has(s.code) && !APP.isFlagged(s.code));
     function render() {
-      document.getElementById("pick").innerHTML = BANK.sheets().map(s => `<button class="tag${chosen.has(s.code) ? " on" : ""}" data-code="${s.code}" type="button"${APP.isFlagged(s.code) ? " disabled" : ""}>${APP.isFlagged(s.code) ? "🚩 " : ""}${esc(LKG.TRACKS[s.code[0]].name)} ${s.code[1]} · ${esc(s.title)}</button>`).join("");
+      document.getElementById("pick").innerHTML = BANK.sheets(view).map(s => `<button class="tag${chosen.has(s.code) ? " on" : ""}" data-code="${s.code}" type="button"${APP.isFlagged(s.code) ? " disabled" : ""}>${APP.isFlagged(s.code) ? "🚩 " : ""}${esc(LKG.TRACKS[s.code[0]].name)} ${s.code[1]} · ${esc(s.title)}</button>`).join("");
       document.getElementById("copies").innerHTML = [1, 2, 3].map(n => `<button class="tag${copies === n ? " on" : ""}" data-copies="${n}" type="button">${n}</button>`).join("");
       document.querySelectorAll("input[name=flip]").forEach(x => { x.checked = x.value === flip; });
       const l = list();
@@ -63,7 +64,7 @@
         APP.lazyThumb(a, s.code + "/1", () => LKG.page(s, 1), 300); APP.lazyThumb(b, s.code + "/2", () => LKG.page(s, 2), 300);
       });
     }
-    document.getElementById("pick").addEventListener("click", e => { const b = e.target.closest("[data-code]"); if (!b) return; chosen.has(b.dataset.code) ? chosen.delete(b.dataset.code) : chosen.add(b.dataset.code); store.set("lkg.pack", [...chosen]); render(); });
+    document.getElementById("pick").addEventListener("click", e => { const b = e.target.closest("[data-code]"); if (!b) return; chosen.has(b.dataset.code) ? chosen.delete(b.dataset.code) : chosen.add(b.dataset.code); store.set(packKey, [...chosen]); render(); });
     document.getElementById("copies").addEventListener("click", e => { const b = e.target.closest("[data-copies]"); if (!b) return; copies = +b.dataset.copies; store.set("lkg.copies", copies); render(); });
     document.querySelectorAll("input[name=flip]").forEach(x => x.addEventListener("change", () => { flip = x.value; store.set("lkg.flip", flip); render(); }));
     document.getElementById("print").addEventListener("click", () => {
