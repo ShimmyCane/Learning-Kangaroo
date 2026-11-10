@@ -144,7 +144,7 @@
     return o;
   }
 
-  const TRACKS = { J: { name: "Joey", about: "the younger track: counting, shapes, patterns" }, R: { name: "Roo", about: "the older track: number sense, logic, shapes" } };
+  const TRACKS = { J: { name: "Joey", about: "kindergarten: counting, shapes, patterns" }, R: { name: "Roo", about: "grade 2: number sense, logic, shapes" }, W: { name: "Wallaby", about: "grade 3: multi-step logic and counting" }, F: { name: "Flyer", about: "grade 4: sums, time and constraints" }, B: { name: "Boomer", about: "grade 5: puzzles that need a plan" } };
   const codeOf = s => "LK-" + s.code;
   // page = 1 (front: questions 1–2) or 2 (back: questions 3–4)
   function page(sheet, n) {

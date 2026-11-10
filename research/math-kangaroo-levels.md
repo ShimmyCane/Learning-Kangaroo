@@ -59,3 +59,11 @@ Each sheet has one 5-point question that needs a trick (two steps, a comparison,
 - The weakest eight were culled, four per track: one-step sums worth five points, a race whose picture gave the order, and a farm question that repeated an archived one.
 - The 64 remaining questions are packed into full sheets: Joey `J16`–`J23` (kindergarten), Roo `R16`–`R23` (grade 2). Every question has a new id. The sheets from last round (`J7`–`J15`, `R7`–`R15`) are retired.
 - Points: only five 5-point questions remain in the Joey set, so Joey sheets are 3-4-4-4 or 3-4-4-5 rather than the usual mix. Worth a look.
+
+## Round 4: grades 3–5 (calibrated to the official samples)
+
+- The official sample site is now reachable (`mathkangaroo.org` added to the environment's allowed hosts). Sample papers for 2022–2026 were read for calibration. Questions were not copied.
+- Grades 3–4 share one paper; grades 5–6 share another. The grade 3 and 4 sets follow the 3–4 paper and the grade 5 set follows the 5–6 paper.
+- New tracks: Wallaby (grade 3, `W1`–`W4`), Flyer (grade 4, `F1`–`F4`), Boomer (grade 5, `B1`–`B4`). Sixteen questions per grade.
+- Our new sets are still about half the official reading load, and the engine cannot draw cut-and-fold or reflection pictures yet. See `research/grades-3-5-review.md`.
+- Question text beside a picture is limited to 3 lines; a question without a picture may run to 7 lines.

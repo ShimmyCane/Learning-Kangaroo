@@ -1,12 +1,19 @@
 {
   "_about": "How to add questions. One sheet = 4 questions (2 on the front, 2 on the back). Copy this file's shape, change the values, keep the rules on format.html. The sheet below is an EXAMPLE to copy from: do not add J99 to data/questions.js.",
-  "_levels": { "tk": "TK and younger (round 1, kept behind Settings)", "k": "Kindergarten (Joey)", "g2": "Grade 2 (Roo)" },
-  "_codes": "Track letter then a number: J = Joey, R = Roo. Never reuse a code or an id; retire a replaced question with retired: true.",
+  "_levels": {
+    "tk": "TK and younger (archived)",
+    "k": "Kindergarten (Joey)",
+    "g2": "Grade 2 (Roo)",
+    "g3": "Grade 3 (Wallaby)",
+    "g4": "Grade 4 (Flyer)",
+    "g5": "Grade 5 (Boomer)"
+  },
+  "_codes": "Track letter then a number: J = Joey, R = Roo, W = Wallaby (grade 3), F = Flyer (grade 4), B = Boomer (grade 5). Never reuse a code or an id; retire a replaced question with retired: true.",
   "_points": "3 = one step, 4 = two steps or a careful look, 5 = a trick or a pattern. A sheet has two 3s, one 4 and one 5, or one 3, two 4s and one 5.",
   "_choices": "Exactly 5 different choices. Each is a number, a word, or one of: {\"shape\": \"triangle\"}, {\"dots\": 6}, {\"see\": \"C\"} (for kangaroos or flowers labelled A–E in the picture).",
   "_answer": "The letter A–E of the correct choice. Spread the letters across a sheet.",
   "_calc": "The worked-out answer as a number or the exact text of the correct choice. tools/check_sheets.js checks that the letter's choice matches it, so the answer is proven, not guessed.",
-  "_art": "A picture kind from js/kangaroo.js (see format.html for the list), or null for text only. The picture must help the child but not give the answer away.",
+  "_art": "A picture kind from js/kangaroo.js (see format.html for the list), or null for text only. With a picture the question text is at most 3 lines; without one, up to 7 lines. The picture must help the child but not give the answer away.",
   "sheets": [
     {
       "code": "J99",
@@ -17,8 +24,17 @@
           "id": "J99-1",
           "points": 3,
           "text": "How many apples are on the tree? (at most 3 short lines, about 130 characters)",
-          "art": { "kind": "tree", "n": 4 },
-          "choices": [2, 3, 4, 5, 6],
+          "art": {
+            "kind": "tree",
+            "n": 4
+          },
+          "choices": [
+            2,
+            3,
+            4,
+            5,
+            6
+          ],
           "answer": "C",
           "calc": 4,
           "why": "Count them one by one: 4 apples."
@@ -27,8 +43,21 @@
           "id": "J99-2",
           "points": 3,
           "text": "Which number is missing?",
-          "art": { "kind": "missing", "list": [10, null, 12] },
-          "choices": [10, 11, 12, 13, 14],
+          "art": {
+            "kind": "missing",
+            "list": [
+              10,
+              null,
+              12
+            ]
+          },
+          "choices": [
+            10,
+            11,
+            12,
+            13,
+            14
+          ],
           "answer": "B",
           "calc": 11,
           "why": "10, 11, 12: counting up by ones."
@@ -37,8 +66,33 @@
           "id": "J99-3",
           "points": 4,
           "text": "How many circles are there?",
-          "art": { "kind": "shapeMix", "list": [["circle", 20, 50], ["square", 50, 30], ["circle", 75, 60]] },
-          "choices": [2, 3, 1, 4, 5],
+          "art": {
+            "kind": "shapeMix",
+            "list": [
+              [
+                "circle",
+                20,
+                50
+              ],
+              [
+                "square",
+                50,
+                30
+              ],
+              [
+                "circle",
+                75,
+                60
+              ]
+            ]
+          },
+          "choices": [
+            2,
+            3,
+            1,
+            4,
+            5
+          ],
           "answer": "A",
           "calc": 2,
           "why": "Two round shapes; the square is not a circle."
@@ -48,7 +102,13 @@
           "points": 5,
           "text": "Kip has 5 apples. He gives 2 away and then finds 1 more. How many does he have now?",
           "art": null,
-          "choices": [3, 4, 6, 7, 8],
+          "choices": [
+            3,
+            4,
+            6,
+            7,
+            8
+          ],
           "answer": "B",
           "calc": 4,
           "why": "5 − 2 = 3, then 3 + 1 = 4."

@@ -37,7 +37,7 @@ for (const s of LKG_SHEETS) {
       if (q.choices.filter(c => key(c) === v).length !== 1) sq("the worked-out answer is not exactly one of the choices");
     }
     if (!q.why) sq("no explanation for the answer key");
-    if (q.text.length > 46 * 3) sq("question text is longer than 3 lines");
+    if (q.text.length > (q.art ? 46 * 3 : 46 * 7)) sq("question text is too long (3 lines beside a picture, 7 without)");
     if (q.art && !LKG.ART[q.art.kind]) sq("unknown picture " + q.art.kind);
   }
   try {
