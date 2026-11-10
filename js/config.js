@@ -7,5 +7,5 @@ window.APP_CONFIG = {
   url: "https://twvqvutrcobedvuhnzxq.supabase.co",
   key: "sb_publishable_eqUo8HEdEB1hMQM4CpSVqA_9i6b0qCo",
   timeoutMs: 8000,
-  links: [["index.html", "🏠 Home"], ["pack.html", "🖨️ Print in bulk"], ["answers.html", "✅ Answers and results"], ["index.html?level=tk", "📦 TK and younger worksheets"], ["answers.html?level=tk", "📦 TK answers and results"], ["../index.html", "🌀 Felix Maze"]]
+  links: [["index.html", "🏠 Home"], ["pack.html", "🖨️ Print in bulk"], ["answers.html", "✅ Answers and results"], ["index.html?level=tk", "📦 TK and younger worksheets"], ["answers.html?level=tk", "📦 TK answers and results"], ["format.html", "🧩 How to add questions"], ["../index.html", "🌀 Felix Maze"]]
 };
