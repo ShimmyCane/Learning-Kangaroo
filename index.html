@@ -44,9 +44,9 @@
         const view = BANK.viewOf(APP.param("level")), all = BANK.sheets(view), q = view === "current" ? "" : "?level=" + view;
         document.getElementById("packLink").href = "pack.html" + q;
         document.getElementById("answersLink").href = "answers.html" + q;
-        document.getElementById("levelNote").textContent = view === "tk"
-          ? "Earlier worksheets, TK and younger. They are kept here, out of the main list. Back to the current ones: 🏠 Home in ⚙️ Settings."
-          : "Joey works at kindergarten level and Roo at grade 2. The earlier TK worksheets are in ⚙️ Settings.";
+        document.getElementById("levelNote").textContent = view === "archive"
+          ? "Archived worksheets: earlier sets, kept for reference. Printing and results still work. Back to the current ones: 🏠 Home in ⚙️ Settings."
+          : "Joey works at kindergarten level and Roo at grade 2. Older sets are in ⚙️ Settings → 🗄️ Archive.";
         document.getElementById("count").textContent = all.length + " worksheets · " + all.length * 4 + " questions";
         document.getElementById("tracks").innerHTML = Object.entries(LKG.TRACKS).map(([t, info]) => `<section class="track"><h2>🦘 ${esc(info.name)}</h2><p>${esc(info.about)}</p><div class="cards" data-t="${t}"></div></section>`).join("");
         all.forEach(s => {
