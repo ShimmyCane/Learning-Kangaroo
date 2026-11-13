@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/app.css">
+<title>Learning Kangaroo: Roman numerals</title>
+<style>
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  @media (max-width: 760px) { .two { grid-template-columns: 1fr; } }
+  .two h3, .sec h2 { font: 28px var(--hand); margin: 0 0 4px; font-weight: 400; }
+  .sec { margin-top: 26px; }
+  .sec > p { margin: 0 0 10px; font-weight: 600; opacity: .85; }
+  .cards { grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); }
+  .card .eq { font: 700 15px/1.25 var(--ui); overflow-wrap: anywhere; }
+  .card .meta span.m { background: var(--sun); }
+  details { background: #fff; border: var(--line); border-radius: 14px; box-shadow: var(--pop); margin: 0 0 12px; padding: 8px 14px; }
+  summary { cursor: pointer; font-weight: 700; display: flex; flex-wrap: wrap; gap: 4px 10px; align-items: baseline; }
+  summary .id { font-size: 13px; opacity: .7; }
+  summary .star { background: var(--sun); border: 2px solid var(--ink); border-radius: 999px; padding: 0 8px; font-size: 13px; }
+  summary .tag { font-size: 13px; background: var(--mint); border: 2px solid var(--ink); border-radius: 8px; padding: 0 7px; }
+  .steps { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 22px; margin-top: 8px; }
+  @media (max-width: 760px) { .steps { grid-template-columns: 1fr; } }
+  .steps h4 { margin: 4px 0; font: 22px var(--hand); font-weight: 400; }
+  .steps ol { margin: 0; padding-left: 24px; font-size: 15px; }
+  .steps li.sum { list-style: none; margin-left: -24px; font-weight: 700; margin-top: 6px; }
+  .why { grid-column: 1 / -1; font-size: 15px; }
+  .tips li { margin: 4px 0; }
+</style>
+</head>
+<body>
+<header class="top">
+  <h1 class="title"><a href="index.html">Learning Kangaroo</a> <small id="sub">Roman numerals: practise presenting</small></h1>
+  <span class="chip sun" id="count">…</span>
+</header>
+<main class="wrap">
+  <div id="list">
+    <div class="row noprint" style="margin-bottom:12px">
+      <button class="btn go" id="printAll" type="button">🖨️ Print the ten (two-sided)</button>
+      <a class="btn" href="index.html">🏠 Home</a>
+    </div>
+    <p class="note">This page is separate from the Joey and Roo worksheets. Our own problems, written for presenting: read it, work it out, then explain it out loud.
+      The worked steps come from the Roman Numerals tool, which uses a <b>teaching model</b> (split a numeral into its pieces, cross out, merge the rest). It is not a documented Roman method.
+      The <b>front</b> of each sheet has no answer. The pages after it are in colour like the Roman Numerals tool: the answer and every step as tiles (orange break apart, pink take away, blue the right form), then the presenting notes and a practice page. Long problems run to two solution pages at the same letter size, so a sheet is two or four pages. Keep those pages for the presenter.</p>
+    <section class="sec"><h2>🦘 The ten to present</h2>
+      <p>The most interesting of the 25: messy to start, tidy at the end. Lots of merges, some splits, a few that make you smile.</p>
+      <div class="cards" id="ten"></div></section>
+    <section class="sec"><h2>🖍️ How to practise</h2>
+      <ol class="tips">
+        <li><b>Read</b> the front. Guess the answer and how many splits and merges you expect.</li>
+        <li><b>Work it out</b> on the front. Then check the solution pages.</li>
+        <li><b>Present it</b> to a wall, a toy, then a person. Use the notes after the solution: open with the hook, slow down at the hard part, say why it is fun.</li>
+        <li><b>Voice:</b> loud enough for the back of the room. <b>Pace:</b> one idea at a time, a pause after each merge. <b>Eyes:</b> look up between steps. <b>Hands:</b> point at the letters you split, cross out or merge.</li>
+        <li><b>Two ways:</b> present Way 1 (split, cross out, merge), then the column way and say which one you like better, and why.</li>
+        <li>Tick the practice tracker on the practice page after each take, and write your own script on its lines.</li>
+      </ol>
+    </section>
+    <div id="groups"></div>
+  </div>
+  <div id="one" hidden>
+    <div class="row noprint" style="margin-bottom:12px">
+      <a class="btn" id="prev">◀</a>
+      <button class="btn go" id="print" type="button">🖨️ Print this sheet (two-sided)</button>
+      <a class="btn" id="next">▶</a>
+      <a class="btn mint" href="roman.html">📋 All problems</a>
+    </div>
+    <div class="two" id="pages"></div>
+  </div>
+</main>
+<script src="js/kangaroo.js"></script>
+<script src="data/roman.js"></script>
+<script src="js/roman.js"></script>
+<script src="js/config.js"></script>
+<script src="js/app.js"></script>
+<script>
+  (function () {
+    const { esc } = APP, RS = LKG_ROMAN_SHEETS, all = LKG_ROMAN.problems, ten = RS.sheets();
+    const flip = APP.store.get("lkg.flip", "long");
+    APP.init();
+    const code = APP.param("code"), cur = code && RS.find(code);
+    if (cur) {
+      const i = ten.indexOf(cur);
+      document.getElementById("list").hidden = true; document.getElementById("one").hidden = false;
+      document.title = "Learning Kangaroo #LK-" + cur.code;
+      document.getElementById("sub").textContent = "#LK-" + cur.code + " · Roman numerals · present it " + cur.top;
+      document.getElementById("count").textContent = "sheet " + cur.top + " of " + ten.length;
+      const pgs = RS.pages(cur);
+      document.getElementById("pages").innerHTML = pgs.map((svg, k) => `<div><h3>${k === 0 ? "Front" : "Page " + (k + 1) + (k === 1 ? " (the presenter's page)" : "")}</h3><div class="paper">${svg}</div></div>`).join("");
+      document.getElementById("prev").href = "roman.html?code=" + ten[(i - 1 + ten.length) % ten.length].code;
+      document.getElementById("next").href = "roman.html?code=" + ten[(i + 1) % ten.length].code;
+      document.getElementById("print").addEventListener("click", () => APP.printPages(pgs, { duplex: true, flip }));
+      return;
+    }
+    document.getElementById("count").textContent = all.length + " problems · " + ten.length + " sheets";
+    document.getElementById("printAll").addEventListener("click", () => APP.printPages(ten.flatMap(p => RS.pages(p)), { duplex: true, flip }));
+    const n = (k, w) => k + " " + w + (k === 1 ? "" : "s");
+    const eq = p => RS.equation(p) + " = " + p.answer;
+    ten.forEach(p => {
+      const a = document.createElement("a"); a.className = "card"; a.href = "roman.html?code=" + p.code;
+      a.innerHTML = `<img alt=""><b>Present it ${p.top}</b><div class="eq">${esc(RS.equation(p))}</div><div class="meta"><span>#LK-${p.code}</span><span class="t">${n(p.splits, "split")}</span><span class="m">${n(p.merges, "merge")}</span></div>`;
+      document.getElementById("ten").append(a);
+      APP.lazyThumb(a.querySelector("img"), "roman-" + p.code, () => RS.front(p), 360);
+    });
+    const GROUPS = [
+      ["straight", "Straight: a big number, then a big number taken away", "Every letter has a partner to cross out. No splits, no merges: just cross out and write what is left."],
+      ["step", "One more step", "The same, then one more addition or subtraction afterwards."],
+      ["pick", "The rest of the 25: the pool the ten came from", "⭐ marks the ten printed as sheets. Messy at the start, tidy at the end; merges, splits and a few that make you smile."],
+    ];
+    const list = (steps) => steps.map(s => String(s).trim().startsWith("§") ? `<li class="sum">Sum: ${esc(s.trim().slice(1).trim())}</li>` : `<li>${esc(String(s).trim())}</li>`).join("");
+    document.getElementById("groups").innerHTML = GROUPS.map(([g, title, about]) => {
+      const ps = all.filter(p => p.group === g);
+      return `<section class="sec"><h2>${esc(title)} (${ps.length})</h2><p>${esc(about)}</p>${ps.map(p => `
+        <details><summary><span class="id">${p.id}</span><span>${esc(eq(p))}</span>
+          ${p.top ? `<a class="star" href="roman.html?code=${p.code}">⭐ sheet ${p.top}</a>` : ""}
+          <span class="tag">${n(p.splits, "split")}</span><span class="tag">${n(p.merges, "merge")}</span></summary>
+          <div class="steps">
+            ${p.top ? `<p class="why"><b>Hook:</b> ${esc(p.hook)}<br><b>Slow down:</b> ${esc(p.watch)}<br><b>Why it is fun:</b> ${esc(p.why)}</p>` : ""}
+            <div><h4>Way 1 · split, cross out, merge</h4><ol>${list(p.way1)}</ol></div>
+            <div><h4>Way 2 · by column, ones first</h4><ol>${list(p.way2)}</ol></div>
+          </div></details>`).join("")}</section>`;
+    }).join("");
+  })();
+</script>
+</body>
+</html>
