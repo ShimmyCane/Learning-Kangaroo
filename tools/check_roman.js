@@ -50,14 +50,19 @@ for (const p of P) {
 }
 for (const p of S.sheets()) {
   try {
-    const [f, b] = S.pages(p);
-    for (const [n, svg] of [[1, f], [2, b]]) {
+    const pg = S.pages(p), f = pg[0];
+    if (pg.length % 2) say(p, "an odd number of pages: it will not print two-sided cleanly");
+    if (pg.length > 6) say(p, "more than six pages");
+    pg.forEach((svg, i) => { const n = i + 1;
       if (!svg.includes("Learning Kangaroo #LK-" + p.code)) say(p, "page " + n + " has no code at the top");
       if (/NaN|undefined/.test(svg)) say(p, "page " + n + " has NaN or undefined");
-    }
+      if (!svg.includes("page " + n + " of " + pg.length)) say(p, "page " + n + " has the wrong page count in the footer");
+      const sizes = [...svg.matchAll(/font-size="([\d.]+)"/g)].map(m => +m[1]);
+      if (Math.min(...sizes) < 11) say(p, "page " + n + " has text smaller than 11");
+    });
     if (f.includes(">" + p.answer + "<")) say(p, "the answer is on the front");
     if (/answer|Answer/.test(f.replace("Say the answer, then pause", ""))) say(p, "the front mentions the answer");
   } catch (e) { say(p, "does not draw: " + e.message); }
 }
 if (bad.length) { console.log("❌ " + bad.length + " problem(s):\n" + bad.join("\n")); process.exit(1); }
-console.log(`✅ ${P.length} problems re-worked and right. ${S.sheets().length} sheets (20 pages) draw and fit. Splits/merges of the ten: ${S.sheets().map(p => p.splits + "/" + p.merges).join(" ")}`);
+console.log(`✅ ${P.length} problems re-worked and right. ${S.sheets().length} sheets (${S.sheets().reduce((n, p) => n + S.pages(p).length, 0)} pages) draw and fit. Pages per sheet: ${S.sheets().map(p => S.pages(p).length).join(' ')}. Splits/merges of the ten: ${S.sheets().map(p => p.splits + "/" + p.merges).join(" ")}`);

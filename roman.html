@@ -43,18 +43,18 @@
     </div>
     <p class="note">This page is separate from the Joey and Roo worksheets. Our own problems, written for presenting: read it, work it out, then explain it out loud.
       The worked steps come from the Roman Numerals tool, which uses a <b>teaching model</b> (split a numeral into its pieces, cross out, merge the rest). It is not a documented Roman method.
-      The <b>front</b> of each sheet has no answer. The <b>back</b> has the answer, the steps two ways and the presenting notes, so keep it for the presenter.</p>
+      The <b>front</b> of each sheet has no answer. The pages after it are in colour like the Roman Numerals tool: the answer and every step as tiles (orange break apart, pink take away, blue the right form), then the presenting notes and a practice page. Long problems run to two solution pages at the same letter size, so a sheet is two or four pages. Keep those pages for the presenter.</p>
     <section class="sec"><h2>🦘 The ten to present</h2>
       <p>The most interesting of the 25: messy to start, tidy at the end. Lots of merges, some splits, a few that make you smile.</p>
       <div class="cards" id="ten"></div></section>
     <section class="sec"><h2>🖍️ How to practise</h2>
       <ol class="tips">
         <li><b>Read</b> the front. Guess the answer and how many splits and merges you expect.</li>
-        <li><b>Work it out</b> on the front. Then check the back.</li>
-        <li><b>Present it</b> to a wall, a toy, then a person. Use the notes on the back: open with the hook, slow down at the hard part, say why it is fun.</li>
+        <li><b>Work it out</b> on the front. Then check the solution pages.</li>
+        <li><b>Present it</b> to a wall, a toy, then a person. Use the notes after the solution: open with the hook, slow down at the hard part, say why it is fun.</li>
         <li><b>Voice:</b> loud enough for the back of the room. <b>Pace:</b> one idea at a time, a pause after each merge. <b>Eyes:</b> look up between steps. <b>Hands:</b> point at the letters you split, cross out or merge.</li>
-        <li><b>Two ways:</b> present Way 1 (split, cross out, merge), then Way 2 (by column) and say which one you like better, and why.</li>
-        <li>Tick the practice tracker on the back after each take.</li>
+        <li><b>Two ways:</b> present Way 1 (split, cross out, merge), then the column way and say which one you like better, and why.</li>
+        <li>Tick the practice tracker on the practice page after each take, and write your own script on its lines.</li>
       </ol>
     </section>
     <div id="groups"></div>
@@ -66,10 +66,7 @@
       <a class="btn" id="next">▶</a>
       <a class="btn mint" href="roman.html">📋 All problems</a>
     </div>
-    <div class="two">
-      <div><h3>Front</h3><div class="paper" id="p1"></div></div>
-      <div><h3>Back (the presenter's page)</h3><div class="paper" id="p2"></div></div>
-    </div>
+    <div class="two" id="pages"></div>
   </div>
 </main>
 <script src="js/kangaroo.js"></script>
@@ -89,11 +86,11 @@
       document.title = "Learning Kangaroo #LK-" + cur.code;
       document.getElementById("sub").textContent = "#LK-" + cur.code + " · Roman numerals · present it " + cur.top;
       document.getElementById("count").textContent = "sheet " + cur.top + " of " + ten.length;
-      const [f, b] = RS.pages(cur);
-      document.getElementById("p1").innerHTML = f; document.getElementById("p2").innerHTML = b;
+      const pgs = RS.pages(cur);
+      document.getElementById("pages").innerHTML = pgs.map((svg, k) => `<div><h3>${k === 0 ? "Front" : "Page " + (k + 1) + (k === 1 ? " (the presenter's page)" : "")}</h3><div class="paper">${svg}</div></div>`).join("");
       document.getElementById("prev").href = "roman.html?code=" + ten[(i - 1 + ten.length) % ten.length].code;
       document.getElementById("next").href = "roman.html?code=" + ten[(i + 1) % ten.length].code;
-      document.getElementById("print").addEventListener("click", () => APP.printPages([f, b], { duplex: true, flip }));
+      document.getElementById("print").addEventListener("click", () => APP.printPages(pgs, { duplex: true, flip }));
       return;
     }
     document.getElementById("count").textContent = all.length + " problems · " + ten.length + " sheets";

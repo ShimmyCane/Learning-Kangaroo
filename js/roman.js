@@ -19,17 +19,17 @@
   const equation = p => p.terms.map((t, i) => (i ? sign(p.ops[i - 1]) + " " : "") + t).join(" ");
   const arabic = p => p.terms.map((t, i) => (i ? sign(p.ops[i - 1]) + " " : "") + valueOf(t)).join(" ") + " = " + p.value;
 
-  function head(p, n, sub) {
+  function head(p, n, sub, label) {
     const code = "LK-" + p.code;
-    return text(60, 58, NAME + " #" + code + (n === 1 ? " · front" : " · back"), { size: 22, weight: 700 })
+    return text(60, 58, NAME + " #" + code + " · " + (label || (n === 1 ? "front" : "back")), { size: 22, weight: 700 })
       + text(790, 58, "Name ____________", { size: 24, anchor: "end", font: "hand", weight: 400 })
       + kangaroo(82, 140, 62) + text(124, 120, "Roman numerals · Present it " + p.top, { size: 40, font: "hand", weight: 400 })
       + text(124, 150, sub, { size: 22, fill: "#333", weight: 600 });
   }
-  const foot = (p, n) => text(425, 1078, `${NAME} #LK-${p.code} · page ${n} of 2 · Roman numerals · our own problems`, { size: 16, anchor: "middle", fill: "#333" });
+  const foot = (p, n, N = 2) => text(425, 1078, `${NAME} #LK-${p.code} · page ${n} of ${N} · Roman numerals · our own problems`, { size: 16, anchor: "middle", fill: "#333" });
 
   const hookLines = p => fit(p.hook, 700, 26 * 0.85);        // the hand font is narrower than the others
-  function front(p) {
+  function front(p, N = 2) {
     let o = `<rect width="${W}" height="${H}" fill="#fff"/>` + head(p, 1, "Read it. Work it out. Then present it out loud!");
     // Kip's hook
     o += rect(50, 172, 750, 108, { rx: 20, w: 3 }) + text(76, 204, "Kip says:", { size: 22, weight: 700 });
@@ -63,7 +63,7 @@
       o += rect(x, y - 21, 23, 23, { rx: 5, w: 3 }) + text(x + 36, y - 2, s, { size: 24, font: "hand", weight: 400 });
     });
     o += text(440, 1023, "Voice loud · Pace slow · Look up", { size: 24, font: "hand", weight: 400 });
-    return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" width="8.5in" height="11in">${o}${foot(p, 1)}</svg>`;
+    return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" width="8.5in" height="11in">${o}${foot(p, 1, N)}</svg>`;
   }
 
   // ---------- the solution side: drawn like the Roman Numerals tool ----------
@@ -109,76 +109,102 @@
     return { svg: o, w };
   }
 
-  // Steps → bands. Returns drawing items and where they end, in the biggest size that fits.
-  function layoutSteps(p, top, bottom) {
-    const rows = [];
-    p.way1.forEach((label, i) => { if (p.eqs1[i]) rows.push({ label: trim(label), e: p.eqs1[i] }); });
-    let n = 0;
-    const multi = p.terms.length > 2;
-    for (const u of [22, 20, 18, 17, 16, 15, 14, 13, 12, 11, 10]) {
-      const widest = Math.ceil(Math.max(...rows.map(r => eqLine(r.e, 0, 0, u, true).w))) + 4;
-      if (widest > 470 && u > 10) continue;          // keep one letter size on the sheet unless it is the smallest
-      const X0 = 56, X1 = 794, EQW = Math.min(470, widest), capW = X1 - X0 - 34 - EQW - 24, capSize = Math.min(15, Math.max(11, u - 2)), capLH = capSize * 1.2;
-     for (const pad of [12, 8, 4, 0]) {
-      let y = top; const out = []; let cur = null;
-      for (const r of rows) {
-        const key = r.e.sum + ":" + r.e.part, lines = fit(r.label, capW, capSize), h = Math.max(u * 1.9, lines.length * capLH + 6) + pad;
-        if (!cur || cur.key !== key) {
-          if (cur) { cur.end = y; y += 8; }
-          cur = { key, part: r.e.part, y0: y, rows: [] };
-          const sumLabel = multi && r.e.sum ? "Sum " + r.e.sum + " · " : "";
-          cur.title = sumLabel + "Part " + rom(r.e.part) + ": " + (r.e.name || PARTNAME[r.e.part]); out.push(cur); y += 24;
-        }
-        let w = u, fit1 = true;
-        while (eqLine(r.e, 0, 0, w, true).w > EQW && w > 8) w -= 0.5;
-        cur.rows.push({ y: y + 2, h, lines, e: r.e, u: w, capSize, capLH }); y += h + 4;
-      }
-      if (cur) { cur.end = y; }
-      y += 2;
-      if (y <= bottom) return { u, bands: out, end: y, X0, X1, EQW };
-     }
+  // ---------- paging: one fixed letter size on every sheet; the solution runs over as many pages as it needs ----------
+  const U = 16, CAP = 14, CAPLH = 17;                  // equation letter size and caption size: the same on every sheet
+  const TOP = 284, BOTTOM = 1040, NOTES_H = 190;       // where steps may go on a page; room the notes need
+  const svgOf = (p, n, N, o) => `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" width="8.5in" height="11in">${o}${foot(p, n, N)}</svg>`;
+  const X0 = 56, X1 = 794;
+  const columns = p => p.way2.map(trim).filter(t => /^(Ones|Tens|Hundreds|Thousands|Put the columns together)/.test(t) && / = [IVXLCDM]+\.?$/.test(t)).join("  ·  ");
+
+  // Rows of the solution, then pages of bands. A row never splits; a band that carries on says "(continued)".
+  function paginate(p) {
+    const multi = p.terms.length > 2, rows = [];
+    p.way1.forEach((label, i) => { const e = p.eqs1[i]; if (e) rows.push({ e, label: trim(label) }); });
+    rows.forEach(r => {
+      const ew = Math.ceil(eqLine(r.e, 0, 0, U, true).w) + 4, side = X1 - X0 - 34 - ew - 20;
+      r.side = side >= 250; r.ew = ew;
+      r.lines = fit(r.label, r.side ? side : X1 - X0 - 50, CAP);
+      r.h = (r.side ? Math.max(U * 1.9, r.lines.length * CAPLH + 8) : r.lines.length * CAPLH + 6 + U * 1.9 + 4) + 6;
+    });
+    const pages = []; let page = null, band = null, y = 0, k = 0;
+    const open = (r, cont) => {
+      const sumLabel = multi && r.e.sum ? "Sum " + r.e.sum + " · " : "";
+      band = { key: r.e.sum + ":" + r.e.part, part: r.e.part, y0: y, rows: [], title: sumLabel + "Part " + rom(r.e.part) + ": " + (r.e.name || PARTNAME[r.e.part]) + (cont ? " (continued)" : "") };
+      page.bands.push(band); y += 24;
+    };
+    for (const r of rows) {
+      const key = r.e.sum + ":" + r.e.part, same = band && band.key === key;
+      if (!page || y + (same ? 0 : 32) + r.h + 6 > BOTTOM) {
+        if (band) band.end = y + 2;
+        page = { bands: [] }; pages.push(page); y = TOP; open(r, same); 
+      } else if (!same) { band.end = y + 2; y += 8; open(r, false); }
+      band.rows.push(Object.assign({ y: y + 2, n: ++k }, r)); y += r.h + 4;
+      page.end = y + 4;
     }
-    throw new Error(p.code + ": the steps do not fit on the back");
+    if (band) band.end = y + 2;
+    return pages;
   }
-  const columns = p => {
-    const keep = p.way2.map(trim).filter(t => /^(Ones|Tens|Hundreds|Thousands|Put the columns together)/.test(t) && / = [IVXLCDM]+\.?$/.test(t));
-    return keep.join("  ·  ");
-  };
-  function back(p) {
-    let o = `<rect width="${W}" height="${H}" fill="#fff"/>` + head(p, 2, "The answer, step by step, and the presenting notes.");
-    const eq = equation(p) + " = " + p.answer, size = Math.min(50, Math.floor(700 / (eq.length * 0.7)));
-    o += rect(50, 170, 750, 56, { rx: 16, w: 4 }) + text(425, 170 + 39, eq, { size: Math.min(size, 38), weight: 700, anchor: "middle" });
+
+  function solutionPage(p, n, N, pg, extra) {
+    let o = `<rect width="${W}" height="${H}" fill="#fff"/>` + head(p, n, "The answer, step by step.", "solution " + (n - 1));
+    const eq = equation(p) + " = " + p.answer, size = Math.min(38, Math.floor(700 / (eq.length * 0.7)));
+    o += rect(50, 170, 750, 56, { rx: 16, w: 4 }) + text(425, 170 + 39, eq, { size, weight: 700, anchor: "middle" });
     o += text(425, 246, "Check (for the presenter): " + arabic(p), { size: 17, weight: 600, fill: "#444", anchor: "middle" });
-    // key
     [[PART[1], "break apart / get ready"], [PART[2], "take away"], [PART[3], "the right form"]].forEach(([c, t], i) => {
       const x = 90 + i * 240; o += rect(x, 258, 22, 16, { rx: 4, fill: c, w: 1.6 }) + text(x + 30, 271, t, { size: 15, weight: 600 });
     });
-    const notesTop = 960, lay = layoutSteps(p, 284, notesTop - 52);
-    let stepNo = 0;
-    for (const b of lay.bands) {
-      o += rect(lay.X0, b.y0, lay.X1 - lay.X0, b.end - b.y0, { rx: 12, fill: PART[b.part], w: 1.8 }) + text(lay.X0 + 12, b.y0 + 17, b.title, { size: 14, weight: 800, fill: "#2b2540" });
+    for (const b of pg.bands) {
+      o += rect(X0, b.y0, X1 - X0, b.end - b.y0, { rx: 12, fill: PART[b.part], w: 1.8 }) + text(X0 + 12, b.y0 + 17, b.title, { size: 14, weight: 800, fill: "#2b2540" });
       for (const r of b.rows) {
-        o += rect(lay.X0 + 6, r.y, lay.X1 - lay.X0 - 12, r.h, { rx: 8, fill: "#fff", w: 1.4 });
-        const yc = r.y + r.h / 2;
-        o += circle(lay.X0 + 22, yc, 9, { fill: TILE.M, w: 1.4 }) + text(lay.X0 + 22, yc + 4, String(++stepNo), { size: 11, weight: 800, anchor: "middle" });
-        const top0 = yc - r.lines.length * r.capLH / 2;
-        r.lines.forEach((l, i) => { o += text(lay.X0 + 38, top0 + (i + 0.8) * r.capLH, l, { size: r.capSize, weight: 600, fill: "#2b2540" }); });
-        o += eqLine(r.e, lay.X1 - 12, yc, r.u).svg;
+        o += rect(X0 + 6, r.y, X1 - X0 - 12, r.h, { rx: 8, fill: "#fff", w: 1.4 });
+        const top = r.y + 3;
+        o += circle(X0 + 22, r.side ? r.y + r.h / 2 : top + 12, 9, { fill: TILE.M, w: 1.4 }) + text(X0 + 22, (r.side ? r.y + r.h / 2 : top + 12) + 4, String(r.n), { size: 11, weight: 800, anchor: "middle" });
+        const cy = r.side ? r.y + r.h / 2 - r.lines.length * CAPLH / 2 : top + 2;
+        r.lines.forEach((l, i) => { o += text(X0 + 38, cy + (i + 0.85) * CAPLH, l, { size: CAP, weight: 600, fill: "#2b2540" }); });
+        o += eqLine(r.e, X1 - 12, r.side ? r.y + r.h / 2 : r.y + r.h - U * 1.0 - 6, U).svg;
       }
     }
-    // the same sum by column, in one line
-    const col = fit("By column, ones first:  " + columns(p), 730, 13).slice(0, 2);
-    col.forEach((l, i) => { o += text(60, notesTop - 30 + i * 16, l, { size: 13, weight: 600, fill: "#333" }); });
-    // presenting notes
-    o += rect(50, notesTop, 750, 102, { rx: 16, w: 3 });
-    let y = notesTop + 24;
+    if (extra) o += notes(p, Math.max(pg.end + 12, 0) , true);
+    return svgOf(p, n, N, o);
+  }
+  // The column way in one line and the presenting notes, from y downwards.
+  function notes(p, y0) {
+    let o = "", y = y0;
+    fit("By column, ones first:  " + columns(p), 730, 14).slice(0, 2).forEach((l, i) => { o += text(60, y + 14 + i * 18, l, { size: 14, weight: 600, fill: "#333" }); });
+    y += 48;
+    o += rect(50, y, 750, 116, { rx: 16, w: 3 }); y += 28;
     for (const [label, t] of [["Slow down", p.watch], ["Why it is fun", p.why]]) {
       o += text(70, y, label + ":", { size: 16, weight: 700 });
-      const ls = fit(t, 600, 15).slice(0, 2); ls.forEach((l, i) => { o += text(178, y + i * 18, l, { size: 15, weight: 500 }); });
-      y += Math.max(1, ls.length) * 18 + 8;
+      const ls = fit(t, 590, 15).slice(0, 2); ls.forEach((l, i) => { o += text(180, y + i * 19, l, { size: 15, weight: 500 }); });
+      y += Math.max(1, ls.length) * 19 + 10;
     }
-    return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" width="8.5in" height="11in">${o}${foot(p, 2)}</svg>`;
+    return o;
+  }
+  // A page to practise on: the notes (when they did not fit above), a tracker and room to write a script.
+  function practicePage(p, n, N, withNotes) {
+    let o = `<rect width="${W}" height="${H}" fill="#fff"/>` + head(p, n, "Practise presenting it.", "practice");
+    let y = 190;
+    if (withNotes) { o += notes(p, y); y += 190; }
+    o += rect(50, y, 750, 124, { rx: 20, w: 3, dash: "12 8" }) + text(72, y + 34, "Practice tracker", { size: 21, weight: 700 });
+    ["Take 1", "Take 2", "Take 3"].forEach((t, i) => { o += rect(72 + i * 150, y + 50, 23, 23, { rx: 5, w: 3 }) + text(104 + i * 150, y + 69, t, { size: 24, font: "hand", weight: 400 }); });
+    ["Loud enough?", "Slow enough?", "Looked up?"].forEach((t, i) => { o += rect(72 + i * 230, y + 88, 23, 23, { rx: 5, w: 3 }) + text(104 + i * 230, y + 107, t, { size: 24, font: "hand", weight: 400 }); });
+    y += 160;
+    o += text(60, y, "My script: say it in my own words", { size: 22, weight: 700 });
+    for (let ly = y + 44; ly < 1030; ly += 44) o += path([[60, ly], [790, ly]], { w: 1.5, c: LIGHT });
+    return svgOf(p, n, N, o);
   }
 
-  root.LKG_ROMAN_SHEETS = { sheets, find, front, back, pages: p => [front(p), back(p)], equation, valueOf, hookLines };
+  // All the pages of a sheet: the front, the solution (as many pages as it takes), then the notes and practice.
+  // The count is always even, so the sheet prints two-sided with the next sheet starting on a new front.
+  function pages(p) {
+    const sol = paginate(p), last = sol[sol.length - 1];
+    const inline = BOTTOM - last.end >= NOTES_H - 60 && last.end + NOTES_H <= 1060;
+    const plan = [{ kind: "front" }].concat(sol.map((pg, i) => ({ kind: "sol", pg, extra: inline && i === sol.length - 1 })));
+    if (!inline) plan.push({ kind: "practice", notes: true });
+    if (plan.length % 2) plan.push({ kind: "practice", notes: false });
+    const N = plan.length;
+    return plan.map((q, i) => q.kind === "front" ? front(p, N) : q.kind === "sol" ? solutionPage(p, i + 1, N, q.pg, q.extra) : practicePage(p, i + 1, N, q.notes));
+  }
+
+  root.LKG_ROMAN_SHEETS = { sheets, find, front, pages, equation, valueOf, hookLines, U, CAP };
 })(typeof window !== "undefined" ? window : globalThis);
