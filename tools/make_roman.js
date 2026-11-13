@@ -71,16 +71,26 @@ const SPLIT = /^Not enough|short way to write|is the same as/, MERGE = /make one
 const sign = op => (op === "+" ? "+" : "−");
 function parts(e) { const p = R.parse(e); if (p.error) throw new Error(e + ": " + p.error); return p; }
 
+const CODE = { normal: "n", cross: "c", gone: "g", new: "w" };
+const tiles = list => list.map(t => [t.ch, CODE[t.st] || "n"]);
 function way1(terms, ops) {            // split, cross out, merge: one pair at a time
-  const ts = terms.slice(), os = ops.slice(), out = [], first = ts.length > 2;
+  const ts = terms.slice(), os = ops.slice(), out = [], eqs = [], first = ts.length > 2;
+  let sum = 0;
   while (ts.length > 1) {
     const k = R.pairToWork(ts, os), a = ts[k], b = ts[k + 1], op = os[k];
     const plan = op === "+" ? R.addEquation([a, b]) : R.takeAwayEquation(a, b);
-    if (first) out.push("§ " + a + " " + sign(op) + " " + b);
-    plan.steps.forEach(s => out.push(s.label));
+    sum++;
+    if (first) { out.push("§ " + a + " " + sign(op) + " " + b); eqs.push(null); }
+    plan.steps.forEach(s => {
+      out.push(s.label);
+      const e = s.eq;   // the tiles at this step: parts crossed out (c), replaced (g) or new (w)
+      eqs.push({ sum: first ? sum : 0, part: s.part, name: s.partName, focus: e.focus || "",
+        items: e.items.map(it => it.kind === "op" ? ["op", it.text] : ["num", tiles(it.tiles)]),
+        right: e.result ? null : e.right === "ask" ? "ask" : tiles(e.right), result: e.result || "" });
+    });
     ts.splice(k, 2, plan.result); os.splice(k, 1);
   }
-  return out;
+  return { out, eqs };
 }
 function way2(terms, ops) {            // by column, like a counting board
   const r = R.calculate(terms, ops);
@@ -90,11 +100,11 @@ function way2(terms, ops) {            // by column, like a counting board
 const problems = LIST.map((x, i) => {
   const { terms, ops } = parts(x.e);
   const value = terms.reduce((s, t, k) => (k ? s + (ops[k - 1] === "+" ? 1 : -1) * R.lenientValue(t) : R.lenientValue(t)), 0);
-  const answer = R.toRoman(value), w1 = way1(terms, ops), labels = w1.filter(t => !t.startsWith("§"));
+  const answer = R.toRoman(value), W1 = way1(terms, ops), w1 = W1.out, labels = w1.filter(t => !t.startsWith("§"));
   const o = {
     id: "R" + String(i + 1).padStart(2, "0"), group: x.g, terms, ops, answer, value,
     splits: labels.filter(t => SPLIT.test(t)).length, merges: labels.filter(t => MERGE.test(t)).length,
-    letters: terms.join("").length, way1: w1, way2: way2(terms, ops),
+    letters: terms.join("").length, way1: w1, eqs1: W1.eqs, way2: way2(terms, ops),
   };
   if (x.top) Object.assign(o, { top: x.top, code: "RN" + x.top, hook: x.hook, watch: x.watch, why: x.why });
   return o;
@@ -102,7 +112,7 @@ const problems = LIST.map((x, i) => {
 
 const text = "/* Learning Kangaroo: the Roman numerals page. 25 of our own problems, their worked solutions, and the ten chosen for presenting.\n"
   + "   Made by tools/make_roman.js from the Roman Numerals tool's engine (a teaching model: split, cross out, merge). Do not edit by hand. */\n"
-  + "window.LKG_ROMAN = " + JSON.stringify({ problems }, null, 1) + ";\n";
+  + "window.LKG_ROMAN = " + JSON.stringify({ problems }, (k, v) => v, 0).replace(/\{"id"/g, "\n{\"id\"") + ";\n";
 fs.writeFileSync(path.join(__dirname, "..", "data", "roman.js"), text);
 console.log("wrote data/roman.js:", problems.length, "problems,", problems.filter(p => p.top).length, "chosen");
 problems.forEach(p => console.log(p.id, p.group.padEnd(8), (p.top ? "★" + p.top : " ").padEnd(3), p.terms.map((t, i) => (i ? sign(p.ops[i - 1]) + " " : "") + t).join(" "), "=", p.answer, "| splits", p.splits, "merges", p.merges, "way1", p.way1.length, "way2", p.way2.length));

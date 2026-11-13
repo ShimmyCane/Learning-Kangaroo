@@ -39,6 +39,7 @@ for (const p of P) {
   if (run < 1 || run > 3999) say(p, "answer out of range");
   if (roman(run) !== p.answer) say(p, `answer ${p.answer} but worked out ${roman(run)}`);
   if (!p.way1.length || !p.way2.length) say(p, "no worked steps");
+  if (!p.eqs1 || p.eqs1.length !== p.way1.length) say(p, "the step tiles do not match the steps");
   if (p.way1.concat(p.way2).some(s => /\d/.test(s))) say(p, "a worked step shows an Arabic digit");
   if (p.top) {
     ["hook", "watch", "why", "code"].forEach(k => { if (!p[k]) say(p, "no " + k); });

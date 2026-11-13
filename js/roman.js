@@ -1,12 +1,12 @@
 /* Learning Kangaroo: the Roman numerals presenting sheets.
    Ten chosen problems (data/roman.js, made by tools/make_roman.js), each one sheet printed on both sides, Letter portrait, black and white.
    Front = the problem, Kip's hook, a guess line, a work area and a presenting checklist (no answer).
-   Back = the answer, the worked steps (two ways) and presenting notes: the page for the presenter, not the one to hand out first.
+   Back = the answer, the worked steps drawn like the Roman Numerals tool (coloured bands, tiles, crossed and new letters), the column way in one line and presenting notes: the page for the presenter. It is the only coloured page.
    The steps are a teaching model (split, cross out, merge), not a documented Roman method. */
 (function (root) {
   "use strict";
   const { W, H, NAME, draw } = root.LKG;
-  const { rect, text, wrap, path, kangaroo, INK, GREY, LIGHT } = draw;
+  const { rect, text, wrap, path, circle, kangaroo, INK, GREY, LIGHT } = draw;
   const sign = op => (op === "+" ? "+" : "−");
   const trim = s => String(s).replace(/\s+/g, " ").trim();
   const CHAR = 0.54;                                   // average character width as a share of the font size
@@ -66,60 +66,116 @@
     return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" width="8.5in" height="11in">${o}${foot(p, 1)}</svg>`;
   }
 
-  // Back: the steps in the biggest size that fits above the notes. One column when there is room, else two side by side.
+  // ---------- the solution side: drawn like the Roman Numerals tool ----------
+  // Each step is a white row inside a coloured band for its part of the working: orange = get the numbers ready (break apart),
+  // pink = take away, blue = the right form. Letters crossed out are struck through, letters swapped out are faded,
+  // and new letters sit on their own colour with an underline. This is the only coloured page; the fronts stay black and white.
+  const PART = { 1: "#ff9f1c", 2: "#ff4d8d", 3: "#2ec4ff" }, TILE = { I: "#c4eedb", V: "#ffd2b0", X: "#cde8bf", L: "#ffb4ad", C: "#c6e6f8", D: "#e0d4f5", M: "#ffe9a6" };
+  const LW = { I: 0.34, V: 0.68, X: 0.68, L: 0.58, C: 0.7, D: 0.74, M: 0.88 };
+  const PARTNAME = { 1: "Preparing the left side", 2: "Subtracting", 3: "Correct form" };
+  const lw = (ch, u) => [...ch].reduce((n, c) => n + (LW[c] || 0.7) * u, 0);
+  const numW = (tiles, u) => tiles.reduce((n, t) => n + lw(t[0], u), 0) + 10;
+  const rom = n => ["", "i", "ii", "iii"][n] || String(n);
+  const WHITE = "#fff", FAINT = "#aaa";
+
+  // One equation line, right edge at xr, vertical centre at yc, letter size u. Returns { svg, w }.
+  function eqLine(e, xr, yc, u, measure) {
+    const els = [];   // { w, draw(x) }
+    const num = (tiles, box = true) => ({ w: numW(tiles, u), draw: x => {
+      let o = box ? rect(x, yc - u * 0.8, numW(tiles, u), u * 1.6, { rx: 6, fill: WHITE, w: 1.6 }) : "", cx = x + 5;
+      for (const [ch, st] of tiles) {
+        const w = lw(ch, u);
+        if (st === "w") o += rect(cx - 1, yc - u * 0.62, w + 2, u * 1.24, { rx: 4, fill: TILE[ch[ch.length - 1]] || "#eee", c: "#2b2540", w: 1 }) + path([[cx, yc + u * 0.68], [cx + w, yc + u * 0.68]], { w: 2, c: "#2b2540" });
+        o += text(cx + w / 2, yc + u * 0.36, ch, { size: u, weight: 800, anchor: "middle", fill: st === "g" ? "#ccc" : st === "c" ? FAINT : "#2b2540" });
+        if (st === "c") o += path([[cx - 1, yc], [cx + w + 1, yc]], { w: 2, c: "#d8372b" });
+        cx += w;
+      }
+      return o;
+    } });
+    const op = t => ({ w: u * 0.9 + 6, draw: x => text(x + (u * 0.9 + 6) / 2, yc + u * 0.36, t, { size: u * 1.05, weight: 800, anchor: "middle", fill: "#2b2540" }) });
+    const ask = { w: u * 0.8 + 10, draw: x => rect(x, yc - u * 0.8, u * 0.8 + 10, u * 1.6, { rx: 6, fill: WHITE, w: 1.6, dash: "4 3" }) + text(x + (u * 0.8 + 10) / 2, yc + u * 0.36, "?", { size: u, weight: 800, anchor: "middle", fill: FAINT }) };
+    const left = e.items.map(it => it[0] === "op" ? op(it[1] === "-" ? "−" : it[1]) : num(it[1]));
+    const group = (list, on, fill) => ({ w: list.reduce((n, x) => n + x.w + 4, 0) + 8, draw: x => {
+      let o = on ? rect(x, yc - u * 0.98, list.reduce((n, q) => n + q.w + 4, 0) + 8, u * 1.96, { rx: 9, fill, c: "#1f4fa8", w: 1.6 }) : "", cx = x + 4;
+      for (const q of list) { o += q.draw(cx); cx += q.w + 4; } return o;
+    } });
+    els.push(group(left, e.focus === "left", TILE.M));
+    if (e.result) { els.push(op("=")); els.push({ w: lw(e.result, u) + 14, draw: x => rect(x, yc - u * 0.8, lw(e.result, u) + 14, u * 1.6, { rx: 6, fill: "#cde8bf", w: 1.6 }) + text(x + 7, yc + u * 0.36, e.result, { size: u, weight: 800, fill: "#2b2540" }) }); }
+    else if (e.right) { els.push(op("=")); els.push(group([e.right === "ask" ? ask : num(e.right)], e.focus === "right", TILE.M)); }
+    const w = els.reduce((n, x) => n + x.w + 3, 0);
+    if (measure) return { w };
+    let x = xr - w, o = "";
+    for (const q of els) { o += q.draw(x); x += q.w + 3; }
+    return { svg: o, w };
+  }
+
+  // Steps → bands. Returns drawing items and where they end, in the biggest size that fits.
   function layoutSteps(p, top, bottom) {
-    // One block of numbered steps starting at y0; returns where it ends.
-    const block = (out, size, title, steps, x0, w, y0) => {
-      const lh = Math.round(size * 1.28); let y = y0, k = 0;
-      out.push({ y: y + 6, title, x: x0, w }); y += 32;
-      for (const raw of steps) {
-        const s = trim(raw);
-        if (s.startsWith("§")) { y += 4; out.push({ y: y + size, head: "Sum: " + s.slice(1).trim(), x: x0 }); y += lh + 2; continue; }
-        const ls = fit(s, w - 34, size);
-        out.push({ y: y + size, num: ++k, x: x0 });
-        ls.forEach((l, i) => out.push({ y: y + size + i * lh, line: l, x: x0 + 34 }));
-        y += ls.length * lh + 3;
+    const rows = [];
+    p.way1.forEach((label, i) => { if (p.eqs1[i]) rows.push({ label: trim(label), e: p.eqs1[i] }); });
+    let n = 0;
+    const multi = p.terms.length > 2;
+    for (const u of [22, 20, 18, 17, 16, 15, 14, 13, 12, 11, 10]) {
+      const widest = Math.ceil(Math.max(...rows.map(r => eqLine(r.e, 0, 0, u, true).w))) + 4;
+      if (widest > 470 && u > 10) continue;          // keep one letter size on the sheet unless it is the smallest
+      const X0 = 56, X1 = 794, EQW = Math.min(470, widest), capW = X1 - X0 - 34 - EQW - 24, capSize = Math.min(15, Math.max(11, u - 2)), capLH = capSize * 1.2;
+     for (const pad of [12, 8, 4, 0]) {
+      let y = top; const out = []; let cur = null;
+      for (const r of rows) {
+        const key = r.e.sum + ":" + r.e.part, lines = fit(r.label, capW, capSize), h = Math.max(u * 1.9, lines.length * capLH + 6) + pad;
+        if (!cur || cur.key !== key) {
+          if (cur) { cur.end = y; y += 8; }
+          cur = { key, part: r.e.part, y0: y, rows: [] };
+          const sumLabel = multi && r.e.sum ? "Sum " + r.e.sum + " · " : "";
+          cur.title = sumLabel + "Part " + rom(r.e.part) + ": " + (r.e.name || PARTNAME[r.e.part]); out.push(cur); y += 24;
+        }
+        let w = u, fit1 = true;
+        while (eqLine(r.e, 0, 0, w, true).w > EQW && w > 8) w -= 0.5;
+        cur.rows.push({ y: y + 2, h, lines, e: r.e, u: w, capSize, capLH }); y += h + 4;
       }
-      return y + 10;
-    };
-    const T1 = "Way 1 · split, cross out, merge", T2 = "Way 2 · by column, ones first";
-    for (const [cols, sizes] of [[1, [19, 18, 17, 16]], [2, [17, 16, 15, 14, 13]]]) {
-      for (const size of sizes) {
-        const items = [];
-        const end = cols === 1
-          ? block(items, size, T2, p.way2, 60, 730, block(items, size, T1, p.way1, 60, 730, top))
-          : Math.max(block(items, size, T1, p.way1, 60, 410, top), block(items, size, T2, p.way2, 490, 300, top));
-        if (end <= bottom) return { size, items, end };
-      }
+      if (cur) { cur.end = y; }
+      y += 2;
+      if (y <= bottom) return { u, bands: out, end: y, X0, X1, EQW };
+     }
     }
     throw new Error(p.code + ": the steps do not fit on the back");
   }
+  const columns = p => {
+    const keep = p.way2.map(trim).filter(t => /^(Ones|Tens|Hundreds|Thousands|Put the columns together)/.test(t) && / = [IVXLCDM]+\.?$/.test(t));
+    return keep.join("  ·  ");
+  };
   function back(p) {
-    let o = `<rect width="${W}" height="${H}" fill="#fff"/>` + head(p, 2, "The answer and the presenting notes.");
+    let o = `<rect width="${W}" height="${H}" fill="#fff"/>` + head(p, 2, "The answer, step by step, and the presenting notes.");
     const eq = equation(p) + " = " + p.answer, size = Math.min(50, Math.floor(700 / (eq.length * 0.7)));
-    o += rect(50, 172, 750, 76, { rx: 20, w: 4 }) + text(425, 172 + 50, eq, { size, weight: 700, anchor: "middle" });
-    o += text(425, 272, "Check (for the presenter): " + arabic(p), { size: 18, weight: 600, fill: "#444", anchor: "middle" });
-    const notesTop = 872, lay = layoutSteps(p, 286, notesTop - 12);
-    for (const it of lay.items) {
-      if (it.title) o += text(it.x, it.y + 18, it.title, { size: 22, weight: 700 }) + path([[it.x, it.y + 26], [it.x + it.w - 10, it.y + 26]], { w: 1.5, c: GREY });
-      else if (it.head) o += text(it.x, it.y, it.head, { size: lay.size, weight: 700 });
-      else if (it.num) o += text(it.x, it.y, it.num + ".", { size: lay.size, weight: 700, fill: "#444" });
-      else o += text(it.x, it.y, it.line, { size: lay.size, weight: 500 });
+    o += rect(50, 170, 750, 56, { rx: 16, w: 4 }) + text(425, 170 + 39, eq, { size: Math.min(size, 38), weight: 700, anchor: "middle" });
+    o += text(425, 246, "Check (for the presenter): " + arabic(p), { size: 17, weight: 600, fill: "#444", anchor: "middle" });
+    // key
+    [[PART[1], "break apart / get ready"], [PART[2], "take away"], [PART[3], "the right form"]].forEach(([c, t], i) => {
+      const x = 90 + i * 240; o += rect(x, 258, 22, 16, { rx: 4, fill: c, w: 1.6 }) + text(x + 30, 271, t, { size: 15, weight: 600 });
+    });
+    const notesTop = 960, lay = layoutSteps(p, 284, notesTop - 52);
+    let stepNo = 0;
+    for (const b of lay.bands) {
+      o += rect(lay.X0, b.y0, lay.X1 - lay.X0, b.end - b.y0, { rx: 12, fill: PART[b.part], w: 1.8 }) + text(lay.X0 + 12, b.y0 + 17, b.title, { size: 14, weight: 800, fill: "#2b2540" });
+      for (const r of b.rows) {
+        o += rect(lay.X0 + 6, r.y, lay.X1 - lay.X0 - 12, r.h, { rx: 8, fill: "#fff", w: 1.4 });
+        const yc = r.y + r.h / 2;
+        o += circle(lay.X0 + 22, yc, 9, { fill: TILE.M, w: 1.4 }) + text(lay.X0 + 22, yc + 4, String(++stepNo), { size: 11, weight: 800, anchor: "middle" });
+        const top0 = yc - r.lines.length * r.capLH / 2;
+        r.lines.forEach((l, i) => { o += text(lay.X0 + 38, top0 + (i + 0.8) * r.capLH, l, { size: r.capSize, weight: 600, fill: "#2b2540" }); });
+        o += eqLine(r.e, lay.X1 - 12, yc, r.u).svg;
+      }
     }
-    // when the steps are short there is room for a practice tracker
-    if (lay.end < notesTop - 150) {
-      const ty = notesTop - 128;
-      o += rect(50, ty, 750, 108, { rx: 20, w: 3, dash: "12 8" }) + text(72, ty + 34, "Practice tracker", { size: 21, weight: 700 });
-      ["Take 1", "Take 2", "Take 3"].forEach((t, i) => { o += rect(72 + i * 150, ty + 52, 23, 23, { rx: 5, w: 3 }) + text(104 + i * 150, ty + 71, t, { size: 24, font: "hand", weight: 400 }); });
-      ["Loud enough?", "Slow enough?", "Looked up?"].forEach((t, i) => { o += rect(72 + i * 230, ty + 82, 23, 23, { rx: 5, w: 3 }) + text(104 + i * 230, ty + 101, t, { size: 24, font: "hand", weight: 400 }); });
-    }
+    // the same sum by column, in one line
+    const col = fit("By column, ones first:  " + columns(p), 730, 13).slice(0, 2);
+    col.forEach((l, i) => { o += text(60, notesTop - 30 + i * 16, l, { size: 13, weight: 600, fill: "#333" }); });
     // presenting notes
-    o += rect(50, notesTop, 750, 184, { rx: 20, w: 3 });
-    let y = notesTop + 32;
-    for (const [label, s] of [["Open with", p.hook], ["Slow down", p.watch], ["Why it is fun", p.why]]) {
-      o += text(72, y, label + ":", { size: 19, weight: 700 });
-      const ls = fit(s, 570, 18).slice(0, 2); ls.forEach((l, i) => { o += text(206, y + i * 22, l, { size: 18, weight: 500 }); });
-      y += Math.max(1, ls.length) * 22 + 12;
+    o += rect(50, notesTop, 750, 102, { rx: 16, w: 3 });
+    let y = notesTop + 24;
+    for (const [label, t] of [["Slow down", p.watch], ["Why it is fun", p.why]]) {
+      o += text(70, y, label + ":", { size: 16, weight: 700 });
+      const ls = fit(t, 600, 15).slice(0, 2); ls.forEach((l, i) => { o += text(178, y + i * 18, l, { size: 15, weight: 500 }); });
+      y += Math.max(1, ls.length) * 18 + 8;
     }
     return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" width="8.5in" height="11in">${o}${foot(p, 2)}</svg>`;
   }
