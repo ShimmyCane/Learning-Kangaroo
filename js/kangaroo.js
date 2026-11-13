@@ -163,5 +163,5 @@ ${text(425, 1076, footer, { size: 17, anchor: "middle", fill: "#333" })}
   }
   const pages = sheet => [page(sheet, 1), page(sheet, 2)];
 
-  root.LKG = { W, H, NAME, LETTERS, TRACKS, codeOf, page, pages, ART };
+  root.LKG = { W, H, NAME, LETTERS, TRACKS, codeOf, page, pages, ART, draw: { path, circle, ell, rect, text, wrap, kangaroo, esc, INK, GREY, LIGHT } };
 })(typeof window !== "undefined" ? window : globalThis);

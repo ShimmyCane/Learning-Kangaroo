@@ -1,0 +1,937 @@
+/* Learning Kangaroo: the Roman numerals page. 25 of our own problems, their worked solutions, and the ten chosen for presenting.
+   Made by tools/make_roman.js from the Roman Numerals tool's engine (a teaching model: split, cross out, merge). Do not edit by hand. */
+window.LKG_ROMAN = {
+ "problems": [
+  {
+   "id": "R01",
+   "group": "straight",
+   "terms": [
+    "MMMDCCLXXXVIII",
+    "MCCXXIII"
+   ],
+   "ops": [
+    "-"
+   ],
+   "answer": "MMDLXV",
+   "value": 2565,
+   "splits": 0,
+   "merges": 0,
+   "letters": 22,
+   "way1": [
+    "Start with MMMDCCLXXXVIII. Take away MCCXXIII.",
+    "Both numbers have M, two C's, two X's and three I's. Take them away: cross them out on both sides.",
+    "All of MCCXXIII is taken away. Write what is left after the = sign.",
+    "Right form: MMDLXV."
+   ],
+   "way2": [
+    "Take MCCXXIII out of MMMDCCLXXXVIII: cross out M, C, C, X, X, I, I, I.",
+    "MMDLXV is left."
+   ]
+  },
+  {
+   "id": "R02",
+   "group": "straight",
+   "terms": [
+    "MMDCCCLXXXVIII",
+    "MDCCXXXV"
+   ],
+   "ops": [
+    "-"
+   ],
+   "answer": "MCLIII",
+   "value": 1153,
+   "splits": 0,
+   "merges": 0,
+   "letters": 22,
+   "way1": [
+    "Start with MMDCCCLXXXVIII. Take away MDCCXXXV.",
+    "Both numbers have M, D, two C's, three X's and V. Take them away: cross them out on both sides.",
+    "All of MDCCXXXV is taken away. Write what is left after the = sign.",
+    "Right form: MCLIII."
+   ],
+   "way2": [
+    "Take MDCCXXXV out of MMDCCCLXXXVIII: cross out M, D, C, C, X, X, X, V.",
+    "MCLIII is left."
+   ]
+  },
+  {
+   "id": "R03",
+   "group": "straight",
+   "terms": [
+    "MMMDCCCLXXXII",
+    "MMDCCLXXI"
+   ],
+   "ops": [
+    "-"
+   ],
+   "answer": "MCXI",
+   "value": 1111,
+   "splits": 0,
+   "merges": 0,
+   "letters": 22,
+   "way1": [
+    "Start with MMMDCCCLXXXII. Take away MMDCCLXXI.",
+    "Both numbers have two M's, D, two C's, L, two X's and I. Take them away: cross them out on both sides.",
+    "All of MMDCCLXXI is taken away. Write what is left after the = sign.",
+    "Right form: MCXI."
+   ],
+   "way2": [
+    "Take MMDCCLXXI out of MMMDCCCLXXXII: cross out M, M, D, C, C, L, X, X, I.",
+    "MCXI is left."
+   ]
+  },
+  {
+   "id": "R04",
+   "group": "straight",
+   "terms": [
+    "MMMDCCCLXXXVII",
+    "MMDCCCXXXV"
+   ],
+   "ops": [
+    "-"
+   ],
+   "answer": "MLII",
+   "value": 1052,
+   "splits": 0,
+   "merges": 0,
+   "letters": 24,
+   "way1": [
+    "Start with MMMDCCCLXXXVII. Take away MMDCCCXXXV.",
+    "Both numbers have two M's, D, three C's, three X's and V. Take them away: cross them out on both sides.",
+    "All of MMDCCCXXXV is taken away. Write what is left after the = sign.",
+    "Right form: MLII."
+   ],
+   "way2": [
+    "Take MMDCCCXXXV out of MMMDCCCLXXXVII: cross out M, M, D, C, C, C, X, X, X, V.",
+    "MLII is left."
+   ]
+  },
+  {
+   "id": "R05",
+   "group": "straight",
+   "terms": [
+    "MMDCCLXXVII",
+    "MDLXXV"
+   ],
+   "ops": [
+    "-"
+   ],
+   "answer": "MCCII",
+   "value": 1202,
+   "splits": 0,
+   "merges": 0,
+   "letters": 17,
+   "way1": [
+    "Start with MMDCCLXXVII. Take away MDLXXV.",
+    "Both numbers have M, D, L, two X's and V. Take them away: cross them out on both sides.",
+    "All of MDLXXV is taken away. Write what is left after the = sign.",
+    "Right form: MCCII."
+   ],
+   "way2": [
+    "Take MDLXXV out of MMDCCLXXVII: cross out M, D, L, X, X, V.",
+    "MCCII is left."
+   ]
+  },
+  {
+   "id": "R06",
+   "group": "step",
+   "terms": [
+    "MMDCCLXXVII",
+    "MDLXXV",
+    "CCXXV"
+   ],
+   "ops": [
+    "-",
+    "+"
+   ],
+   "answer": "MCDXXVII",
+   "value": 1427,
+   "splits": 0,
+   "merges": 0,
+   "letters": 22,
+   "way1": [
+    "§ MMDCCLXXVII − MDLXXV",
+    "Start with MMDCCLXXVII. Take away MDLXXV.",
+    "Both numbers have M, D, L, two X's and V. Take them away: cross them out on both sides.",
+    "All of MDLXXV is taken away. Write what is left after the = sign.",
+    "Right form: MCCII.",
+    "§ MCCII + CCXXV",
+    "Add MCCII and CCXXV.",
+    "Put all the letters together after the = sign, biggest first.",
+    "CCCC is the long way. The short way is CD.",
+    "Right form: MCDXXVII."
+   ],
+   "way2": [
+    "Next: MMDCCLXXVII − MDLXXV.",
+    "Take MDLXXV out of MMDCCLXXVII: cross out M, D, L, X, X, V.",
+    "MCCII is left.",
+    "Next: MCCII + CCXXV.",
+    "Ones: II + V = VII.",
+    "Hundreds: CC + CC = CD.",
+    "Put the columns together: M + CD + XX + VII = MCDXXVII."
+   ]
+  },
+  {
+   "id": "R07",
+   "group": "step",
+   "terms": [
+    "MMMDCCCLXXXII",
+    "MMDCCLXXI",
+    "XI"
+   ],
+   "ops": [
+    "-",
+    "-"
+   ],
+   "answer": "MC",
+   "value": 1100,
+   "splits": 0,
+   "merges": 0,
+   "letters": 24,
+   "way1": [
+    "§ MMMDCCCLXXXII − MMDCCLXXI",
+    "Start with MMMDCCCLXXXII. Take away MMDCCLXXI.",
+    "Both numbers have two M's, D, two C's, L, two X's and I. Take them away: cross them out on both sides.",
+    "All of MMDCCLXXI is taken away. Write what is left after the = sign.",
+    "Right form: MCXI.",
+    "§ MCXI − XI",
+    "Start with MCXI. Take away XI.",
+    "Both numbers have X and I. Take them away: cross them out on both sides.",
+    "All of XI is taken away. Write what is left after the = sign.",
+    "Right form: MC."
+   ],
+   "way2": [
+    "Next: MMMDCCCLXXXII − MMDCCLXXI.",
+    "Take MMDCCLXXI out of MMMDCCCLXXXII: cross out M, M, D, C, C, L, X, X, I.",
+    "MCXI is left.",
+    "Next: MCXI − XI.",
+    "Take XI out of MCXI: cross out X, I.",
+    "MC is left."
+   ]
+  },
+  {
+   "id": "R08",
+   "group": "step",
+   "terms": [
+    "MMDCCCLXXXVIII",
+    "MDCCXXXV",
+    "XLVII"
+   ],
+   "ops": [
+    "-",
+    "+"
+   ],
+   "answer": "MCC",
+   "value": 1200,
+   "splits": 1,
+   "merges": 4,
+   "letters": 27,
+   "way1": [
+    "§ MMDCCCLXXXVIII − MDCCXXXV",
+    "Start with MMDCCCLXXXVIII. Take away MDCCXXXV.",
+    "Both numbers have M, D, two C's, three X's and V. Take them away: cross them out on both sides.",
+    "All of MDCCXXXV is taken away. Write what is left after the = sign.",
+    "Right form: MCLIII.",
+    "§ MCLIII + XLVII",
+    "Add MCLIII and XLVII.",
+    "XL is a short way to write XXXX. Write it the long way.",
+    "Put all the letters together after the = sign, biggest first.",
+    "Five I's make one V.",
+    "Two V's make one X.",
+    "Five X's make one L.",
+    "Two L's make one C.",
+    "Right form: MCC."
+   ],
+   "way2": [
+    "Next: MMDCCCLXXXVIII − MDCCXXXV.",
+    "Take MDCCXXXV out of MMDCCCLXXXVIII: cross out M, D, C, C, X, X, X, V.",
+    "MCLIII is left.",
+    "Next: MCLIII + XLVII.",
+    "Ones: III + VII = X.",
+    "X belongs in the tens, so move it up. Nothing stays in the ones.",
+    "Tens: L + XL + X = C.",
+    "C belongs in the hundreds, so move it up. Nothing stays in the tens.",
+    "Hundreds: C + C = CC.",
+    "Put the columns together: M + CC = MCC."
+   ]
+  },
+  {
+   "id": "R09",
+   "group": "step",
+   "terms": [
+    "MMMDCCLXXVIII",
+    "MCCCXXV",
+    "DCCL"
+   ],
+   "ops": [
+    "-",
+    "+"
+   ],
+   "answer": "MMMCCIII",
+   "value": 3203,
+   "splits": 2,
+   "merges": 3,
+   "letters": 24,
+   "way1": [
+    "§ MMMDCCLXXVIII − MCCCXXV",
+    "Start with MMMDCCLXXVIII. Take away MCCCXXV.",
+    "Both numbers have M, two C's, two X's and V. Take them away: cross them out on both sides.",
+    "Not enough C's. Trade one D for C + C + C + C + C.",
+    "Now take away C: cross it out on both sides.",
+    "All of MCCCXXV is taken away. Write what is left after the = sign.",
+    "CCCC is the long way. The short way is CD.",
+    "Right form: MMCDLIII.",
+    "§ MMCDLIII + DCCL",
+    "Add MMCDLIII and DCCL.",
+    "CD is a short way to write CCCC. Write it the long way.",
+    "Put all the letters together after the = sign, biggest first.",
+    "Two L's make one C.",
+    "Five C's make one D.",
+    "Two D's make one M.",
+    "Right form: MMMCCIII."
+   ],
+   "way2": [
+    "Next: MMMDCCLXXVIII − MCCCXXV.",
+    "Ones: VIII − V = III.",
+    "Tens: LXX − XX = L.",
+    "Hundreds: DCC − CCC = CD.",
+    "Thousands: MMM − M = MM.",
+    "Put the columns together: MM + CD + L + III = MMCDLIII.",
+    "Next: MMCDLIII + DCCL.",
+    "Tens: L + L = C.",
+    "C belongs in the hundreds, so move it up. Nothing stays in the tens.",
+    "Hundreds: CD + DCC + C = MCC.",
+    "MCC has an M in it. The M belongs in the thousands, so move it up. CC stays in the hundreds.",
+    "Thousands: MM + M = MMM.",
+    "Put the columns together: MMM + CC + III = MMMCCIII."
+   ]
+  },
+  {
+   "id": "R10",
+   "group": "step",
+   "terms": [
+    "MMMCCXXII",
+    "MCXI",
+    "DCCXI"
+   ],
+   "ops": [
+    "-",
+    "-"
+   ],
+   "answer": "MCD",
+   "value": 1400,
+   "splits": 2,
+   "merges": 0,
+   "letters": 18,
+   "way1": [
+    "§ MMMCCXXII − MCXI",
+    "Start with MMMCCXXII. Take away MCXI.",
+    "Both numbers have M, C, X and I. Take them away: cross them out on both sides.",
+    "All of MCXI is taken away. Write what is left after the = sign.",
+    "Right form: MMCXI.",
+    "§ MMCXI − DCCXI",
+    "Start with MMCXI. Take away DCCXI.",
+    "Both numbers have C, X and I. Take them away: cross them out on both sides.",
+    "Not enough C's. Trade one M for D + D.",
+    "Now take away D: cross it out on both sides.",
+    "Not enough C's. Trade one D for C + C + C + C + C.",
+    "Now take away C: cross it out on both sides.",
+    "All of DCCXI is taken away. Write what is left after the = sign.",
+    "CCCC is the long way. The short way is CD.",
+    "Right form: MCD."
+   ],
+   "way2": [
+    "Next: MMMCCXXII − MCXI.",
+    "Take MCXI out of MMMCCXXII: cross out M, C, X, I.",
+    "MMCXI is left.",
+    "Next: MMCXI − DCCXI.",
+    "Ones: I − I leaves nothing in the ones.",
+    "Tens: X − X leaves nothing in the tens.",
+    "Hundreds: C is less than DCC. Get one M from the thousands: MM becomes M, and C becomes MC.",
+    "Hundreds: MC − DCC = CD.",
+    "Put the columns together: M + CD = MCD."
+   ]
+  },
+  {
+   "id": "R11",
+   "group": "pick",
+   "terms": [
+    "MCMXCIX",
+    "I"
+   ],
+   "ops": [
+    "+"
+   ],
+   "answer": "MM",
+   "value": 2000,
+   "splits": 3,
+   "merges": 6,
+   "letters": 8,
+   "way1": [
+    "Add MCMXCIX and I.",
+    "IX is a short way to write VIIII. Write it the long way.",
+    "XC is a short way to write LXXXX. Write it the long way.",
+    "CM is a short way to write DCCCC. Write it the long way.",
+    "Put all the letters together after the = sign, biggest first.",
+    "Five I's make one V.",
+    "Two V's make one X.",
+    "Five X's make one L.",
+    "Two L's make one C.",
+    "Five C's make one D.",
+    "Two D's make one M.",
+    "Right form: MM."
+   ],
+   "way2": [
+    "Ones: IX + I = X.",
+    "X belongs in the tens, so move it up. Nothing stays in the ones.",
+    "Tens: XC + X = C.",
+    "C belongs in the hundreds, so move it up. Nothing stays in the tens.",
+    "Hundreds: CM + C = M.",
+    "M belongs in the thousands, so move it up. Nothing stays in the hundreds.",
+    "Thousands: M + M = MM.",
+    "That gives MM."
+   ],
+   "top": 4,
+   "code": "RN4",
+   "hook": "One tiny I walks up to a long row of letters and knocks the whole row over, like dominoes.",
+   "watch": "Say the count out loud at every merge: five I's, then two V's, then five X's. Let your voice climb.",
+   "why": "Messy to start (three short forms to open), then each merge sets off the next one and it all ends as two letters."
+  },
+  {
+   "id": "R12",
+   "group": "pick",
+   "terms": [
+    "MM",
+    "I"
+   ],
+   "ops": [
+    "-"
+   ],
+   "answer": "MCMXCIX",
+   "value": 1999,
+   "splits": 6,
+   "merges": 0,
+   "letters": 3,
+   "way1": [
+    "Start with MM. Take away I.",
+    "Not enough I's. Trade one M for D + D.",
+    "Not enough I's. Trade one D for C + C + C + C + C.",
+    "Not enough I's. Trade one C for L + L.",
+    "Not enough I's. Trade one L for X + X + X + X + X.",
+    "Not enough I's. Trade one X for V + V.",
+    "Not enough I's. Trade one V for I + I + I + I + I.",
+    "Both numbers have I. Take it away: cross it out on both sides.",
+    "All of I is taken away. Write what is left after the = sign.",
+    "DCCCC is the long way. The short way is CM.",
+    "LXXXX is the long way. The short way is XC.",
+    "VIIII is the long way. The short way is IX.",
+    "Right form: MCMXCIX."
+   ],
+   "way2": [
+    "Ones: there is nothing here to take I from. Get one M from the thousands: MM becomes M, the tens get XC, the hundreds get CM, and the ones get X.",
+    "Ones: X − I = IX.",
+    "Put the columns together: M + CM + XC + IX = MCMXCIX."
+   ],
+   "top": 5,
+   "code": "RN5",
+   "hook": "Take one little I out of two thousand and everything falls apart!",
+   "watch": "Go slowly. Each trade breaks one letter into smaller ones. It takes six trades before the I can leave.",
+   "why": "Three letters to start, and the answer is long. The reverse of the dominoes: all splits and no merges, then the short forms come back."
+  },
+  {
+   "id": "R13",
+   "group": "pick",
+   "terms": [
+    "DCCCLXXXVIII",
+    "CXII"
+   ],
+   "ops": [
+    "+"
+   ],
+   "answer": "M",
+   "value": 1000,
+   "splits": 0,
+   "merges": 6,
+   "letters": 16,
+   "way1": [
+    "Add DCCCLXXXVIII and CXII.",
+    "Put all the letters together after the = sign, biggest first.",
+    "Five I's make one V.",
+    "Two V's make one X.",
+    "Five X's make one L.",
+    "Two L's make one C.",
+    "Five C's make one D.",
+    "Two D's make one M.",
+    "Right form: M."
+   ],
+   "way2": [
+    "Ones: VIII + II = X.",
+    "X belongs in the tens, so move it up. Nothing stays in the ones.",
+    "Tens: LXXX + X + X = C.",
+    "C belongs in the hundreds, so move it up. Nothing stays in the tens.",
+    "Hundreds: DCCC + C + C = M.",
+    "M belongs in the thousands, so move it up. Nothing stays in the hundreds.",
+    "That gives M."
+   ],
+   "top": 2,
+   "code": "RN2",
+   "hook": "The longest numeral under a thousand meets its secret partner.",
+   "watch": "No splits at all. The surprise is the chain of merges at the end. Pause before you say the answer.",
+   "why": "Sixteen letters go in and one comes out. Eight hundred eighty-eight needs just one hundred twelve to make a thousand."
+  },
+  {
+   "id": "R14",
+   "group": "pick",
+   "terms": [
+    "CDXLIV",
+    "DLVI"
+   ],
+   "ops": [
+    "+"
+   ],
+   "answer": "M",
+   "value": 1000,
+   "splits": 3,
+   "merges": 6,
+   "letters": 10,
+   "way1": [
+    "Add CDXLIV and DLVI.",
+    "IV is a short way to write IIII. Write it the long way.",
+    "XL is a short way to write XXXX. Write it the long way.",
+    "CD is a short way to write CCCC. Write it the long way.",
+    "Put all the letters together after the = sign, biggest first.",
+    "Five I's make one V.",
+    "Two V's make one X.",
+    "Five X's make one L.",
+    "Two L's make one C.",
+    "Five C's make one D.",
+    "Two D's make one M.",
+    "Right form: M."
+   ],
+   "way2": [
+    "Ones: IV + VI = X.",
+    "X belongs in the tens, so move it up. Nothing stays in the ones.",
+    "Tens: XL + L + X = C.",
+    "C belongs in the hundreds, so move it up. Nothing stays in the tens.",
+    "Hundreds: CD + D + C = M.",
+    "M belongs in the thousands, so move it up. Nothing stays in the hundreds.",
+    "That gives M."
+   ],
+   "top": 6,
+   "code": "RN6",
+   "hook": "A numeral made only of short forms (CD, XL and IV) meets a partner that undoes every one.",
+   "watch": "Open the three short forms from the right, one at a time. Point at each pair as you split it.",
+   "why": "Three splits, then six merges in a row. The two numbers fit together exactly, and they make one letter."
+  },
+  {
+   "id": "R15",
+   "group": "pick",
+   "terms": [
+    "MMMCMXCIX",
+    "CMXCIX"
+   ],
+   "ops": [
+    "-"
+   ],
+   "answer": "MMM",
+   "value": 3000,
+   "splits": 0,
+   "merges": 0,
+   "letters": 15,
+   "way1": [
+    "Start with MMMCMXCIX. Take away CMXCIX.",
+    "Both numbers have CM, XC and IX. Take them away: cross them out on both sides.",
+    "All of CMXCIX is taken away. Write what is left after the = sign.",
+    "Right form: MMM."
+   ],
+   "way2": [
+    "Take CMXCIX out of MMMCMXCIX: cross out CM, XC, IX.",
+    "MMM is left."
+   ]
+  },
+  {
+   "id": "R16",
+   "group": "pick",
+   "terms": [
+    "MMMDCCCLXXXVIII",
+    "DCCCLXXXVIII"
+   ],
+   "ops": [
+    "-"
+   ],
+   "answer": "MMM",
+   "value": 3000,
+   "splits": 0,
+   "merges": 0,
+   "letters": 27,
+   "way1": [
+    "Start with MMMDCCCLXXXVIII. Take away DCCCLXXXVIII.",
+    "Both numbers have D, three C's, L, three X's, V and three I's. Take them away: cross them out on both sides.",
+    "All of DCCCLXXXVIII is taken away. Write what is left after the = sign.",
+    "Right form: MMM."
+   ],
+   "way2": [
+    "Take DCCCLXXXVIII out of MMMDCCCLXXXVIII: cross out D, C, C, C, L, X, X, X, V, I, I, I.",
+    "MMM is left."
+   ],
+   "top": 3,
+   "code": "RN3",
+   "hook": "The longest numeral loses nearly all of itself and keeps only its crown.",
+   "watch": "Everything crosses out in one move. Read the letters you cross out, so the listener can follow.",
+   "why": "Twenty-seven letters in the problem, three left. No splits and no merges, only crossing out."
+  },
+  {
+   "id": "R17",
+   "group": "pick",
+   "terms": [
+    "XLIX",
+    "XLIX",
+    "II"
+   ],
+   "ops": [
+    "+",
+    "+"
+   ],
+   "answer": "C",
+   "value": 100,
+   "splits": 4,
+   "merges": 7,
+   "letters": 10,
+   "way1": [
+    "§ XLIX + II",
+    "Add XLIX and II.",
+    "IX is a short way to write VIIII. Write it the long way.",
+    "XL is a short way to write XXXX. Write it the long way.",
+    "Put all the letters together after the = sign, biggest first.",
+    "Five I's make one V.",
+    "Two V's make one X.",
+    "Five X's make one L.",
+    "Right form: LI.",
+    "§ XLIX + LI",
+    "Add XLIX and LI.",
+    "IX is a short way to write VIIII. Write it the long way.",
+    "XL is a short way to write XXXX. Write it the long way.",
+    "Put all the letters together after the = sign, biggest first.",
+    "Five I's make one V.",
+    "Two V's make one X.",
+    "Five X's make one L.",
+    "Two L's make one C.",
+    "Right form: C."
+   ],
+   "way2": [
+    "Next: XLIX + XLIX.",
+    "Ones: IX + IX = XVIII.",
+    "XVIII has an X in it. The X belongs in the tens, so move it up. VIII stays in the ones.",
+    "Tens: XL + XL + X = XC.",
+    "Put the columns together: XC + VIII = XCVIII.",
+    "Next: XCVIII + II.",
+    "Ones: VIII + II = X.",
+    "X belongs in the tens, so move it up. Nothing stays in the ones.",
+    "Tens: XC + X = C.",
+    "C belongs in the hundreds, so move it up. Nothing stays in the tens.",
+    "That gives C."
+   ],
+   "top": 7,
+   "code": "RN7",
+   "hook": "Two numbers that are each one short of fifty, plus two pennies. Can they sneak up to one hundred?",
+   "watch": "There are two sums, one after the other. Say the answer to the first sum before you start the second.",
+   "why": "Three numbers and ten letters become one letter. Every short form gets opened and the merges rebuild it."
+  },
+  {
+   "id": "R18",
+   "group": "pick",
+   "terms": [
+    "XXXIX",
+    "XI"
+   ],
+   "ops": [
+    "+"
+   ],
+   "answer": "L",
+   "value": 50,
+   "splits": 1,
+   "merges": 3,
+   "letters": 7,
+   "way1": [
+    "Add XXXIX and XI.",
+    "IX is a short way to write VIIII. Write it the long way.",
+    "Put all the letters together after the = sign, biggest first.",
+    "Five I's make one V.",
+    "Two V's make one X.",
+    "Five X's make one L.",
+    "Right form: L."
+   ],
+   "way2": [
+    "Ones: IX + I = X.",
+    "X belongs in the tens, so move it up. Nothing stays in the ones.",
+    "Tens: XXX + X + X = L.",
+    "That gives L."
+   ],
+   "top": 1,
+   "code": "RN1",
+   "hook": "Thirty-nine and eleven look nothing alike, but together they make a number with a single letter.",
+   "watch": "Only one short form to open (IX). Take your time and say each step in a full sentence.",
+   "why": "The gentlest merge chain: I's, then V's, then X's, and L at the end."
+  },
+  {
+   "id": "R19",
+   "group": "pick",
+   "terms": [
+    "MDCCLXXVI",
+    "MCDXCII"
+   ],
+   "ops": [
+    "-"
+   ],
+   "answer": "CCLXXXIV",
+   "value": 284,
+   "splits": 6,
+   "merges": 0,
+   "letters": 16,
+   "way1": [
+    "Start with MDCCLXXVI. Take away MCDXCII.",
+    "Both numbers have M and I. Take them away: cross them out on both sides.",
+    "Not enough I's. Trade one V for I + I + I + I + I.",
+    "Now take away I: cross it out on both sides.",
+    "XC is the same as LXXXX. Write it the long way, so each letter can be taken away.",
+    "Now take away L and two X's: cross them out on both sides.",
+    "Not enough X's. Trade one C for L + L.",
+    "Not enough X's. Trade one L for X + X + X + X + X.",
+    "Now take away two X's: cross them out on both sides.",
+    "CD is the same as CCCC. Write it the long way, so each letter can be taken away.",
+    "Now take away C: cross it out on both sides.",
+    "Not enough C's. Trade one D for C + C + C + C + C.",
+    "Now take away three C's: cross them out on both sides.",
+    "All of MCDXCII is taken away. Write what is left after the = sign.",
+    "IIII is the long way. The short way is IV.",
+    "Right form: CCLXXXIV."
+   ],
+   "way2": [
+    "Ones: VI − II = IV.",
+    "Tens: LXX is less than XC. Get one C from the hundreds: DCC becomes DC, and LXX becomes CLXX.",
+    "Tens: CLXX − XC = LXXX.",
+    "Hundreds: DC − CD = CC.",
+    "Thousands: M − M leaves nothing in the thousands.",
+    "Put the columns together: CC + LXXX + IV = CCLXXXIV."
+   ],
+   "top": 10,
+   "code": "RN10",
+   "hook": "Columbus sails (MCDXCII). The United States declares independence (MDCCLXXVI). How many years in between?",
+   "watch": "Four trades. Say why each is needed: not enough I's, then not enough X's, then not enough C's.",
+   "why": "Two famous years, and the answer is a little untidy until IIII turns into IV at the very end."
+  },
+  {
+   "id": "R20",
+   "group": "pick",
+   "terms": [
+    "MMMCMXCIX",
+    "MMMCMXCVIII"
+   ],
+   "ops": [
+    "-"
+   ],
+   "answer": "I",
+   "value": 1,
+   "splits": 1,
+   "merges": 0,
+   "letters": 20,
+   "way1": [
+    "Start with MMMCMXCIX. Take away MMMCMXCVIII.",
+    "Both numbers have three M's, CM and XC. Take them away: cross them out on both sides.",
+    "IX is a short way to write VIIII. Write it the long way.",
+    "Now take away V and three I's: cross them out on both sides.",
+    "All of MMMCMXCVIII is taken away. Write what is left after the = sign.",
+    "Right form: I."
+   ],
+   "way2": [
+    "Ones: IX − VIII = I.",
+    "Tens: XC − XC leaves nothing in the tens.",
+    "Hundreds: CM − CM leaves nothing in the hundreds.",
+    "Thousands: MMM − MMM leaves nothing in the thousands.",
+    "That gives I."
+   ],
+   "top": 8,
+   "code": "RN8",
+   "hook": "The biggest Roman numeral we write, take away one less than itself. Two giants and a tiny gap.",
+   "watch": "Cross out the long shared start in one move: three M's, CM and XC. The gap is only the last letters.",
+   "why": "Twenty letters in the problem and one left. Messy to look at, elegant to finish."
+  },
+  {
+   "id": "R21",
+   "group": "pick",
+   "terms": [
+    "DCCLXXVII",
+    "CCXXIII"
+   ],
+   "ops": [
+    "+"
+   ],
+   "answer": "M",
+   "value": 1000,
+   "splits": 0,
+   "merges": 6,
+   "letters": 16,
+   "way1": [
+    "Add DCCLXXVII and CCXXIII.",
+    "Put all the letters together after the = sign, biggest first.",
+    "Five I's make one V.",
+    "Two V's make one X.",
+    "Five X's make one L.",
+    "Two L's make one C.",
+    "Five C's make one D.",
+    "Two D's make one M.",
+    "Right form: M."
+   ],
+   "way2": [
+    "Ones: VII + III = X.",
+    "X belongs in the tens, so move it up. Nothing stays in the ones.",
+    "Tens: LXX + XX + X = C.",
+    "C belongs in the hundreds, so move it up. Nothing stays in the tens.",
+    "Hundreds: DCC + CC + C = M.",
+    "M belongs in the thousands, so move it up. Nothing stays in the hundreds.",
+    "That gives M."
+   ]
+  },
+  {
+   "id": "R22",
+   "group": "pick",
+   "terms": [
+    "MMMCCCXXXIII",
+    "CCCXXXIII"
+   ],
+   "ops": [
+    "-"
+   ],
+   "answer": "MMM",
+   "value": 3000,
+   "splits": 0,
+   "merges": 0,
+   "letters": 21,
+   "way1": [
+    "Start with MMMCCCXXXIII. Take away CCCXXXIII.",
+    "Both numbers have three C's, three X's and three I's. Take them away: cross them out on both sides.",
+    "All of CCCXXXIII is taken away. Write what is left after the = sign.",
+    "Right form: MMM."
+   ],
+   "way2": [
+    "Take CCCXXXIII out of MMMCCCXXXIII: cross out C, C, C, X, X, X, I, I, I.",
+    "MMM is left."
+   ]
+  },
+  {
+   "id": "R23",
+   "group": "pick",
+   "terms": [
+    "XCIX",
+    "XLIX"
+   ],
+   "ops": [
+    "-"
+   ],
+   "answer": "L",
+   "value": 50,
+   "splits": 2,
+   "merges": 0,
+   "letters": 8,
+   "way1": [
+    "Start with XCIX. Take away XLIX.",
+    "Both numbers have IX. Take it away: cross it out on both sides.",
+    "XL is the same as XXXX. Write it the long way, so each letter can be taken away.",
+    "XC is a short way to write LXXXX. Write it the long way.",
+    "Now take away four X's: cross them out on both sides.",
+    "All of XLIX is taken away. Write what is left after the = sign.",
+    "Right form: L."
+   ],
+   "way2": [
+    "Ones: IX − IX leaves nothing in the ones.",
+    "Tens: XC − XL = L.",
+    "That gives L."
+   ]
+  },
+  {
+   "id": "R24",
+   "group": "pick",
+   "terms": [
+    "MMXXVI",
+    "MCMXCIX"
+   ],
+   "ops": [
+    "-"
+   ],
+   "answer": "XXVII",
+   "value": 27,
+   "splits": 9,
+   "merges": 0,
+   "letters": 13,
+   "way1": [
+    "Start with MMXXVI. Take away MCMXCIX.",
+    "Both numbers have M. Take it away: cross it out on both sides.",
+    "IX is the same as VIIII. Write it the long way, so each letter can be taken away.",
+    "Now take away V and I: cross them out on both sides.",
+    "Not enough I's. Trade one X for V + V.",
+    "Not enough I's. Trade one V for I + I + I + I + I.",
+    "Now take away three I's: cross them out on both sides.",
+    "XC is the same as LXXXX. Write it the long way, so each letter can be taken away.",
+    "Now take away X: cross it out on both sides.",
+    "Not enough X's. Trade one M for D + D.",
+    "Not enough X's. Trade one D for C + C + C + C + C.",
+    "Not enough X's. Trade one C for L + L.",
+    "Now take away L: cross it out on both sides.",
+    "Not enough X's. Trade one L for X + X + X + X + X.",
+    "Now take away three X's: cross them out on both sides.",
+    "CM is the same as DCCCC. Write it the long way, so each letter can be taken away.",
+    "Now take away D and four C's: cross them out on both sides.",
+    "All of MCMXCIX is taken away. Write what is left after the = sign.",
+    "Right form: XXVII."
+   ],
+   "way2": [
+    "Ones: VI is less than IX. Get one X from the tens: XX becomes X, and VI becomes XVI.",
+    "Ones: XVI − IX = VII.",
+    "Tens: X is less than XC. Get one M from the thousands: MM becomes M, the hundreds get CM, and X becomes CX.",
+    "Tens: CX − XC = XX.",
+    "Hundreds: CM − CM leaves nothing in the hundreds.",
+    "Thousands: M − M leaves nothing in the thousands.",
+    "Put the columns together: XX + VII = XXVII."
+   ],
+   "top": 9,
+   "code": "RN9",
+   "hook": "Take MCMXCIX, the last year before two thousand, away from this year. How long has it been?",
+   "watch": "Nineteen steps: slow and steady wins. Group them out loud: first the I's, then the X's, then the C's.",
+   "why": "It starts with a quick cross-out and then needs six trades. The answer is tiny and tidy."
+  },
+  {
+   "id": "R25",
+   "group": "pick",
+   "terms": [
+    "XCIX",
+    "I"
+   ],
+   "ops": [
+    "+"
+   ],
+   "answer": "C",
+   "value": 100,
+   "splits": 2,
+   "merges": 4,
+   "letters": 5,
+   "way1": [
+    "Add XCIX and I.",
+    "IX is a short way to write VIIII. Write it the long way.",
+    "XC is a short way to write LXXXX. Write it the long way.",
+    "Put all the letters together after the = sign, biggest first.",
+    "Five I's make one V.",
+    "Two V's make one X.",
+    "Five X's make one L.",
+    "Two L's make one C.",
+    "Right form: C."
+   ],
+   "way2": [
+    "Ones: IX + I = X.",
+    "X belongs in the tens, so move it up. Nothing stays in the ones.",
+    "Tens: XC + X = C.",
+    "C belongs in the hundreds, so move it up. Nothing stays in the tens.",
+    "That gives C."
+   ]
+  }
+ ]
+};

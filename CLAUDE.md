@@ -8,6 +8,7 @@ Purpose: Math Kangaroo-style worksheets for the kids, our own questions, two tra
 - Shared conventions: the Index repo's root `CLAUDE.md` (public repo, privacy) and its `02 Refs/Skills/`
 
 How to run: open `index.html` (works from the file or GitHub Pages). One worksheet: `sheet.html?code=J1`. Answer key and results: `answers.html`.
+Roman numerals (its own page, `roman.html`, apart from the tracks): 25 problems and solutions in `data/roman.js`, ten two-sided presenting sheets (`js/roman.js`, codes `LK-RN1`–`RN10`; the back has the answer, for the presenter). Made by `node tools/make_roman.js` from the Roman Numerals repo's engine (a teaching model); check with `node tools/check_roman.js`.
 Check: `node tools/check_sheets.js` (4 questions each, 5 different choices, the worked-out answer matches the letter, pages draw, fingerprints; `--update` only when a change to a printed sheet is intended).
 
 Rules:

@@ -8,6 +8,12 @@
 - [x] Home, worksheet, bulk print (two-sided, flip, copies), answers and results pages
 - [x] `lkg_reviews` SQL + rolled-back test written
 
+## Roman numerals presenting (2026-11-13)
+
+- [x] 25 problems with solutions (5 straight, 5 one more step, 15 candidates); ten chosen; `roman.html`; ten two-sided sheets
+- [ ] Print the ten, try presenting, mark which ones worked
+- [ ] Link to the Roman Numerals tool's record and play-back once both are hosted
+
 ## Round 3 (2026-11-10)
 
 - [x] Earlier sheets archived (retired, reached from ⚙️ Settings → Archive)
