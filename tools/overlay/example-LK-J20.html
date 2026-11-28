@@ -27,7 +27,8 @@
   }
   body { margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.4 system-ui, -apple-system, "Segoe UI", sans-serif; }
   .wrap { max-width: 860px; margin: 0 auto; padding-block: 14px 190px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
-  h1 { font-size: 18px; margin: 0 0 12px; text-wrap: balance; }
+  .top { display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: space-between; gap: 10px 16px; margin: 0 0 12px; }
+  h1 { font-size: 18px; margin: 0; text-wrap: balance; flex: 1 1 260px; min-width: 0; }
   .intro { color: var(--muted); font-size: 14px; margin: 0 0 14px; }
 
   /* The paper is the worksheet's own drawing; the buttons sit on top of its boxes. */
@@ -49,11 +50,12 @@
   .bar-in { max-width: 860px; margin: 0 auto; }
   .hint { margin: 0 0 10px; border-left: 5px solid var(--accent); background: var(--bg); border-radius: 10px; padding: 10px 12px; font-size: 16px; }
   .hint small { display: block; color: var(--muted); font-size: 13px; margin-bottom: 2px; }
-  .who { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
-  .who-label { font-size: 14px; color: var(--muted); margin-right: 4px; }
+  .who { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 6px; margin-left: auto; }
+  .who-label { font-size: 13px; color: var(--muted); margin-right: 2px; }
   .chip { appearance: none; border: 2px solid var(--line); background: transparent; color: var(--fg); font: inherit; font-weight: 600; border-radius: 999px; padding: 6px 12px; min-height: 40px; cursor: pointer; }
   .chip[aria-pressed="true"] { border-color: var(--accent); background: rgba(224,122,63,.18); }
   .chip.done::after { content: " ✓"; color: var(--good); font-weight: 800; }
+  .chip-note { font-size: 13px; color: var(--muted); }
   .row { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 10px; }
   .status { font-size: 14px; color: var(--muted); }
   .btn { appearance: none; border: 2px solid var(--line); background: transparent; color: var(--fg); font: inherit; font-weight: 700; border-radius: 12px; padding: 8px 14px; min-height: 40px; cursor: pointer; }
@@ -68,7 +70,10 @@
 </head>
 <body>
 <div class="wrap">
-  <h1>Learning Kangaroo #LK-J20 · Mixed set 5</h1>
+  <div class="top">
+    <h1>Learning Kangaroo #LK-J20 · Mixed set 5</h1>
+    <div class="who" id="who" role="group" aria-label="Who is doing this?"></div>
+  </div>
   <p class="intro">Tap a letter on the paper. A wrong one gets a hint, so try again.</p>
 
   <section class="paper" aria-label="Page 1"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 850 1100" class="art">
@@ -94,7 +99,6 @@
 <div class="bar">
   <div class="bar-in">
     <div class="hint hidden" id="hint" role="status" aria-live="polite"></div>
-    <div class="who" id="who" role="group" aria-label="Who is doing this?"></div>
     <div class="row">
       <span class="status" id="status"></span>
       <button class="btn" id="again" type="button">Start again</button>
@@ -117,13 +121,14 @@
   const N = DATA.length;
   // null: read the family list and the saved completions from the database (js/config.js).
   // an array: a fixed list, used by the demo page and tests. Nothing is sent anywhere.
-  const CHILDREN = null;
+  const CHILDREN = null;   // [{id, name, initial}] for the demo; null for the database
+  const GUEST = { id: "guest", name: "Guest", initial: "Guest" };
   const CONFIG_SRC = "../../js/config.js";
 
   // ---- state for this sheet ----
   const solved = {};   // question index -> true
   const tries = {};    // question index -> wrong taps so far
-  let who = null;      // the chosen child {id, name}
+  let who = null;      // the chosen child {id, name, initial}; kept on this device until changed
   let done = {};       // child id -> true, for this sheet
   let childList = [];  // the family members the picker shows
 
@@ -144,6 +149,8 @@
     } catch (e) { /* storage can be blocked: the database write still happens */ }
   }
   function localDone() { return (localAll()[CODE]) || {}; }
+  function rememberWho(id) { try { if (id) localStorage.setItem("lkg.child", id); else localStorage.removeItem("lkg.child"); } catch (e) { /* blocked: the choice lasts the page only */ } }
+  function rememberedWho() { try { return localStorage.getItem("lkg.child") || ""; } catch (e) { return ""; } }
 
   // ---- database (only when CHILDREN is null) ----
   let sb = null;
@@ -161,9 +168,9 @@
   async function loadChildren() {
     if (CHILDREN) return CHILDREN;
     const c = await client();
-    const { data, error } = await c.from("family_members").select("id,name,display_order").order("display_order");
+    const { data, error } = await c.from("family_members").select("id,name,display_order").eq("role", "kid").order("display_order");
     if (error) throw new Error(error.message);
-    return data;
+    return data.map(r => ({ id: r.id, name: r.name, initial: (r.name || "?").charAt(0).toUpperCase() }));
   }
   async function loadDone() {
     if (CHILDREN) return localDone();
@@ -176,23 +183,25 @@
   }
   async function saveDone(childId) {
     localSave(childId);
-    if (CHILDREN) return "saved on this device";
+    if (CHILDREN || childId === GUEST.id) return childId === GUEST.id ? "saved for Guest on this device" : "saved on this device";
     const c = await client();
     const now = new Date().toISOString();
     const { error } = await c.from("lkg_reviews").insert({ code: CODE, kind: "done", who: childId, status: "done", reason: "", note: "", created_at: now, updated_at: now });
     if (error && !/duplicate/i.test(error.message)) throw new Error(error.message);
-    return "saved for " + (who ? who.name : "this child");
+    return "saved for " + (who ? who.initial : "this child");
   }
 
   // ---- the child picker ----
   function drawWho(list) {
     childList = list;
-    whoBox.innerHTML = `<span class="who-label">Who is doing this?</span>` +
-      list.map(c => `<button class="chip${done[c.id] ? " done" : ""}" type="button" data-id="${c.id}" aria-pressed="${who && who.id === c.id}">${escapeHtml(c.name)}</button>`).join("");
+    const options = list.concat([GUEST]);
+    whoBox.innerHTML = `<span class="who-label">Who?</span>` +
+      options.map(c => `<button class="chip${done[c.id] ? " done" : ""}" type="button" data-id="${escapeHtml(c.id)}" aria-pressed="${who ? who.id === c.id : false}">${escapeHtml(c.initial)}</button>`).join("");
     whoBox.querySelectorAll(".chip").forEach(b => b.addEventListener("click", () => {
-      who = list.find(c => c.id === b.dataset.id);
+      who = options.find(c => c.id === b.dataset.id);
+      rememberWho(who.id);
       drawWho(list);
-      statusBox.textContent = done[who.id] ? who.name + " has done this one" : "";
+      statusBox.textContent = done[who.id] ? "Done for " + who.initial + " already" : "";
     }));
   }
   function escapeHtml(s) { return String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]); }
@@ -201,10 +210,16 @@
     try {
       const list = await loadChildren();
       done = await loadDone();
+      const saved = rememberedWho();
+      who = list.concat([GUEST]).find(c => c.id === saved) || null;
       drawWho(list);
-      if (!list.length) statusBox.textContent = "No family members found.";
     } catch (e) {
-      whoBox.innerHTML = `<span class="who-label">The family list is not available here (${escapeHtml(e.message)}). Sign in on the home page, then open this sheet again.</span>`;
+      // the family list is not reachable (not signed in, or offline): Guest still works, and saves on this device
+      done = localDone();
+      const saved = rememberedWho();
+      who = saved === GUEST.id ? GUEST : null;
+      drawWho([]);
+      statusBox.textContent = "Family list not available (" + e.message + "). Guest only.";
     }
   }
 
@@ -233,7 +248,7 @@
 
   async function finish() {
     statusBox.textContent = "";
-    if (!who) { statusBox.textContent = "Pick who did this to save it."; return; }
+    if (!who) { statusBox.textContent = "Pick who is doing this (top right) to save it."; return; }
     try {
       const msg = await saveDone(who.id);
       done[who.id] = true;

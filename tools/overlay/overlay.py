@@ -104,7 +104,7 @@ def hints_for(q):
     return out[:MAX_HINTS]
 
 
-DEMO_CHILDREN = [{"id": "demo-1", "name": "Child one"}, {"id": "demo-2", "name": "Child two"}]
+DEMO_CHILDREN = [{"id": "demo-f", "name": "Demo one", "initial": "F"}, {"id": "demo-a", "name": "Demo two", "initial": "A"}]
 
 
 def build(sheet):
