@@ -1,10 +1,11 @@
-// Prints one worksheet as JSON: its two page SVGs (drawn by js/kangaroo.js, the same drawing the site prints)
-// and the answers. Used by tools/overlay.py. Usage: node tools/export_sheet.js J20
+// Prints one worksheet as JSON: its two page SVGs (drawn by js/kangaroo.js, the same drawing the site prints),
+// the answers, the explanation, the picture kind and any hints written for the question.
+// Used by overlay.py. Usage: node tools/overlay/export_sheet.js J20
 "use strict";
 const fs = require("fs");
 const path = require("path");
 const vm = require("vm");
-const ROOT = path.resolve(__dirname, "..");
+const ROOT = path.resolve(__dirname, "..", "..");
 const code = String(process.argv[2] || "").toUpperCase().replace(/^LK-/, "");
 
 const sandbox = { console };
@@ -25,6 +26,8 @@ const out = {
     points: q.points,
     answer: q.answer,
     why: q.why,
+    art: q.art ? q.art.kind : null,
+    hints: q.hints || [],
     choices: q.choices.map(c => (typeof c === "object" ? c.see : c)),
   })),
 };
