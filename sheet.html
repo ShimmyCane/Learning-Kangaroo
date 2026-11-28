@@ -14,6 +14,7 @@
   .panel { background: #fff; border: var(--line); border-radius: 18px 18px 18px 6px; box-shadow: var(--pop); padding: 12px 14px; margin-top: 16px; }
   .panel h3 { font: 24px var(--hand); margin: 0 0 6px; }
   .reasons { display: flex; flex-wrap: wrap; gap: 8px; }
+  .reasons .btn[data-reason="good"] { background: var(--mint); border-color: var(--mint-dark); }
 </style>
 </head>
 <body>
@@ -64,7 +65,7 @@
       document.getElementById("flagState").innerHTML = flag ? `<b>🚩 Flagged: ${esc((BANK.REASONS.find(x => x[0] === flag.reason) || [, flag.reason])[1])}</b>${flag.note ? " · " + esc(flag.note) : ""}` : "<small>Flagged worksheets are left out of bulk printing until they are fixed.</small>";
       document.getElementById("unflag").hidden = !flag;
     }
-    document.getElementById("reasons").addEventListener("click", e => { const b = e.target.closest("[data-reason]"); if (b) APP.addReview({ code: s.code, kind: "flag", reason: b.dataset.reason, note: document.getElementById("flagNote").value.trim() }); });
+    document.getElementById("reasons").addEventListener("click", e => { const b = e.target.closest("[data-reason]"); if (!b) return; APP.addReview({ code: s.code, kind: "flag", reason: b.dataset.reason, note: document.getElementById("flagNote").value.trim() }); if (b.dataset.reason === "good") APP.resolveFlag(s.code, "kept", "marked good"); });
     document.getElementById("unflag").addEventListener("click", () => APP.resolveFlag(s.code, "kept", "fine on a second look"));
     APP.onReviews = render;
     render();
