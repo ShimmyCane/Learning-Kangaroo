@@ -5,7 +5,7 @@
 **State (2026-11-09, round 1):**
 - 6 worksheets / 24 questions in `data/questions.js`; `tools/check_sheets.js` passes; answer letters A3 B5 C6 D6 E4.
 - Pages: home, sheet, pack, answers (key + results). Smoke-tested offline at 390 and 1024 px.
-- **Database not applied** (same as Learning to Draw: the Supabase tool's confirmation wasn't answered). SQL and the rolled-back test are in `supabase/`.
+- **Database applied** to Family (checked 2026-11-28; the earlier "not applied" note was stale). SQL and the rolled-back test are in `supabase/`; the migration isn't in `list_migrations`, so it is recorded here only.
 
 **Decisions:**
 - No answers on the kids' pages; `answers.html` holds the key.

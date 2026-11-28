@@ -16,7 +16,7 @@
   };
   const viewOf = param => (param === "archive" || VIEWS[param] || LEVELS[param]) ? param : "current";
   const find = code => every().find(s => s.code === String(code || "").toUpperCase().replace(/^LK-/, "")) || null;
-  const REASONS = [["wrong", "❌ An answer is wrong"], ["hard", "😣 Too hard"], ["easy", "😴 Too easy"], ["unclear", "🤔 Hard to understand"], ["ugly", "🎨 Picture is unclear"], ["other", "📝 Something else"]];
+  const REASONS = [["good", "👍 Good"], ["wrong", "❌ An answer is wrong"], ["hard", "😣 Too hard"], ["easy", "😴 Too easy"], ["unclear", "🤔 Hard to understand"], ["ugly", "🎨 Picture is unclear"], ["other", "📝 Something else"]];
   const WHO = { J: "younger", R: "older", W: "older", F: "older", B: "older" };
   root.BANK = { sheets, find, viewOf, LEVELS, REASONS, WHO };
 })(window);
