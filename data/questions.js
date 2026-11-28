@@ -217,7 +217,7 @@ window.LKG_SHEETS = [
     { id: "J20-3", points: 4, text: "How many apples are on the tree?", art: {"kind": "tree", "n": 8}, choices: [8, 9, 10, 6, 7], answer: "A", calc: () => 8, why: "Count the apples carefully: there are 8 apples." },
     { id: "J20-4", points: 5, text: "Kip starts at 1 and makes one jump of size 3. Where does he land?", art: {"kind": "numberLine", "max": 6, "jumps": [], "kip": 1}, choices: [3, 4, 5, 6, 2], answer: "B", calc: () => 4, why: "1 + 3 = 4." }
   ] },
-  { code: "J21", level: "k", title: "Mixed set 6", questions: [
+  { code: "J21", level: "k", retired: true, title: "Mixed set 6", questions: [
     { id: "J21-1", points: 3, text: "What hour does the clock show?", art: {"kind": "clock", "h": 4}, choices: [2, 3, 4, 5, 6], answer: "C", calc: () => 4, why: "The hour hand points directly at the number 4." },
     { id: "J21-2", points: 4, text: "What is the missing number in the sequence?", art: {"kind": "missing", "list": [5, 6, null, 8]}, choices: [9, 5, 6, 7, 8], answer: "D", calc: () => 7, why: "Counting forward by ones: 5, 6, 7, 8." },
     { id: "J21-3", points: 4, text: "Which kangaroo is the shortest?", art: {"kind": "roos", "heights": [5, 4, 1, 3, 2]}, choices: [{"see": "A"}, {"see": "B"}, {"see": "C"}, {"see": "D"}, {"see": "E"}], answer: "C", calc: () => "C", why: "Kangaroo C has height 1, which is the shortest." },
