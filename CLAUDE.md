@@ -17,4 +17,4 @@ Rules:
 - Every question has `calc` (the answer worked out) so the checker can prove the letter is right.
 - No names or ages of the kids; the tracks are Joey and Roo, the data says "younger" / "older". Characters are our own kangaroos Kip, Bo and Pip.
 - Retire, don't delete: a replaced question or worksheet gets `retired: true`; ids are never reused.
-- Supabase: Family project, app `learning-kangaroo`, table `lkg_reviews` (`supabase/001_reviews.sql`). Not applied yet.
+- Supabase: Family project, app `learning-kangaroo`, table `lkg_reviews` (`supabase/001_reviews.sql`). Applied to Family (checked 2026-11-28).

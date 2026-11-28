@@ -43,4 +43,4 @@ Practice in the style of the Math Kangaroo contest: a picture, a little story, f
 
 ## Data
 
-Supabase **Family** project, app `learning-kangaroo`, table `lkg_reviews`: flags (per worksheet), results (per question: 1 right, 0 wrong, empty skipped, with "younger"/"older"), prints. Kept on the device first, synced when signed in. **SQL written, not applied.**
+Supabase **Family** project, app `learning-kangaroo`, table `lkg_reviews`: flags (per worksheet), results (per question: 1 right, 0 wrong, empty skipped, with "younger"/"older"), prints. Kept on the device first, synced when signed in. **Applied to Family** (checked 2026-11-28: table and RLS live, `anon` has no grant, registry row present, 12 rows: 10 flags, 2 prints). Results are keyed by question id, per child.

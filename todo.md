@@ -33,7 +33,8 @@
 
 - [ ] Jimmy answers `convo/convo v0.1.md`
 - [ ] Print one Joey and one Roo worksheet, try them, mark the results
-- [ ] Apply `supabase/001_reviews.sql` (test first)
+- [x] `supabase/001_reviews.sql` is live on Family (checked 2026-11-28: table, RLS on, anon has no grant, registry row present, 12 rows)
+- [ ] Record it in Supabase migrations (it was run as SQL, so `list_migrations` doesn't show it); re-run the rolled-back test only with Jimmy's OK
 
 ## Next (after evaluating)
 
