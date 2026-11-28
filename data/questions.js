@@ -187,7 +187,7 @@ window.LKG_SHEETS = [
     { id: "R15-3", points: 4, text: "Bo has 5 apples on 3 trees. How many apples in total?", art: {"kind": "tree", "n": 5}, choices: [16, 20, 10, 12, 15], answer: "E", calc: () => 15, why: "3 trees x 5 apples = 15 apples." },
     { id: "R15-4", points: 5, text: "In a race, Kip finishes before Bo, but after Pip. Who won 1st place in the race?", art: {"kind": "names", "names": ["Pip", "Kip", "Bo"]}, choices: ["Pip", "Tie", "Unknown", "Bo", "Kip"], answer: "A", calc: () => "Pip", why: "Order of finish: 1st Pip, 2nd Kip, 3rd Bo. Pip won 1st place." }
   ] },
-  { code: "J16", level: "k", title: "Mixed set 1", questions: [
+  { code: "J16", level: "k", retired: true, title: "Mixed set 1", questions: [
     { id: "J16-1", points: 3, text: "How many apples are hanging on the tree?", art: {"kind": "tree", "n": 5}, choices: [5, 6, 7, 3, 4], answer: "A", calc: () => 5, why: "Count the apples on the branches one by one: 5 apples." },
     { id: "J16-2", points: 3, text: "What hour does the clock show?", art: {"kind": "clock", "h": 7}, choices: [6, 7, 8, 9, 5], answer: "B", calc: () => 7, why: "The hour hand points straight to 7." },
     { id: "J16-3", points: 4, text: "Which flower has the fewest petals?", art: {"kind": "flowers", "petals": [5, 3, 6, 4, 7]}, choices: [{"see": "A"}, {"see": "B"}, {"see": "C"}, {"see": "D"}, {"see": "E"}], answer: "B", calc: () => "B", why: "Flower B has 3 petals, which is smaller than 4, 5, 6, or 7." },
@@ -205,7 +205,7 @@ window.LKG_SHEETS = [
     { id: "J18-3", points: 4, text: "How many coins are in the pile?", art: {"kind": "coins", "n": 7}, choices: [8, 9, 5, 6, 7], answer: "E", calc: () => 7, why: "Count all coins in the stack: 7." },
     { id: "J18-4", points: 4, text: "How many coins are shown?", art: {"kind": "coins", "n": 9}, choices: [9, 10, 6, 7, 8], answer: "A", calc: () => 9, why: "Count the total coins: 9." }
   ] },
-  { code: "J19", level: "k", title: "Mixed set 4", questions: [
+  { code: "J19", level: "k", retired: true, title: "Mixed set 4", questions: [
     { id: "J19-1", points: 3, text: "Where is Kip sitting on the number line?", art: {"kind": "numberLine", "max": 6, "jumps": [], "kip": 3}, choices: [2, 3, 4, 5, 1], answer: "B", calc: () => 3, why: "Kip is sitting directly above the number 3." },
     { id: "J19-2", points: 4, text: "Which kangaroo is the tallest?", art: {"kind": "roos", "heights": [2, 4, 5, 3, 1]}, choices: [{"see": "A"}, {"see": "B"}, {"see": "C"}, {"see": "D"}, {"see": "E"}], answer: "C", calc: () => "C", why: "Kangaroo C has height 5, which is taller than all the others." },
     { id: "J19-3", points: 4, text: "Bo is first in line. Kip is right behind Bo. Pip is right behind Kip. Who is second in line?", art: null, choices: ["Can't tell", "Bo", "Kip", "Pip", "Nobody"], answer: "C", calc: () => "Kip", why: "Bo is 1st, so Kip, right behind him, is 2nd." },
@@ -223,13 +223,13 @@ window.LKG_SHEETS = [
     { id: "J21-3", points: 4, text: "Which kangaroo is the shortest?", art: {"kind": "roos", "heights": [5, 4, 1, 3, 2]}, choices: [{"see": "A"}, {"see": "B"}, {"see": "C"}, {"see": "D"}, {"see": "E"}], answer: "C", calc: () => "C", why: "Kangaroo C has height 1, which is the shortest." },
     { id: "J21-4", points: 5, text: "Bo has 6 carrots. He gives 3 to Pip and 1 to Kip. How many carrots are left for Bo?", art: null, choices: [3, 4, 5, 1, 2], answer: "E", calc: () => 2, why: "6 - 3 - 1 = 2." }
   ] },
-  { code: "J22", level: "k", title: "Mixed set 7", questions: [
+  { code: "J22", level: "k", retired: true, title: "Mixed set 7", questions: [
     { id: "J22-1", points: 3, text: "How many dots should be in the next box?", art: {"kind": "growing", "counts": [1, 2, 3]}, choices: [4, 5, 6, 2, 3], answer: "A", calc: () => 4, why: "The pattern increases by 1 each step: 1, 2, 3, 4." },
     { id: "J22-2", points: 4, text: "How many small squares make up this shape?", art: {"kind": "cells", "cells": [[0, 0], [0, 1], [1, 0], [1, 1]]}, choices: [3, 4, 5, 6, 2], answer: "B", calc: () => 4, why: "Count all grid units: 4 small squares arranged in a 2x2 grid." },
     { id: "J22-3", points: 4, text: "What number is missing from the list?", art: {"kind": "missing", "list": [7, 8, 9, null]}, choices: [8, 9, 10, 11, 12], answer: "C", calc: () => 10, why: "Counting up by ones: 7, 8, 9, 10." },
     { id: "J22-4", points: 5, text: "Bo has 4 fish. Pip gives him 4 more. How many fish does Bo have in total?", art: null, choices: [10, 6, 7, 8, 9], answer: "D", calc: () => 8, why: "4 + 4 = 8." }
   ] },
-  { code: "J23", level: "k", title: "Mixed set 8", questions: [
+  { code: "J23", level: "k", retired: true, title: "Mixed set 8", questions: [
     { id: "J23-1", points: 3, text: "How many triangles are in the box?", art: {"kind": "shapeMix", "list": [["triangle", 30, 40], ["square", 60, 20], ["triangle", 70, 70]]}, choices: [3, 4, 5, 1, 2], answer: "E", calc: () => 2, why: "Count only the 3-sided triangles: there are 2." },
     { id: "J23-2", points: 4, text: "How many total animals are on the farm?", art: {"kind": "farm", "hens": 4, "dogs": 2}, choices: [6, 7, 8, 4, 5], answer: "A", calc: () => 6, why: "Add 4 hens + 2 dogs = 6 animals." },
     { id: "J23-3", points: 4, text: "How many dots are on the die?", art: {"kind": "die", "n": 5}, choices: [4, 5, 6, 2, 3], answer: "B", calc: () => 5, why: "Count the dots on the die: 5." },
