@@ -5,12 +5,17 @@ The worksheet stays as it prints: the page SVGs come from js/kangaroo.js (throug
 Transparent buttons sit on the answer boxes A-E. There are no wrong answers: a wrong tap gets a
 hint, and the child picks again. The right tap shows the explanation.
 
-Hints: each question can carry its own `hints` list in data/questions.js (easiest first, no
-letter given away). Any missing hints are filled from the picture kind (a tree, a farm, a number
-line ...), then a last general hint. So every question has at least a sensible way in.
+Hints come from data/hints.js (two per question, easiest first, no letter given away). If a
+question has none, the picture kind (a tree, a farm, a number line ...) and then a general hint
+are used, so every question still has a way in.
+
+A right tap turns the box green with no pop-up. Tapping the right box again shows the explanation.
+Nothing is scored or summarised on the paper. The child is picked from the family list in the
+database (js/config.js); when the sheet is done, the completion is saved for that child.
 
 Usage:
   python3 tools/overlay/overlay.py J20                 # writes tools/overlay/out/LK-J20.html
+  python3 tools/overlay/overlay.py J20 --demo          # fixed sample children, no database
   python3 tools/overlay/overlay.py J20 -o some.html
 
 Needs node (the worksheet engine is JavaScript). See README.md in this folder.
@@ -99,6 +104,9 @@ def hints_for(q):
     return out[:MAX_HINTS]
 
 
+DEMO_CHILDREN = [{"id": "demo-1", "name": "Child one"}, {"id": "demo-2", "name": "Child two"}]
+
+
 def build(sheet):
     pages = []
     questions = sheet["questions"]
@@ -135,7 +143,7 @@ def build(sheet):
     return {"code": sheet["code"], "title": sheet["title"], "pages": pages, "data": data}
 
 
-def render(built):
+def render(built, children, out):
     page_blocks = []
     for n, p in enumerate(built["pages"], start=1):
         hits = [
@@ -153,6 +161,9 @@ def render(built):
         "__HEAD__": html.escape(f'Learning Kangaroo #LK-{built["code"]} · {built["title"]}'),
         "__PAGES__": "\n".join(page_blocks),
         "__DATA__": json.dumps(built["data"], ensure_ascii=False),
+        "__CODE__": built["code"],
+        "__CHILDREN__": json.dumps(children, ensure_ascii=False) if children is not None else "null",
+        "__CONFIG_SRC__": config_src(out),
     }
     out = TEMPLATE.read_text(encoding="utf-8")
     for key, value in replacements.items():
@@ -160,16 +171,23 @@ def render(built):
     return out
 
 
+def config_src(out):
+    """The path from the output page to js/config.js (the page reads the database settings from there)."""
+    import os
+    return pathlib.Path(os.path.relpath(ROOT / "js" / "config.js", out.resolve().parent)).as_posix()
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("code", help="worksheet code, for example J20 (LK- prefix allowed)")
     ap.add_argument("-o", "--out", help="output file (default tools/overlay/out/LK-<code>.html)")
+    ap.add_argument("--demo", action="store_true", help="use two sample children and no database (for previews)")
     args = ap.parse_args()
     code = args.code.upper().removeprefix("LK-")
     built = build(load_sheet(code))
     out = pathlib.Path(args.out) if args.out else DEFAULT_OUT / f"LK-{code}.html"
     out.parent.mkdir(parents=True, exist_ok=True)
-    out.write_text(render(built), encoding="utf-8")
+    out.write_text(render(built, DEMO_CHILDREN if args.demo else None, out), encoding="utf-8")
     print(f"Wrote {out}")
 
 

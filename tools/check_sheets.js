@@ -10,13 +10,13 @@
 const fs = require("fs"), path = require("path"), vm = require("vm"), crypto = require("crypto");
 const dir = path.join(__dirname, "..");
 const ctx = { console }; ctx.window = ctx; ctx.globalThis = ctx; vm.createContext(ctx);
-for (const f of ["js/kangaroo.js", "data/questions.js"]) vm.runInContext(fs.readFileSync(path.join(dir, f), "utf8"), ctx, { filename: f });
+for (const f of ["js/kangaroo.js", "data/questions.js", "data/hints.js"]) vm.runInContext(fs.readFileSync(path.join(dir, f), "utf8"), ctx, { filename: f });
 const { LKG, LKG_SHEETS } = ctx;
 const FP = path.join(__dirname, "fingerprints.json");
 const fps = fs.existsSync(FP) ? JSON.parse(fs.readFileSync(FP, "utf8")) : {};
 const update = process.argv.includes("--update");
 const key = c => (c && typeof c === "object") ? String(c.shape || c.dots || c.see) : String(c);
-const problems = [], ids = new Set(), out = {}, letters = {};
+const problems = [], ids = new Set(), out = {}, letters = {}, noHints = [];
 for (const s of LKG_SHEETS) {
   const say = m => problems.push("LK-" + s.code + ": " + m);
   const live = s.questions.filter(q => !q.retired);
@@ -39,6 +39,9 @@ for (const s of LKG_SHEETS) {
     if (!q.why) sq("no explanation for the answer key");
     if (q.text.length > (q.art ? 46 * 3 : 46 * 7)) sq("question text is too long (3 lines beside a picture, 7 without)");
     if (q.art && !LKG.ART[q.art.kind]) sq("unknown picture " + q.art.kind);
+    // hints are a warning, not a failure: a question without them is flagged for the hint writer
+    const hints = (ctx.LKG_HINTS || {})[q.id] || [];
+    if (!s.retired && hints.length < 2) noHints.push(q.id + (hints.length ? " (one hint)" : ""));
   }
   try {
     LKG.pages(s).forEach((svg, n) => {
@@ -60,5 +63,6 @@ try {
   if (!m || m[1].trim() !== fj.trim()) problems.push("format.html does not show the same JSON as data/question-format.json");
 } catch (e) { problems.push("question format: " + e.message); }
 if (!problems.length && (update || !fs.existsSync(FP))) { fs.writeFileSync(FP, JSON.stringify(Object.assign(fps, out), null, 1) + "\n"); console.log("fingerprints written"); }
+if (noHints.length) console.log("⚠️  " + noHints.length + " question(s) without two hints in data/hints.js: " + noHints.join(", ") + "\n   Add them (see process.md, step 2b).");
 if (problems.length) { console.log("❌ " + problems.length + " problem(s):\n" + problems.join("\n")); process.exit(1); }
 console.log(`✅ ${LKG_SHEETS.length} worksheets, ${ids.size} questions pass. Answer letters: ${"ABCDE".split("").map(l => l + " " + (letters[l] || 0)).join(" · ")}`);

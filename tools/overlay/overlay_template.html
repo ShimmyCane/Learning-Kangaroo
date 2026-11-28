@@ -7,7 +7,7 @@
 <title>__TITLE__</title>
 <style>
   /* Written by tools/overlay/overlay.py from overlay_template.html. Edit the template, not the output.
-     No wrong answers here: a wrong tap gets a hint and the child tries again. */
+     No wrong answers: a wrong tap gets a hint and the child tries again. No score, no summary on the paper. */
   :root {
     --bg: #f6f2e8; --fg: #22201c; --muted: #6d675c; --accent: #e07a3f;
     --good: #2f9e72; --card: #ffffff; --line: #e4ddcc;
@@ -26,7 +26,7 @@
     color-scheme: dark;
   }
   body { margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.4 system-ui, -apple-system, "Segoe UI", sans-serif; }
-  .wrap { max-width: 860px; margin: 0 auto; padding-block: 14px 150px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+  .wrap { max-width: 860px; margin: 0 auto; padding-block: 14px 190px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
   h1 { font-size: 18px; margin: 0 0 12px; text-wrap: balance; }
   .intro { color: var(--muted); font-size: 14px; margin: 0 0 14px; }
 
@@ -41,40 +41,43 @@
   .hit.tried { outline: 2px dashed var(--muted); outline-offset: -6px; }
   .hit.solved { background: rgba(47,158,114,.22); box-shadow: inset 0 0 0 4px var(--good); }
   .hit:disabled { cursor: default; }
-  .hit.solved:disabled, .hit.tried:disabled { opacity: 1; }
   .hit:disabled:not(.solved) { opacity: .45; }
   .mark { position: absolute; width: 30px; height: 30px; margin: -15px 0 0 -15px; border-radius: 50%; display: grid; place-items: center; color: #fff; background: var(--good); font: 700 18px/1 system-ui, sans-serif; box-shadow: 0 1px 3px rgba(0,0,0,.25); }
 
-  /* Bottom bar: hints appear here, above the status line. */
+  /* Bottom bar: who is doing it, and the hint for the question that was tapped. */
   .bar { position: fixed; left: 0; right: 0; bottom: 0; background: var(--card); border-top: 1px solid var(--line); padding-block: 10px calc(10px + env(safe-area-inset-bottom, 0px)); padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
   .bar-in { max-width: 860px; margin: 0 auto; }
-  .hint { max-width: 860px; margin: 0 auto 10px; border-left: 5px solid var(--accent); background: var(--bg); border-radius: 10px; padding: 10px 12px; font-size: 16px; }
-  .hint.ok { border-left-color: var(--good); }
+  .hint { margin: 0 0 10px; border-left: 5px solid var(--accent); background: var(--bg); border-radius: 10px; padding: 10px 12px; font-size: 16px; }
   .hint small { display: block; color: var(--muted); font-size: 13px; margin-bottom: 2px; }
-  .row { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
-  .status { font-size: 15px; color: var(--muted); }
-  .btn { appearance: none; border: 2px solid var(--line); background: transparent; color: var(--fg); font: inherit; font-weight: 700; border-radius: 12px; padding: 10px 16px; min-height: 44px; cursor: pointer; }
+  .who { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+  .who-label { font-size: 14px; color: var(--muted); margin-right: 4px; }
+  .chip { appearance: none; border: 2px solid var(--line); background: transparent; color: var(--fg); font: inherit; font-weight: 600; border-radius: 999px; padding: 6px 12px; min-height: 40px; cursor: pointer; }
+  .chip[aria-pressed="true"] { border-color: var(--accent); background: rgba(224,122,63,.18); }
+  .chip.done::after { content: " ✓"; color: var(--good); font-weight: 800; }
+  .row { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 10px; }
+  .status { font-size: 14px; color: var(--muted); }
+  .btn { appearance: none; border: 2px solid var(--line); background: transparent; color: var(--fg); font: inherit; font-weight: 700; border-radius: 12px; padding: 8px 14px; min-height: 40px; cursor: pointer; }
   .hidden { display: none !important; }
 
-  .result { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 16px; margin-bottom: 18px; }
-  .result h2 { font-size: 20px; margin: 0 0 8px; }
-  .result ol { margin: 10px 0 0; padding-left: 22px; }
-  .result li { margin: 6px 0; }
+  /* The explanation pops up only when the right answer is tapped again. */
+  .pop-back { position: fixed; inset: 0; box-sizing: border-box; background: rgba(0,0,0,.35); display: flex; align-items: center; justify-content: center; padding: 16px; z-index: 20; }
+  .pop { box-sizing: border-box; width: min(480px, 100%); background: var(--card); color: var(--fg); border-radius: 16px; padding: 20px; box-shadow: 0 12px 40px rgba(0,0,0,.3); }
+  .pop h2 { font-size: 18px; margin: 0 0 8px; }
+  .pop p { margin: 0 0 16px; font-size: 17px; }
 </style>
 </head>
 <body>
 <div class="wrap">
   <h1>__HEAD__</h1>
-  <p class="intro">Tap a letter on the paper. If it is not the one, a hint will help you pick again.</p>
+  <p class="intro">Tap a letter on the paper. A wrong one gets a hint, so try again.</p>
 
   __PAGES__
-
-  <section class="result hidden" id="result" aria-live="polite"></section>
 </div>
 
 <div class="bar">
   <div class="bar-in">
     <div class="hint hidden" id="hint" role="status" aria-live="polite"></div>
+    <div class="who" id="who" role="group" aria-label="Who is doing this?"></div>
     <div class="row">
       <span class="status" id="status"></span>
       <button class="btn" id="again" type="button">Start again</button>
@@ -82,36 +85,115 @@
   </div>
 </div>
 
+<div class="pop-back hidden" id="popBack">
+  <div class="pop" role="dialog" aria-modal="true" aria-labelledby="popTitle">
+    <h2 id="popTitle"></h2>
+    <p id="popText"></p>
+    <button class="btn" id="popClose" type="button">Close</button>
+  </div>
+</div>
+
 <script>
-  // Each question: its answer (index 0-4), its hints in order, and the explanation shown once it is solved.
+  // ---- data the page is built from ----
+  const CODE = "__CODE__";
   const DATA = __DATA__;
   const N = DATA.length;
+  // null: read the family list and the saved completions from the database (js/config.js).
+  // an array: a fixed list, used by the demo page and tests. Nothing is sent anywhere.
+  const CHILDREN = __CHILDREN__;
+  const CONFIG_SRC = "__CONFIG_SRC__";
+
+  // ---- state for this sheet ----
   const solved = {};   // question index -> true
-  const tries = {};    // question index -> number of wrong taps so far
-  const firstTry = {}; // question index -> true when the first tap was right
+  const tries = {};    // question index -> wrong taps so far
+  let who = null;      // the chosen child {id, name}
+  let done = {};       // child id -> true, for this sheet
+  let childList = [];  // the family members the picker shows
+
   const hits = [...document.querySelectorAll(".hit")];
-  const status = document.getElementById("status");
   const hintBox = document.getElementById("hint");
-  const result = document.getElementById("result");
+  const statusBox = document.getElementById("status");
+  const whoBox = document.getElementById("who");
   const again = document.getElementById("again");
+  const popBack = document.getElementById("popBack");
 
-  function hintFor(i, n) {
-    const list = DATA[i].hints;
-    return list[Math.min(n - 1, list.length - 1)];
+  // ---- local copy of completions (this device), so the page works without the database ----
+  function localAll() { try { return JSON.parse(localStorage.getItem("lkg.done") || "{}"); } catch (e) { return {}; } }
+  function localSave(childId) {
+    try {
+      const all = localAll();
+      all[CODE] = Object.assign(all[CODE] || {}, { [childId]: true });
+      localStorage.setItem("lkg.done", JSON.stringify(all));
+    } catch (e) { /* storage can be blocked: the database write still happens */ }
+  }
+  function localDone() { return (localAll()[CODE]) || {}; }
+
+  // ---- database (only when CHILDREN is null) ----
+  let sb = null;
+  function loadScript(src) {
+    return new Promise((res, rej) => { const s = document.createElement("script"); s.src = src; s.onload = res; s.onerror = () => rej(new Error("offline?")); document.head.append(s); });
+  }
+  async function client() {
+    if (sb) return sb;
+    if (!window.APP_CONFIG) await loadScript(CONFIG_SRC);
+    const C = window.APP_CONFIG;
+    if (!window.supabase) await loadScript("https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js");
+    sb = window.supabase.createClient(C.url, C.key);
+    return sb;
+  }
+  async function loadChildren() {
+    if (CHILDREN) return CHILDREN;
+    const c = await client();
+    const { data, error } = await c.from("family_members").select("id,name,display_order").order("display_order");
+    if (error) throw new Error(error.message);
+    return data;
+  }
+  async function loadDone() {
+    if (CHILDREN) return localDone();
+    const c = await client();
+    const { data, error } = await c.from("lkg_reviews").select("who").eq("code", CODE).eq("kind", "done");
+    if (error) throw new Error(error.message);
+    const out = {};
+    data.forEach(r => { out[r.who] = true; });
+    return Object.assign({}, localDone(), out);
+  }
+  async function saveDone(childId) {
+    localSave(childId);
+    if (CHILDREN) return "saved on this device";
+    const c = await client();
+    const now = new Date().toISOString();
+    const { error } = await c.from("lkg_reviews").insert({ code: CODE, kind: "done", who: childId, status: "done", reason: "", note: "", created_at: now, updated_at: now });
+    if (error && !/duplicate/i.test(error.message)) throw new Error(error.message);
+    return "saved for " + (who ? who.name : "this child");
   }
 
-  function refresh() {
-    const count = Object.keys(solved).length;
-    status.textContent = count === N ? "All done" : `${count} of ${N} solved`;
-    again.classList.toggle("hidden", count === 0 && !Object.keys(tries).length);
+  // ---- the child picker ----
+  function drawWho(list) {
+    childList = list;
+    whoBox.innerHTML = `<span class="who-label">Who is doing this?</span>` +
+      list.map(c => `<button class="chip${done[c.id] ? " done" : ""}" type="button" data-id="${c.id}" aria-pressed="${who && who.id === c.id}">${escapeHtml(c.name)}</button>`).join("");
+    whoBox.querySelectorAll(".chip").forEach(b => b.addEventListener("click", () => {
+      who = list.find(c => c.id === b.dataset.id);
+      drawWho(list);
+      statusBox.textContent = done[who.id] ? who.name + " has done this one" : "";
+    }));
+  }
+  function escapeHtml(s) { return String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]); }
+
+  async function setupWho() {
+    try {
+      const list = await loadChildren();
+      done = await loadDone();
+      drawWho(list);
+      if (!list.length) statusBox.textContent = "No family members found.";
+    } catch (e) {
+      whoBox.innerHTML = `<span class="who-label">The family list is not available here (${escapeHtml(e.message)}). Sign in on the home page, then open this sheet again.</span>`;
+    }
   }
 
-  function showHint(text, label, ok) {
-    hintBox.className = "hint" + (ok ? " ok" : "");
-    hintBox.innerHTML = `<small>${label}</small>${text}`;
-  }
+  // ---- the question flow ----
+  function hintFor(i, n) { const list = DATA[i].hints; return list[Math.min(n - 1, list.length - 1)]; }
 
-  // A badge sits on the right edge of a box, level with its middle. Its position comes from the box's own percentages.
   function badge(btn) {
     const marks = btn.closest(".paper").querySelector(".marks");
     const m = document.createElement("div");
@@ -122,57 +204,84 @@
     marks.appendChild(m);
   }
 
-  function finishIfDone() {
-    if (Object.keys(solved).length !== N) return;
-    const first = Object.keys(firstTry).length;
-    const lines = DATA.map((q, i) => `<li><b>Question ${i + 1}</b>: ${q.why}</li>`).join("");
-    result.innerHTML = `<h2>All ${N} solved</h2><p>${first} of ${N} on the first try.</p><ol>${lines}</ol>`;
-    result.classList.remove("hidden");
-    hintBox.classList.add("hidden");
-    result.scrollIntoView({ behavior: "smooth", block: "start" });
+  function showHint(label, text) {
+    hintBox.className = "hint";
+    hintBox.innerHTML = `<small>${label}</small>${escapeHtml(text)}`;
+  }
+
+  function refreshStatus() {
+    const count = Object.keys(solved).length;
+    if (count < N) statusBox.textContent = count ? `${count} of ${N} solved` : "";
+  }
+
+  async function finish() {
+    statusBox.textContent = "";
+    if (!who) { statusBox.textContent = "Pick who did this to save it."; return; }
+    try {
+      const msg = await saveDone(who.id);
+      done[who.id] = true;
+      drawWho(childList);
+      statusBox.textContent = msg;
+    } catch (e) {
+      statusBox.textContent = "Not saved yet (" + e.message + "). It is kept on this device.";
+    }
   }
 
   hits.forEach(btn => btn.addEventListener("click", () => {
     const q = Number(btn.dataset.q), k = Number(btn.dataset.k);
-    if (solved[q]) return;
-    hits.filter(h => Number(h.dataset.q) === q).forEach(h => h.setAttribute("aria-pressed", h === btn ? "true" : "false"));
 
-    if (k === DATA[q].answer) {
-      solved[q] = true;
-      if (!tries[q]) firstTry[q] = true;
-      btn.classList.add("solved");
-      badge(btn);
-      hits.filter(h => Number(h.dataset.q) === q).forEach(h => { h.disabled = true; h.classList.remove("tried"); });
-      showHint(DATA[q].why, `Question ${q + 1} · yes!`, true);
-      refresh();
-      finishIfDone();
+    // the right answer, tapped again after it was found: the explanation pops up
+    if (solved[q]) {
+      if (k === DATA[q].answer) {
+        document.getElementById("popTitle").textContent = "Question " + (q + 1);
+        document.getElementById("popText").textContent = DATA[q].why;
+        popBack.classList.remove("hidden");
+        document.getElementById("popClose").focus();
+      }
       return;
     }
 
-    // Not this one: a hint, and the child picks again. Nothing is marked wrong.
+    hits.filter(h => Number(h.dataset.q) === q).forEach(h => h.setAttribute("aria-pressed", h === btn ? "true" : "false"));
+
+    if (k === DATA[q].answer) {
+      // found: green, no pop-up yet
+      solved[q] = true;
+      btn.classList.add("solved");
+      btn.classList.remove("tried");
+      badge(btn);
+      hits.filter(h => Number(h.dataset.q) === q && h !== btn).forEach(h => { h.disabled = true; h.classList.remove("tried"); });
+      btn.setAttribute("aria-pressed", "false");
+      hintBox.classList.add("hidden");
+      refreshStatus();
+      if (Object.keys(solved).length === N) finish();
+      return;
+    }
+
+    // not this one: a hint, and the child picks again. Nothing is marked wrong.
     tries[q] = (tries[q] || 0) + 1;
     btn.classList.add("tried");
     btn.setAttribute("aria-pressed", "false");
-    const hint = hintFor(q, tries[q]);
-    showHint(hint, `Question ${q + 1} · hint ${Math.min(tries[q], DATA[q].hints.length)} of ${DATA[q].hints.length}`, false);
-    refresh();
+    showHint(`Question ${q + 1} · hint ${Math.min(tries[q], DATA[q].hints.length)} of ${DATA[q].hints.length}`, hintFor(q, tries[q]));
+    hintBox.classList.remove("hidden");
   }));
 
+  document.getElementById("popClose").addEventListener("click", () => popBack.classList.add("hidden"));
+  popBack.addEventListener("click", e => { if (e.target === popBack) popBack.classList.add("hidden"); });
+  document.addEventListener("keydown", e => { if (e.key === "Escape") popBack.classList.add("hidden"); });
+
   again.addEventListener("click", () => {
-    for (const obj of [solved, tries, firstTry]) for (const k of Object.keys(obj)) delete obj[k];
+    for (const obj of [solved, tries]) for (const k of Object.keys(obj)) delete obj[k];
     hits.forEach(h => {
       h.disabled = false;
       h.classList.remove("tried", "solved");
       h.setAttribute("aria-pressed", "false");
     });
     document.querySelectorAll(".mark").forEach(m => m.remove());
-    result.classList.add("hidden");
-    result.innerHTML = "";
     hintBox.classList.add("hidden");
-    refresh();
+    statusBox.textContent = "";
   });
 
-  refresh();
+  setupWho();
 </script>
 </body>
 </html>
